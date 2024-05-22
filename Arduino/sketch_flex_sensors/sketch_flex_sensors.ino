@@ -1,5 +1,6 @@
 //https://circuitdigest.com/microcontroller-projects/interfacing-flex-sensor-with-arduino
 //https://www.instructables.com/How-to-use-a-Flex-Sensor-Arduino-Tutorial/
+#include <Adafruit_CircuitPlayground.h>
 
 float VCC = 3.3;
 float R2 = 10000; // 10K resistor is
@@ -9,10 +10,10 @@ float sensorMaxResistance = 4000; // Value of the Sensor when its bent at 90*
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  CircuitPlayground.begin();
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   
-
 }
 
 void loop() {
@@ -29,10 +30,17 @@ void loop() {
   float Resistance1 = R2 * (VCC / ADCVoltage1 -1);
   float ReadValue1 = map(Resistance1, sensorMinResistance, sensorMaxResistance, 0, 255);
 
+  int touchValue = CircuitPlayground.readCap(A3);
+
   Serial.print(ReadValue);
 
   Serial.print(" ");
 
-  Serial.println(ReadValue1);
+  Serial.print(ReadValue1);
+
+  Serial.print(" ");
+
+  Serial.println(touchValue);
+
   delay(100);
 }
