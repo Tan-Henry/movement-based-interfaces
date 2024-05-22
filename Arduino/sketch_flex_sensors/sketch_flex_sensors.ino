@@ -3,8 +3,8 @@
 
 float VCC = 3.3;
 float R2 = 10000; // 10K resistor is
-float sensorMinResistance = 16000; // Value of the Sensor when its flat
-float sensorMaxResistance = 17500; // Value of the Sensor when its bent at 90*
+float sensorMinResistance = 200; // Value of the Sensor when its flat
+float sensorMaxResistance = 4000; // Value of the Sensor when its bent at 90*
 
 void setup() {
   // put your setup code here, to run once:
