@@ -74,6 +74,6 @@ public class CursorController : MonoBehaviour
         }
 
         var localPosition = chunk.transform.InverseTransformPoint(worldPosition);
-        chunk.GetComponent<Chunk>().SetVoxelActiveAt(localPosition, isPainting);
+        chunk.GetComponent<Voxel_Engine.Chunk>().SetVoxelActiveAt(localPosition, isPainting);
     }
 }
