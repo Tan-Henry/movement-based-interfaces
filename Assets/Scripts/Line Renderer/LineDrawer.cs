@@ -10,6 +10,12 @@ public abstract class LineDrawer : MonoBehaviour
     protected GameObject newLine;
     protected LineRenderer drawLine;
     public float lineWidth;
+    
+    public OVRHand rightHand;
+    public OVRSkeleton skeleton;
+    private bool isIndexFingerPinching;
+    private Transform handIndexTipTransform;
+    private bool isDrawing;
 
     protected virtual void Start()
     {
@@ -19,27 +25,51 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        //ToDo: Handtracking in anderer Klasse implementieren
+        if (rightHand.IsTracked)
         {
-            InitializeLine();
-        }
-        if (Input.GetMouseButton(0))
-        {
-            timer -= Time.deltaTime;
-            if (timer <= 0)
+            // Gather info whether left hand is pinching
+            isIndexFingerPinching = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+
+            // Proceed only if left hand is pinching
+            if (isIndexFingerPinching)
             {
-                linePoints.Add(GetMousePosition());
+                if (!isDrawing)
+                {
+                    isDrawing = true;
+                    InitializeLine();
+                }
+                // Loop through all the bones in the skeleton
+                foreach (var b in skeleton.Bones)
+                {
+                    // If bone is the the hand index tip
+                    if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
+                    {
+                        // Store its transform and break the loop
+                        handIndexTipTransform = b.Transform;
+                        break;
+                    }
+                }
+                linePoints.Add(handIndexTipTransform.position);
                 drawLine.positionCount = linePoints.Count;
                 drawLine.SetPositions(linePoints.ToArray());
-                timer = timerDelay;
+                
+            }
+            // If the user is not pinching
+            else
+            {
+                if (isDrawing)
+                {
+                    OnLineComplete();
+                    linePoints.Clear();
+                    isDrawing = false;
+                }
             }
         }
-
-        if (Input.GetMouseButtonUp(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
-            OnLineComplete();
-            linePoints.Clear();
-        }
+            InitializeLine();
+        }*/
     }
 
     protected virtual void InitializeLine()
@@ -54,10 +84,4 @@ public abstract class LineDrawer : MonoBehaviour
     }
 
     protected virtual void OnLineComplete() { }
-
-    protected Vector3 GetMousePosition()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return ray.origin + ray.direction * 3;
-    }
 }

@@ -38,6 +38,8 @@ Library: C:\Users\susan\Documents\GitHub\movement-based-interfaces\Temp\BurstOut
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
 --assembly-defines=Unity.RenderPipelines.Universal.Runtime;
 --assembly-defines=Unity.TextMeshPro;
+--assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.VisualEffectGraph.Runtime;
 --assembly-defines=Unity.XR.Management;
 --assembly-defines=Unity.XR.Oculus;
 --assembly-defines=UnityEngine;
@@ -87,6 +89,8 @@ Library: C:\Users\susan\Documents\GitHub\movement-based-interfaces\Temp\BurstOut
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
 --assembly-defines=Unity.RenderPipelines.Universal.Runtime;
 --assembly-defines=Unity.TextMeshPro;
+--assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.VisualEffectGraph.Runtime;
 --assembly-defines=Unity.XR.Management;
 --assembly-defines=Unity.XR.Oculus;
 --assembly-defines=UnityEngine;
