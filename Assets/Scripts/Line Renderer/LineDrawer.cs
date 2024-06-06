@@ -3,13 +3,13 @@ using UnityEngine;
 
 public abstract class LineDrawer : MonoBehaviour
 {
-    protected List<Vector3> linePoints;
-    protected float timer;
+    public List<Vector3> linePoints;
     public float timerDelay;
-
     protected GameObject newLine;
-    protected LineRenderer drawLine;
+    protected LineRenderer drawLine;  // Make this protected instead of public
     public float lineWidth;
+
+    private float timer;
 
     protected virtual void Start()
     {
@@ -28,7 +28,8 @@ public abstract class LineDrawer : MonoBehaviour
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                linePoints.Add(GetMousePosition());
+                Vector3 mousePosition = GetMousePosition();
+                linePoints.Add(mousePosition);
                 drawLine.positionCount = linePoints.Count;
                 drawLine.SetPositions(linePoints.ToArray());
                 timer = timerDelay;
@@ -42,7 +43,7 @@ public abstract class LineDrawer : MonoBehaviour
         }
     }
 
-    protected virtual void InitializeLine()
+    public virtual void InitializeLine()
     {
         newLine = new GameObject();
         drawLine = newLine.AddComponent<LineRenderer>();
@@ -53,11 +54,39 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.endColor = Color.clear;
     }
 
+    public void ClearLine()
+    {
+        linePoints.Clear();
+        if (drawLine != null)
+        {
+            drawLine.positionCount = 0;
+        }
+    }
+
+    public void AddPoint(Vector3 point)
+    {
+        linePoints.Add(point);
+        drawLine.positionCount = linePoints.Count;
+        drawLine.SetPositions(linePoints.ToArray());
+    }
+
     protected virtual void OnLineComplete() { }
 
-    protected Vector3 GetMousePosition()
+    public Vector3 GetMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         return ray.origin + ray.direction * 3;
+    }
+
+    // Method to get the drawLine
+    public LineRenderer GetDrawLine()
+    {
+        return drawLine;
+    }
+
+    // Method to get the newLine
+    public GameObject GetNewLine()
+    {
+        return newLine;
     }
 }

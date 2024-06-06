@@ -4,10 +4,11 @@ public class SimpleLineDrawer : LineDrawer
 {
     public Color color;
 
-    protected override void InitializeLine()
+    public override void InitializeLine()
     {
         base.InitializeLine();
-        drawLine.startColor = color;
-        drawLine.endColor = color;
+        LineRenderer lineRenderer = GetDrawLine();
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
     }
 }
