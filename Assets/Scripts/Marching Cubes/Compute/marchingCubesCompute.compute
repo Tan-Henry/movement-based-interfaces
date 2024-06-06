@@ -8,6 +8,7 @@
 float3 _HitPosition;
 float _BrushSize;
 float _TerraformStrength;
+float3 _ChunkWorldPosition;
 
 RWStructuredBuffer<float> _Weights;
 
@@ -82,14 +83,18 @@ void March(uint3 id : SV_DispatchThreadID)
 void UpdateWeights( uint3 id : SV_DispatchThreadID ) 
 {
 
-    if ( id.x >= _ChunkSize - 1 || id.y >= _ChunkSize - 1 || id.z >= _ChunkSize - 1 )
+    if ( id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16 )
     {
         return;
     }
 
-    if ( distance( id, _HitPosition ) <= _BrushSize )
+    // Convert the voxel position to world coordinates
+    float3 voxelWorldPosition = float3(id.x, id.y, id.z) + _ChunkWorldPosition * 2;
+
+    // Check if the voxel is within the brush size from the hit position
+    if (distance(voxelWorldPosition, _HitPosition) <= _BrushSize)
     {
-        _Weights[indexFromCoord( id.x, id.y, id.z )] += _TerraformStrength;
+        _Weights[indexFromCoord(id.x, id.y, id.z)] += _TerraformStrength;
     }
     
 }

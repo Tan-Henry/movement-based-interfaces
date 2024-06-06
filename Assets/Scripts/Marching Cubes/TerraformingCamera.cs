@@ -11,6 +11,10 @@ public class TerraformingCamera : MonoBehaviour
     Vector3 _hitPoint;
     Camera _cam;
     
+    public WorldGenerator _worldGenerator;
+    
+    public Vector3 worldPosition;
+    
     private void Awake() {
         _cam = GetComponent<Camera>();
     }
@@ -26,6 +30,8 @@ public class TerraformingCamera : MonoBehaviour
 
             _hitPoint = hit.point;
 
+            Debug.Log("hit point: " + _hitPoint);
+
             hitChunk.EditWeights(_hitPoint, BrushSize, add);  
         }
     }
@@ -39,6 +45,9 @@ public class TerraformingCamera : MonoBehaviour
             Debug.Log("right click");
             Terraform(false);
         }
+        
+        worldPosition = transform.position;
+        _worldGenerator.hideChunks(worldPosition);
     }
     
     private void OnDrawGizmos() {

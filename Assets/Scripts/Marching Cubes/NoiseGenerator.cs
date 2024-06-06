@@ -22,7 +22,7 @@ public class NoiseGenerator : MonoBehaviour
         ReleaseBuffers();
     }
 
-    public float[] GetNoise() {
+    public float[] GetNoise(Vector3 chunkPosition) {
         float[] noiseValues =
             new float[GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk];
 
@@ -35,6 +35,7 @@ public class NoiseGenerator : MonoBehaviour
         NoiseShader.SetInt("_Octaves", octaves);
         NoiseShader.SetFloat("_GroundPercent", groundPercent);
 
+        NoiseShader.SetVector("_ChunkPosition", chunkPosition * 2);
 
         NoiseShader.Dispatch(
             0, GridMetrics.PointsPerChunk / GridMetrics.NumThreads, GridMetrics.PointsPerChunk / GridMetrics.NumThreads, GridMetrics.PointsPerChunk / GridMetrics.NumThreads
