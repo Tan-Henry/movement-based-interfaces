@@ -26,23 +26,20 @@ public class TerraformingCamera : MonoBehaviour
             Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), 
                 out hit, 10000)
         ) {
-            Chunk hitChunk = hit.collider.gameObject.GetComponent<Chunk>();
 
             _hitPoint = hit.point;
 
-            Debug.Log("hit point: " + _hitPoint);
+            // Debug.Log("hit point: " + _hitPoint);
 
-            hitChunk.EditWeights(_hitPoint, BrushSize, add);  
+            _worldGenerator.TerraformAtPoint(_hitPoint, BrushSize, add);
         }
     }
     
     private void LateUpdate() {
         if (Input.GetMouseButton(0)) {
-            Debug.Log("left click");
             Terraform(true);
         }
         else if (Input.GetMouseButton(1)) {
-            Debug.Log("right click");
             Terraform(false);
         }
         

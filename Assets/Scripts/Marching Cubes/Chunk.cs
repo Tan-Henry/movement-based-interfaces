@@ -129,8 +129,7 @@ namespace Marching_Cubes
             MeshCollider.sharedMesh = mesh;
         }
 
-        public void EditWeights(Vector3 hitPosition, float brushSize, bool add)
-        {
+        public void EditWeights(Vector3 hitPosition, float brushSize, bool add) {
             int kernel = MarchingShader.FindKernel("UpdateWeights");
 
             _weightsBuffer.SetData(_weights);
@@ -138,7 +137,7 @@ namespace Marching_Cubes
 
             MarchingShader.SetInt("_ChunkSize", GridMetrics.PointsPerChunk);
             MarchingShader.SetVector("_HitPosition", hitPosition);
-            MarchingShader.SetVector("_ChunkWorldPosition", _chunkWorldPosition); // Add this line
+            MarchingShader.SetVector("_ChunkWorldPosition", _chunkWorldPosition); 
             MarchingShader.SetFloat("_BrushSize", brushSize);
             MarchingShader.SetFloat("_TerraformStrength", add ? 1f : -1f);
 

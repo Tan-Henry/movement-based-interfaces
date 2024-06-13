@@ -52,5 +52,27 @@ namespace Marching_Cubes
                 }
             }
         }
+        
+        public void TerraformAtPoint(Vector3 hitPoint, float brushSize, bool add) {
+            // Debug.Log("brushSize: " + brushSize);
+            
+            // Calculate the affected chunks
+            Vector3Int minChunk = Vector3Int.FloorToInt((hitPoint - Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
+            Vector3Int maxChunk = Vector3Int.FloorToInt((hitPoint + Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
+            
+            // Debug.Log("minChunk: " + minChunk);
+            // Debug.Log("maxChunk: " + maxChunk);
+
+            for (int x = minChunk.x; x <= maxChunk.x; x++) {
+                for (int z = minChunk.z; z <= maxChunk.z; z++) {
+                    Vector3Int chunkPos = new Vector3Int(x, 0, z);
+
+                    if (chunks.TryGetValue(chunkPos, out Chunk chunk)) {
+                        Debug.Log("Terraforming chunk: " + chunkPos + " at point: " + hitPoint + " with brush size: " + brushSize + " and add: " + add);
+                        chunk.EditWeights(hitPoint, brushSize, add);
+                    }
+                }
+            }
+        }
     }
 }
