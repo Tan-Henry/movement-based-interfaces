@@ -28,7 +28,7 @@ void surf(Input IN, inout SurfaceOutput o)
 
             // Wireframe calculation
     float edge = fwidth(IN.uv_MainTex.x) * _WireThickness;
-    float2 grid = fract(IN.uv_MainTex * 10.0) / edge;
+    float2 grid = fract(IN.uv_MainTex * 10.0) / edge;y
     if (grid.x < 1.0 || grid.y < 1.0)
         o.Albedo = _WireColor.rgb;
 }
