@@ -18,6 +18,12 @@ public class DynamicBrushDrawer : LineDrawer
         drawLine.endColor = color;
         drawLine.widthMultiplier = 1.0f;
         drawLine.widthCurve = new AnimationCurve(); // Reset width curve
+
+        // Apply the current material from the ShaderManager if shader is applied
+        if (ShaderManager.Instance != null && ShaderManager.Instance.GetCurrentMaterial() != null)
+        {
+            drawLine.material = ShaderManager.Instance.GetCurrentMaterial();
+        }
     }
 
     protected override void Update()

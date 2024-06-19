@@ -9,6 +9,7 @@ public abstract class LineDrawer : MonoBehaviour
     protected LineRenderer drawLine;
     protected float timer; // Changed from private to protected
     public float lineWidth;
+    private Material originalMaterial;
 
     protected virtual void Start()
     {
@@ -46,6 +47,7 @@ public abstract class LineDrawer : MonoBehaviour
     {
         newLine = new GameObject();
         drawLine = newLine.AddComponent<LineRenderer>();
+        originalMaterial = drawLine.material;
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.startWidth = lineWidth;
         drawLine.endWidth = lineWidth;
@@ -85,5 +87,21 @@ public abstract class LineDrawer : MonoBehaviour
     public GameObject GetNewLine()
     {
         return newLine;
+    }
+
+    public void ApplyMaterial(Material material)
+    {
+        if (drawLine != null && material != null)
+        {
+            drawLine.material = material;
+        }
+    }
+
+    public void RevertMaterial()
+    {
+        if (drawLine != null && originalMaterial != null)
+        {
+            drawLine.material = originalMaterial;
+        }
     }
 }

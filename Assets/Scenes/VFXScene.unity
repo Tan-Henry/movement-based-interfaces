@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 11415411}
   - component: {fileID: 11415413}
   - component: {fileID: 11415414}
+  - component: {fileID: 11415415}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11415407}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73c55f1c31a644f8da3ad217c75cbe37, type: 3}
   m_Name: 
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11415407}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a02988b7ff333456db8072deab13083d, type: 3}
   m_Name: 
@@ -220,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17473ab1dcd4c2b4f8923e4098e61d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineDrawer: {fileID: 11415411}
+  lineDrawer: {fileID: 11415414}
 --- !u!114 &11415414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,9 +237,48 @@ MonoBehaviour:
   linePoints: []
   timerDelay: 0
   lineWidth: 0.1
-  initialLineWidth: 1e-10
+  initialLineWidth: 1e-18
   maxLineWidth: 1
   color: {r: 0.9245283, g: 0.19624424, b: 0.19624424, a: 1}
+--- !u!114 &11415415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11415407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be666453c0b3ea4a9db97c48c5563cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shaderMappings:
+  - name: 12
+    material: {fileID: 2100000, guid: 3d2e873bae834434aabde58a1b8f9430, type: 2}
+  - name: 2
+    material: {fileID: 2100000, guid: f7b6530475e0f644eaf759dc9d964049, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 6a1552bbcc7a83a48abf6b65a77d7406, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: e1f5f49ac3a6fbb4cafd9dbe80aa7357, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: bcd1ca404f97d3e468f9fb43755295bd, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: c8381746cffe9364fa33b6d274a244aa, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 68b4c8dc68386d8418da97058b31c1fe, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 40515648aae8390458f6daab2b98de84, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 871cc1f9344619d458a0c963ca5d0200, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 33e719d5d081d6140bbdc48be51ae211, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 6a1552bbcc7a83a48abf6b65a77d7406, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 6a1552bbcc7a83a48abf6b65a77d7406, type: 2}
+  - name: 3
+    material: {fileID: 2100000, guid: 6a1552bbcc7a83a48abf6b65a77d7406, type: 2}
 --- !u!1 &173348830
 GameObject:
   m_ObjectHideFlags: 0
