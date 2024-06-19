@@ -6,10 +6,9 @@ public abstract class LineDrawer : MonoBehaviour
     public List<Vector3> linePoints;
     public float timerDelay;
     protected GameObject newLine;
-    protected LineRenderer drawLine;  // Make this protected instead of public
+    protected LineRenderer drawLine;
+    protected float timer; // Changed from private to protected
     public float lineWidth;
-
-    private float timer;
 
     protected virtual void Start()
     {
@@ -78,13 +77,11 @@ public abstract class LineDrawer : MonoBehaviour
         return ray.origin + ray.direction * 3;
     }
 
-    // Method to get the drawLine
     public LineRenderer GetDrawLine()
     {
         return drawLine;
     }
 
-    // Method to get the newLine
     public GameObject GetNewLine()
     {
         return newLine;
