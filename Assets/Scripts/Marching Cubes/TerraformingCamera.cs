@@ -7,6 +7,7 @@ public class TerraformingCamera : MonoBehaviour
 {
     
     public float BrushSize = 2f;
+    public int brushType = 0;
     
     Vector3 _hitPoint;
     Camera _cam;
@@ -31,7 +32,7 @@ public class TerraformingCamera : MonoBehaviour
 
             // Debug.Log("hit point: " + _hitPoint);
 
-            _worldGenerator.TerraformAtPoint(_hitPoint, BrushSize, add);
+            _worldGenerator.TerraformAtPoint(_hitPoint, BrushSize, add, brushType);
         }
     }
     

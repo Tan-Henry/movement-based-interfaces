@@ -8,6 +8,7 @@ namespace Marching_Cubes
         public GameObject chunkPrefab;
         public int worldSizeX;
         public int worldSizeZ;
+        public int brushType;
         
         public Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
     
@@ -53,7 +54,7 @@ namespace Marching_Cubes
             }
         }
         
-        public void TerraformAtPoint(Vector3 hitPoint, float brushSize, bool add) {
+        public void TerraformAtPoint(Vector3 hitPoint, float brushSize, bool add, int brushType) {
             // Debug.Log("brushSize: " + brushSize);
             
             // Calculate the affected chunks
@@ -69,7 +70,7 @@ namespace Marching_Cubes
 
                     if (chunks.TryGetValue(chunkPos, out Chunk chunk)) {
                         Debug.Log("Terraforming chunk: " + chunkPos + " at point: " + hitPoint + " with brush size: " + brushSize + " and add: " + add);
-                        chunk.EditWeights(hitPoint, brushSize, add);
+                        chunk.EditWeights(hitPoint, brushSize, add, brushType);
                     }
                 }
             }

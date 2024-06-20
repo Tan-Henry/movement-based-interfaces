@@ -131,12 +131,12 @@ namespace Marching_Cubes
             MeshCollider.sharedMesh = mesh;
         }
         
-        private int brushType = 10;
+        //private int brushType = 10;
         private int currentBrushType;
         private int spacingInterval = 3;
         private int lineSpacing = 50;
 
-        public void EditWeights(Vector3 hitPosition, float brushSize, bool add) {
+        public void EditWeights(Vector3 hitPosition, float brushSize, bool add, int brushType) {
             int kernel = MarchingShader.FindKernel("UpdateWeights");
 
             _weightsBuffer.SetData(_weights);

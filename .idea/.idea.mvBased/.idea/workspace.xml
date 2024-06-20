@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FreeCam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FreeCam.cs" afterDir="false" />
+    <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="12 Brushes Total">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,13 +24,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -121,6 +109,7 @@
       <workItem from="1718355000032" duration="3014000" />
       <workItem from="1718873607062" duration="4269000" />
       <workItem from="1718880605352" duration="2096000" />
+      <workItem from="1718889092639" duration="1371000" />
     </task>
     <task id="LOCAL-00001" summary="MarchingCubes Brushes: First Brushes">
       <created>1718354925661</created>
@@ -129,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718354925661</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="12 Brushes Total">
+      <created>1718889345488</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718889345488</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +148,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="MarchingCubes Brushes: First Brushes" />
-    <option name="LAST_COMMIT_MESSAGE" value="MarchingCubes Brushes: First Brushes" />
+    <MESSAGE value="12 Brushes Total" />
+    <option name="LAST_COMMIT_MESSAGE" value="12 Brushes Total" />
   </component>
 </project>
