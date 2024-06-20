@@ -19,37 +19,37 @@ public class CursorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.E))
         {
             // move the cursor up
             transform.position += (new Vector3(0, 1, 0) * (Time.deltaTime * speed));
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.Q))
         {
             // move the cursor down
             transform.position += new Vector3(0, -1, 0) * (Time.deltaTime * speed);
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             // move the cursor left
             transform.position += new Vector3(-1, 0, 0) * (Time.deltaTime * speed);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             // move the cursor right
             transform.position += new Vector3(1, 0, 0) * (Time.deltaTime * speed);
         }
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.W))
         {
             // move the cursor forward
             transform.position += new Vector3(0, 0, 1) * (Time.deltaTime * speed);
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.S))
         {
             // move the cursor back
             transform.position += new Vector3(0, 0, -1) * (Time.deltaTime * speed);

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Marching_Cubes
 {
@@ -64,7 +66,7 @@ namespace Marching_Cubes
             _mesh = new Mesh();
             UpdateMesh();
         }
-
+        
         Mesh ConstructMesh()
         {
             int kernel = MarchingShader.FindKernel("March");
@@ -128,6 +130,11 @@ namespace Marching_Cubes
             MeshFilter.sharedMesh = mesh;
             MeshCollider.sharedMesh = mesh;
         }
+        
+        private int brushType = 10;
+        private int currentBrushType;
+        private int spacingInterval = 3;
+        private int lineSpacing = 50;
 
         public void EditWeights(Vector3 hitPosition, float brushSize, bool add) {
             int kernel = MarchingShader.FindKernel("UpdateWeights");
@@ -140,6 +147,12 @@ namespace Marching_Cubes
             MarchingShader.SetVector("_ChunkWorldPosition", _chunkWorldPosition); 
             MarchingShader.SetFloat("_BrushSize", brushSize);
             MarchingShader.SetFloat("_TerraformStrength", add ? 1f : -1f);
+
+            MarchingShader.SetFloat("_range", 7.0f);
+            MarchingShader.SetInt("_seed", Random.Range(0, int.MaxValue));
+            MarchingShader.SetInt("_spacingInterval", spacingInterval);
+            MarchingShader.SetInt("_lineSpacing", lineSpacing);
+            MarchingShader.SetInt("_brushType", brushType);
 
             MarchingShader.Dispatch(kernel,
                 GridMetrics.PointsPerChunk / GridMetrics.NumThreads,

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FreeCam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FreeCam.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PackageManagerSettings.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="marching-cubes_brushes" />
+      </map>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
+  <component name="ProjectId" id="2hoK1JxsBvGF7h8xCRIeWYkqlcD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\mady-\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\mady-\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\mady-\\AppData\\Local\\Symbols\\src&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.27f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\mady-\Desktop\Uni\ART\mvBased -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\mady-\Desktop\Uni\ART\mvBased" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.27f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\mady-\Desktop\Uni\ART\mvBased -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\mady-\Desktop\Uni\ART\mvBased" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="" />
+      <created>1718254777490</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718254777490</updated>
+      <workItem from="1718254779206" duration="304000" />
+      <workItem from="1718256401483" duration="16281000" />
+      <workItem from="1718273956257" duration="768000" />
+      <workItem from="1718281994841" duration="751000" />
+      <workItem from="1718285577871" duration="961000" />
+      <workItem from="1718354807033" duration="178000" />
+      <workItem from="1718355000032" duration="3014000" />
+      <workItem from="1718873607062" duration="4269000" />
+      <workItem from="1718880605352" duration="2096000" />
+    </task>
+    <task id="LOCAL-00001" summary="MarchingCubes Brushes: First Brushes">
+      <created>1718354925661</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1718354925661</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="MarchingCubes Brushes: First Brushes" />
+    <option name="LAST_COMMIT_MESSAGE" value="MarchingCubes Brushes: First Brushes" />
+  </component>
+</project>
