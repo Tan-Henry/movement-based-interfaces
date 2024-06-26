@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,8 +49,8 @@ public class DynamicLineDrawing : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             OnLineComplete();
-            Mesh mesh = new Mesh { name = "Line" };
-            drawLine.BakeMesh(mesh);
+            // Mesh mesh = new Mesh { name = "Line" };
+            // drawLine.BakeMesh(mesh);
             linePoints.Clear();
         }
     }
@@ -126,13 +127,14 @@ public class DynamicLineDrawing : MonoBehaviour
             for (var i = 1; i < keys.Length; i++)
             {
                 var key = keys[i];
-                Debug.Log("Debug i-1: " + keys[i-1].time);
-                Debug.Log("Debug i: " + key.time);
                 key.time *= factor;
-
-                curve.MoveKey(i, key);
+                //Ich habe 10 Jahre dafuer gebraucht...
+                if (!key.time.Equals(Single.NaN))
+                {
+                    curve.MoveKey(i, key);
+                }
             }
-
+            
             // add the new last keyframe
             curve.AddKey(1f, width);
         }
