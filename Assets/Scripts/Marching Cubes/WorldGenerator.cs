@@ -1,0 +1,79 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Marching_Cubes
+{
+    public class WorldGenerator : MonoBehaviour
+    {
+        public GameObject chunkPrefab;
+        public int worldSizeX;
+        public int worldSizeZ;
+        public int brushType;
+        
+        public Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
+    
+        void Start()
+        {
+            GenerateWorld();
+        }
+        
+        void GenerateWorld()
+        {
+            for (int x = 0; x < worldSizeX; x++)
+            {
+                for (int z = 0; z < worldSizeZ; z++)
+                {
+                    Vector3 chunkPosition = new Vector3(x * GridMetrics.ChunkSize, 0f, z * GridMetrics.ChunkSize);
+                    GameObject newChunk = Instantiate(chunkPrefab, chunkPosition, Quaternion.identity);
+                    Chunk chunkScript = newChunk.GetComponent<Chunk>();
+                    chunkScript.Initialize(chunkPosition);
+                    chunks.Add(new Vector3Int(x, 0, z), chunkScript);
+                }
+            }
+        }
+        
+        public Chunk GetChunk(Vector3Int chunkPosition)
+        {
+            return chunks[chunkPosition];
+        }
+        
+        public void hideChunks(Vector3 cameraPosition)
+        {
+            foreach (KeyValuePair<Vector3Int, Chunk> chunk in chunks)
+            {
+                Vector3 chunkPosition = chunk.Value.transform.position;
+                float distance = Vector3.Distance(cameraPosition, chunkPosition);
+                if (distance > 400)
+                {
+                    chunk.Value.gameObject.SetActive(false);
+                }
+                else
+                {
+                    chunk.Value.gameObject.SetActive(true);
+                }
+            }
+        }
+        
+        public void TerraformAtPoint(Vector3 hitPoint, float brushSize, bool add, int brushType) {
+            // Debug.Log("brushSize: " + brushSize);
+            
+            // Calculate the affected chunks
+            Vector3Int minChunk = Vector3Int.FloorToInt((hitPoint - Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
+            Vector3Int maxChunk = Vector3Int.FloorToInt((hitPoint + Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
+            
+            // Debug.Log("minChunk: " + minChunk);
+            // Debug.Log("maxChunk: " + maxChunk);
+
+            for (int x = minChunk.x; x <= maxChunk.x; x++) {
+                for (int z = minChunk.z; z <= maxChunk.z; z++) {
+                    Vector3Int chunkPos = new Vector3Int(x, 0, z);
+
+                    if (chunks.TryGetValue(chunkPos, out Chunk chunk)) {
+                        Debug.Log("Terraforming chunk: " + chunkPos + " at point: " + hitPoint + " with brush size: " + brushSize + " and add: " + add);
+                        chunk.EditWeights(hitPoint, brushSize, add, brushType);
+                    }
+                }
+            }
+        }
+    }
+}

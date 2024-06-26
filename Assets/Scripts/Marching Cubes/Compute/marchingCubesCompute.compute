@@ -1,0 +1,206 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel March
+#pragma kernel UpdateWeights
+
+#include "MetrixCompute.compute"
+#include "Includes\MarchingTable.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise3D.hlsl"
+
+float3 _HitPosition;
+float _BrushSize;
+float _TerraformStrength;
+float3 _ChunkWorldPosition;
+
+//Brush Settings
+float radius;
+float _range;
+uint _seed;
+int _spacingInterval;
+int _lineSpacing;
+int _brushType;
+
+RWStructuredBuffer<float> _Weights;
+
+float _IsoLevel;
+
+struct Triangle
+{
+    float3 a, b, c;
+};
+
+AppendStructuredBuffer<Triangle> _Triangles;
+
+float3 interp(float3 edgeVertex1, float valueAtVertex1, float3 edgeVertex2, float valueAtVertex2)
+{
+    return (edgeVertex1 + (_IsoLevel - valueAtVertex1) * (edgeVertex2 - edgeVertex1) / (valueAtVertex2 -
+        valueAtVertex1));
+}
+
+[numthreads(numThreads, numThreads, numThreads)]
+void March(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _ChunkSize - 1 || id.y >= _ChunkSize - 1 || id.z >= _ChunkSize - 1)
+    {
+        return;
+    }
+
+    float cubeValues[8] = {
+        _Weights[indexFromCoord(id.x, id.y, id.z + 1)],
+        _Weights[indexFromCoord(id.x + 1, id.y, id.z + 1)],
+        _Weights[indexFromCoord(id.x + 1, id.y, id.z)],
+        _Weights[indexFromCoord(id.x, id.y, id.z)],
+        _Weights[indexFromCoord(id.x, id.y + 1, id.z + 1)],
+        _Weights[indexFromCoord(id.x + 1, id.y + 1, id.z + 1)],
+        _Weights[indexFromCoord(id.x + 1, id.y + 1, id.z)],
+        _Weights[indexFromCoord(id.x, id.y + 1, id.z)]
+    };
+
+    int cubeIndex = 0;
+    if (cubeValues[0] < _IsoLevel) cubeIndex |= 1;
+    if (cubeValues[1] < _IsoLevel) cubeIndex |= 2;
+    if (cubeValues[2] < _IsoLevel) cubeIndex |= 4;
+    if (cubeValues[3] < _IsoLevel) cubeIndex |= 8;
+    if (cubeValues[4] < _IsoLevel) cubeIndex |= 16;
+    if (cubeValues[5] < _IsoLevel) cubeIndex |= 32;
+    if (cubeValues[6] < _IsoLevel) cubeIndex |= 64;
+    if (cubeValues[7] < _IsoLevel) cubeIndex |= 128;
+
+    int edges[] = triTable[cubeIndex];
+
+    for (int i = 0; edges[i] != -1; i += 3)
+    {
+        // First edge lies between vertex e00 and vertex e01
+        int e00 = edgeConnections[edges[i]][0];
+        int e01 = edgeConnections[edges[i]][1];
+
+        // Second edge lies between vertex e10 and vertex e11
+        int e10 = edgeConnections[edges[i + 1]][0];
+        int e11 = edgeConnections[edges[i + 1]][1];
+
+        // Third edge lies between vertex e20 and vertex e21
+        int e20 = edgeConnections[edges[i + 2]][0];
+        int e21 = edgeConnections[edges[i + 2]][1];
+
+        Triangle tri;
+        tri.a = interp(cornerOffsets[e00], cubeValues[e00], cornerOffsets[e01], cubeValues[e01]) + id;
+        tri.b = interp(cornerOffsets[e10], cubeValues[e10], cornerOffsets[e11], cubeValues[e11]) + id;
+        tri.c = interp(cornerOffsets[e20], cubeValues[e20], cornerOffsets[e21], cubeValues[e21]) + id;
+        _Triangles.Append(tri);
+    }
+}
+
+// Simple hash function to generate pseudo-random values
+uint hash(uint x)
+{
+    x += (x << 10);
+    x ^= (x >> 6);
+    x += (x << 3);
+    x ^= (x >> 11);
+    x += (x << 15);
+    return x;
+}
+
+// Convert the hash value to a float in the range [0, 1]
+float random(uint seed)
+{
+    return frac((hash(seed) & 0xFFFF) / 65536.0);
+}
+
+[numthreads( numThreads, numThreads, numThreads )]
+void UpdateWeights(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16)
+    {
+        return;
+    }
+
+    // Convert the voxel position to world coordinates
+    //float3 voxelWorldPosition = float3(id.x, id.y, id.z) + _ChunkWorldPosition * 2;
+
+    float noiseFrac = SimplexNoiseGrad(float3(id.x, id.y * frac(id.y), id.z));
+    float noise = SimplexNoiseGrad(float3(id.x, id.y, id.z));
+    float3 center = float3(id.x, id.y, id.z);
+
+    float3 voxelWorldPosition = float3(id.x, id.y, id.z) + _ChunkWorldPosition * 2;
+    float angleRound = 10.0 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
+    float angleNoise = 2 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
+
+    switch (_brushType)
+    {
+    case 0: //Standard
+        voxelWorldPosition = float3(id.x, id.y, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 1: //Simple Offset
+        voxelWorldPosition.x += 5.0f;
+        break;
+    case 2: //Simple Noise (GPT)
+        uint combinedSeed = id.x + id.y * 57 + id.z + _seed;
+        voxelWorldPosition = float3(id.x + random(combinedSeed) * _range, id.y + random(combinedSeed + 1) * _range,
+                                    id.z + random(combinedSeed + 1) * _range) + _ChunkWorldPosition * 2;
+        break;
+    case 3: //Round (GPT)
+        voxelWorldPosition = float3(center.x + 20.0f * cos(angleRound), center.y, center.z + 5.0f * sin(angleRound)) +
+            _ChunkWorldPosition * 2;
+        break;
+    case 4: // Spaced
+        voxelWorldPosition = float3(id.x * random(id.x), id.y, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 5: // Spaced Lines on x-axis
+        if ((id.x % _spacingInterval) == 0) // Apply transformation in intervals
+        {
+            int lineNumber = (id.x / _spacingInterval) % 3;
+            switch (lineNumber)
+            {
+            case 0:
+                voxelWorldPosition.x += id.x;
+                break;
+            case 1:
+                voxelWorldPosition.x += id.x + _lineSpacing;
+                break;
+            case 2:
+                voxelWorldPosition.x += id.x + 2 * _lineSpacing;
+                break;
+            }
+        }
+        break;
+    case 6:
+        voxelWorldPosition = float3(SimplexNoise(center.x + 5.0f * cos(angleNoise)), center.y,
+                                    center.z + 5.0f * sin(angleNoise)) + _ChunkWorldPosition * 2;
+        break;
+    case 7:
+        voxelWorldPosition = float3(center.x + 1.0f * cos(noise), sin(noise) * center.y, center.z + 1.0f * sin(noise)) +
+            _ChunkWorldPosition * 2;
+        break;
+    /*case 8:
+        voxelWorldPosition = float3(id.x, noise(id.y * id.y), id.z) + _ChunkWorldPosition * 2;
+        break;*/
+    case 9:
+        voxelWorldPosition = float3(id.x, frac(noise) * id.y, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 10: //CLOUDMAKER
+        voxelWorldPosition = float3(id.x, id.y * cos(noise*0.3), id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 11: //FRACTAL CAVE
+            voxelWorldPosition = float3(id.x, id.y + noiseFrac, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 12: //SPIKES
+        if (id.z % 2 == 0 || id.x % 2 == 0)
+        {
+            //voxelWorldPosition = float3(id.x, 2*noise*(id.y+id.y) + frac(id.x), id.z) + _ChunkWorldPosition * 2;
+            float noiseSpikes = SimplexNoiseGrad(float3(id.x, id.y, id.z));
+            voxelWorldPosition = float3(id.x*(atan(id.x)*(id.y)), noiseSpikes*(id.y*id.y), id.z /*+ noiseFrac*/) + _ChunkWorldPosition * 2;
+        }
+        break;
+    /*case 13:
+        if (id.x % 3 == 0 || id.z % 3 == 0)
+        {
+            voxelWorldPosition = 
+        }*/
+    }
+    
+    // Check if the voxel is within the brush size from the hit position
+    if (distance(voxelWorldPosition, _HitPosition) <= _BrushSize)
+    {
+        _Weights[indexFromCoord(id.x, id.y, id.z)] += _TerraformStrength;
+    }
+}
