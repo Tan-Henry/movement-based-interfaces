@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GradientBrushOne : MonoBehaviour
+public class TransparentAndCool : MonoBehaviour
 {
     private List<Vector3> linePoints;
     private List<float> lineDistances;
@@ -12,12 +12,13 @@ public class GradientBrushOne : MonoBehaviour
     private float lastTime;
     public float minLineWidth;
     public float maxLineWidth;
-    public float maxSpeed;
-    public float minSpeed; // Minimum speed control for gradient transition
+    public float maxSpeed = 0f; // Constant max speed of 0
+    public float minSpeed = 0f; // Constant min speed of 0
     public Gradient gradient; // Gradient field
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
+    public float blendingThreshold = 0.1f; // Blending threshold to avoid overblending
 
     private void Start()
     {
@@ -68,6 +69,8 @@ public class GradientBrushOne : MonoBehaviour
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;
         drawLine.useWorldSpace = true;
+        drawLine.startColor = gradient.colorKeys[0].color;
+        drawLine.endColor = gradient.colorKeys[gradient.colorKeys.Length - 1].color;
     }
 
     private void OnLineComplete()
@@ -151,6 +154,8 @@ public class GradientBrushOne : MonoBehaviour
         for (int i = 0; i < 8; i++)
         {
             float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(lastSpeed / maxSpeed)));
+            t = Mathf.Clamp(t, blendingThreshold, 1 - blendingThreshold); // Apply blending threshold
+
             colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
             alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
         }

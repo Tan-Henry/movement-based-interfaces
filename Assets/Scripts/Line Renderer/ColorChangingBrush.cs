@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GradientBrushOne : MonoBehaviour
+public class ColorChangingBrush : MonoBehaviour
 {
     private List<Vector3> linePoints;
-    private List<float> lineDistances;
 
     private GameObject newLine;
     private LineRenderer drawLine;
@@ -13,16 +12,17 @@ public class GradientBrushOne : MonoBehaviour
     public float minLineWidth;
     public float maxLineWidth;
     public float maxSpeed;
-    public float minSpeed; // Minimum speed control for gradient transition
-    public Gradient gradient; // Gradient field
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
 
+    public Color colorStart = Color.red;
+    public Color colorEnd = Color.green;
+    public float colorChangeDuration = 1.0f;
+
     private void Start()
     {
         linePoints = new List<Vector3>();
-        lineDistances = new List<float>();
         totalLengthOld = 0;
     }
 
@@ -42,7 +42,6 @@ public class GradientBrushOne : MonoBehaviour
 
             float t = Mathf.Clamp01(speed / maxSpeed);
             float width = Mathf.Lerp(minLineWidth, maxLineWidth, t);
-
             AddPoint(currentPoint, width);
 
             lastPoint = currentPoint;
@@ -56,7 +55,6 @@ public class GradientBrushOne : MonoBehaviour
             Mesh mesh = new Mesh { name = "Line" };
             drawLine.BakeMesh(mesh);
             linePoints.Clear();
-            lineDistances.Clear();
         }
     }
 
@@ -70,11 +68,7 @@ public class GradientBrushOne : MonoBehaviour
         drawLine.useWorldSpace = true;
     }
 
-    private void OnLineComplete()
-    {
-        // Apply the gradient when the line is complete
-        ApplyGradient();
-    }
+    private void OnLineComplete() { }
 
     private Vector3 GetMousePosition()
     {
@@ -92,10 +86,6 @@ public class GradientBrushOne : MonoBehaviour
     private void AddPoint(Vector3 position, float width)
     {
         positionCount++;
-        linePoints.Add(position);
-
-        float distance = positionCount > 1 ? Vector3.Distance(linePoints[positionCount - 2], position) : 0;
-        lineDistances.Add(distance);
 
         drawLine.positionCount = positionCount;
         drawLine.SetPosition(positionCount - 1, position);
@@ -133,31 +123,15 @@ public class GradientBrushOne : MonoBehaviour
 
         drawLine.widthCurve = curve;
 
-        // Apply the gradient dynamically
-        ApplyGradient();
+        // Apply the color dynamically
+        ApplyColor();
     }
 
-    private void ApplyGradient()
+    private void ApplyColor()
     {
-        GradientColorKey[] colorKeys = new GradientColorKey[8];
-        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[8];
-
-        float totalDistance = 0;
-        foreach (float distance in lineDistances)
-        {
-            totalDistance += distance;
-        }
-
-        for (int i = 0; i < 8; i++)
-        {
-            float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(lastSpeed / maxSpeed)));
-            colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
-            alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
-        }
-
-        Gradient newGradient = new Gradient();
-        newGradient.SetKeys(colorKeys, alphaKeys);
-
-        drawLine.colorGradient = newGradient;
+        float lerp = Mathf.PingPong(Time.time, colorChangeDuration) / colorChangeDuration;
+        Color currentColor = Color.Lerp(colorStart, colorEnd, lerp);
+        drawLine.startColor = currentColor;
+        drawLine.endColor = currentColor;
     }
 }

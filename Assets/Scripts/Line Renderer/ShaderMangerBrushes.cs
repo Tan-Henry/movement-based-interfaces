@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DynamicBrushDrawer : LineDrawer
@@ -5,10 +6,15 @@ public class DynamicBrushDrawer : LineDrawer
     public float initialLineWidth = 0.1f; // Starting width
     public float maxLineWidth = 1.0f;     // Maximum width
     public Color color = Color.white;     // Color of the line
+    private Material defaultMaterial;     // Store the default material
 
     protected override void Start()
     {
         base.Start();
+        defaultMaterial = new Material(Shader.Find("Sprites/Default"));
+        drawLine.startColor = color; // Set initial color in Start
+        drawLine.endColor = color;   // Set initial color in Start
+        drawLine.material = defaultMaterial; // Set initial material
     }
 
     public override void InitializeLine()
@@ -19,10 +25,13 @@ public class DynamicBrushDrawer : LineDrawer
         drawLine.widthMultiplier = 1.0f;
         drawLine.widthCurve = new AnimationCurve(); // Reset width curve
 
-        // Apply the current material from the ShaderManager if shader is applied
-        if (ShaderManager.Instance != null && ShaderManager.Instance.GetCurrentMaterial() != null)
+        if (ShaderManager.Instance != null && ShaderManager.Instance.IsShaderApplied())
         {
             drawLine.material = ShaderManager.Instance.GetCurrentMaterial();
+        }
+        else
+        {
+            drawLine.material = defaultMaterial;
         }
     }
 
@@ -62,5 +71,15 @@ public class DynamicBrushDrawer : LineDrawer
             OnLineComplete();
             linePoints.Clear();
         }
+    }
+
+    public void ApplyMaterial(Material material)
+    {
+        drawLine.material = material;
+    }
+
+    public void RevertMaterial()
+    {
+        drawLine.material = defaultMaterial;
     }
 }

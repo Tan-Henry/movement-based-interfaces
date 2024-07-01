@@ -57,7 +57,7 @@ public class ShaderManager : MonoBehaviour
 
         isShaderApplied = !isShaderApplied;
 
-        foreach (var brush in FindObjectsOfType<LineDrawer>())
+        foreach (var brush in FindObjectsOfType<DynamicBrushDrawer>())
         {
             if (isShaderApplied)
             {
@@ -90,13 +90,20 @@ public class ShaderManager : MonoBehaviour
 
         if (isShaderApplied)
         {
-            ToggleShader(); // Revert to original
-            ToggleShader(); // Apply new shader
+            foreach (var brush in FindObjectsOfType<DynamicBrushDrawer>())
+            {
+                brush.ApplyMaterial(shaderMappings[currentShaderIndex].material);
+            }
         }
     }
 
     public Material GetCurrentMaterial()
     {
         return shaderMappings.Count > 0 ? shaderMappings[currentShaderIndex].material : null;
+    }
+
+    public bool IsShaderApplied()
+    {
+        return isShaderApplied;
     }
 }
