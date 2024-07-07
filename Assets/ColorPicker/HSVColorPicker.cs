@@ -9,6 +9,14 @@ public class HSVColorPicker : ColorPickerBase
     [Range(0, 100)] public int saturation = 0;
     [Range(0, 100)] public int value = 0;
 
+    [SerializeField]
+    private Color selectedColor;
+    public Color SelectedColor
+    {
+        get { return selectedColor; }
+        private set { selectedColor = value; }
+    }
+
     protected override void Start()
     {
         innerCubes = new GameObject[] { innerCubeHue, innerCubeSaturation, innerCubeValue };
@@ -24,16 +32,16 @@ public class HSVColorPicker : ColorPickerBase
         return Color.HSVToRGB(h, s, v);
     }
 
-    protected override bool GetUseHSV()
-    {
-        return true;
-    }
+    protected override bool GetUseHSV() => true;
 
     protected override void UpdateInnerCubePositions()
     {
-        innerCubeHue.transform.localPosition = new Vector3((hue / 360f) * largerCubeSize.x - largerCubeSize.x / 2, 0, 0);
-        innerCubeSaturation.transform.localPosition = new Vector3(0, (saturation / 100f) * largerCubeSize.y - largerCubeSize.y / 2, 0);
-        innerCubeValue.transform.localPosition = new Vector3(0, 0, (value / 100f) * largerCubeSize.z - largerCubeSize.z / 2);
+        innerCubeHue.transform.localPosition = new Vector3(
+            (hue / 360f) * largerCubeSize.x - largerCubeSize.x / 2, 0, 0);
+        innerCubeSaturation.transform.localPosition = new Vector3(
+            0, (saturation / 100f) * largerCubeSize.y - largerCubeSize.y / 2, 0);
+        innerCubeValue.transform.localPosition = new Vector3(
+            0, 0, (value / 100f) * largerCubeSize.z - largerCubeSize.z / 2);
     }
 
     protected override void UpdateSelectedColor()

@@ -7,6 +7,14 @@ public class RGBColorPicker : ColorPickerBase
     [Range(0, 255)] public int green = 0;
     [Range(0, 255)] public int blue = 0;
 
+    [SerializeField]
+    private Color selectedColor;
+    public Color SelectedColor
+    {
+        get { return selectedColor; }
+        private set { selectedColor = value; }
+    }
+
     protected override void Start()
     {
         innerCubes = new GameObject[] { innerCubeRGB };
@@ -19,16 +27,14 @@ public class RGBColorPicker : ColorPickerBase
         return new Color(position.x / largerCubeSize.x, position.y / largerCubeSize.y, position.z / largerCubeSize.z);
     }
 
-    protected override bool GetUseHSV()
-    {
-        return false;
-    }
+    protected override bool GetUseHSV() => false;
 
     protected override void UpdateInnerCubePositions()
     {
-        innerCubeRGB.transform.localPosition = new Vector3((red / 255f) * largerCubeSize.x - largerCubeSize.x / 2,
-                                                           (green / 255f) * largerCubeSize.y - largerCubeSize.y / 2,
-                                                           (blue / 255f) * largerCubeSize.z - largerCubeSize.z / 2);
+        innerCubeRGB.transform.localPosition = new Vector3(
+            (red / 255f) * largerCubeSize.x - largerCubeSize.x / 2,
+            (green / 255f) * largerCubeSize.y - largerCubeSize.y / 2,
+            (blue / 255f) * largerCubeSize.z - largerCubeSize.z / 2);
     }
 
     protected override void UpdateSelectedColor()

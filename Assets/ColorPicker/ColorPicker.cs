@@ -27,7 +27,13 @@ public class ColorPicker : MonoBehaviour
     private Vector3 largerCubeSize;
     private Vector3 innerCubeSize;
 
-    public Color SelectedColor { get; private set; }
+    [SerializeField]
+    private Color selectedColor;
+    public Color SelectedColor
+    {
+        get { return selectedColor; }
+        private set { selectedColor = value; }
+    }
 
     private bool lastUseHSV;
 
