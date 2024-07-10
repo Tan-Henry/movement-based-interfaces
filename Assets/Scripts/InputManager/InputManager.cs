@@ -24,6 +24,7 @@ public class InputManager: BaseInputManager
     protected override void Update()
     {
         base.Update();
+        CheckChangeEffect();
     }
 
     protected override void UpdateRightHandDrawing()
@@ -42,6 +43,18 @@ public class InputManager: BaseInputManager
                     }
                 }
             }
+        }
+    }
+    
+    private void CheckChangeEffect()
+    {
+        if(!leftHand.IsTracked) return;
+        if(!rightHand.IsTracked) return;
+        
+
+        if (rightHand.IsPointerPoseValid && leftHand.transform.rotation is { x: < 15.0f, z: < 15.0f } && Vector3.Distance(RightHandDrawPosition, leftHand.transform.position) > 0.5f)
+        {
+            OnChangeEffect();
         }
     }
     
@@ -87,15 +100,6 @@ public class InputManager: BaseInputManager
         ToggleBrushEraser?.Invoke();
     }
 
-    private void checkChangeEffect()
-    {
-        if(!leftHand.IsTracked) return;
-        if(!rightHand.IsTracked) return;
-
-        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
-        {
-            
-        }
-    }
+    
 }
 
