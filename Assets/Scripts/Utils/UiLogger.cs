@@ -16,7 +16,7 @@ public class UiLogger : MonoBehaviour
 
     public void Start()
     {
-        inputManager.ChangeEffect += () => Log("ChangeEffect", 2);
+        inputManager.ChangeEffect += () => Log("ChangeEffect" + DateTime.Now, 2);
         inputManager.SwitchMode += () => Log("SwitchMode", 2);
         inputManager.MainMenu += () => Log("MainMenu",2);
         inputManager.TurnOnColorPicker += () => Log("TurnOnColorPicker",2);
