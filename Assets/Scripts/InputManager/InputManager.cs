@@ -1,27 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager: BaseInputManager
 {
-    [SerializeField] OVRHand rightHand;
-    [SerializeField] OVRSkeleton rightHandSkeleton;
-    [SerializeField] OVRHand leftHand;
-    [SerializeField] OVRSkeleton leftHandSkeleton;
+    [SerializeField] private OVRHand rightHand;
+    [SerializeField] private OVRSkeleton rightHandSkeleton;
+    [SerializeField] private OVRHand leftHand;
+    [SerializeField] private OVRSkeleton leftHandSkeleton;
     
     public override bool RightHandIsDrawing { get; protected set; }
     public override Vector3 RightHandDrawPosition { get; protected set; }
-    
-    public override bool LeftHandIsDrawing { get; protected set; }
-    public override Vector3 LeftHandDrawPosition { get; protected set; }
+    public override event Action ChangeEffect;
+    public override event Action ToggleBrushEraser;
+    public override event Action Redo;
+    public override event Action SwitchMode;
+    public override event Action MainMenu;
+    public override event Action TurnOnColorPicker;
+    public override event Action TurnOffColorPicker;
+    public override event Action Undo;
 
-    private void Update()
+    protected override void Update()
     {
-        UpdateRightHandDrawing();
-        UpdateLeftHandDrawing();
+        base.Update();
     }
 
-    private void UpdateRightHandDrawing()
+    protected override void UpdateRightHandDrawing()
     {
         if (rightHand.IsTracked)
         {
@@ -40,22 +45,56 @@ public class InputManager: BaseInputManager
         }
     }
     
-    private void UpdateLeftHandDrawing()
+    protected override void OnChangeEffect()
     {
-        if (leftHand.IsTracked)
+        ChangeEffect?.Invoke();
+    }
+    
+    protected override void OnSwitchMode()
+    {
+        SwitchMode?.Invoke();
+    }
+    
+    protected override void OnMainMenu()
+    {
+        MainMenu?.Invoke();
+    }
+    
+    protected override void OnTurnOnColorPicker()
+    {
+        TurnOnColorPicker?.Invoke();
+    }
+
+    
+    protected override void OnTurnOffColorPicker()
+    {
+        TurnOffColorPicker?.Invoke();
+    }
+    
+    protected override void OnUndo()
+    {
+        Undo?.Invoke();
+    }
+
+    
+    protected override void OnRedo()
+    {
+        Redo?.Invoke();
+    }
+
+    protected override void OnToggleBrushEraser()
+    {
+        ToggleBrushEraser?.Invoke();
+    }
+
+    private void checkChangeEffect()
+    {
+        if(!leftHand.IsTracked) return;
+        if(!rightHand.IsTracked) return;
+
+        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
         {
-            LeftHandIsDrawing = leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-            if (LeftHandIsDrawing)
-            {
-                foreach (var b in leftHandSkeleton.Bones)
-                {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-                    {
-                        LeftHandDrawPosition = b.Transform.position;
-                        break;
-                    }
-                }
-            }
+            
         }
     }
 }
