@@ -53,7 +53,12 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.endColor = Color.clear;
     }
 
-    protected virtual void OnLineComplete() { }
+
+    protected virtual void OnLineComplete()
+    {
+        UndoRedoScript undoRedoScript = GetComponent<UndoRedoScript>();
+        undoRedoScript.AddLastLineGameObject(newLine);
+    }
 
     protected Vector3 GetMousePosition()
     {
