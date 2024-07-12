@@ -7,7 +7,8 @@ using Voxel_Engine;
 public class CursorController : MonoBehaviour
 {
     public float speed = 1.0f;
-    public int brushType = 0; 
+    public int brushType = 0;
+    public int brushSize = 1;
     
     public bool isPainting = false;
     public WorldGenerator WorldGenerator;
@@ -69,6 +70,6 @@ public class CursorController : MonoBehaviour
 
     private void ChangeVoxelAt(Vector3 worldPosition)
     {
-        WorldGenerator.TerraformAtPoint(worldPosition, 3, isPainting, brushType);
+        WorldGenerator.TerraformAtPoint(worldPosition, brushSize, isPainting, brushType);
     }
 }

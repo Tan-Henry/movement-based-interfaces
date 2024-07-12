@@ -29,7 +29,7 @@ namespace Marching_Cubes
 
         float[] _weights;
 
-        private void Awake()
+        /*private void Awake()
         {
             CreateBuffers();
             NoiseGenerator = GameObject.Find("NoiseGenerator").GetComponent<NoiseGenerator>();
@@ -38,7 +38,7 @@ namespace Marching_Cubes
         private void OnDestroy()
         {
             ReleaseBuffers();
-        }
+        }*/
 
         void CreateBuffers()
         {
@@ -60,20 +60,28 @@ namespace Marching_Cubes
 
         public void Initialize(Vector3 chunkWorldPosition)
         {
+            Create(chunkWorldPosition);
+        }
+
+        public void Create(Vector3 chunkWorldPosition)
+        {
+            CreateBuffers();
+            NoiseGenerator = GameObject.Find("NoiseGenerator").GetComponent<NoiseGenerator>();
             _chunkWorldPosition = chunkWorldPosition;
             _weights = NoiseGenerator.GetNoise(_chunkWorldPosition);
 
             _mesh = new Mesh();
             UpdateMesh();
+            ReleaseBuffers();
         }
-        
+
         Mesh ConstructMesh()
         {
             int kernel = MarchingShader.FindKernel("March");
 
             MarchingShader.SetBuffer(kernel, "_Triangles", _trianglesBuffer);
             MarchingShader.SetBuffer(kernel, "_Weights", _weightsBuffer);
-
+            
             MarchingShader.SetInt("_ChunkSize", GridMetrics.PointsPerChunk);
             MarchingShader.SetFloat("_IsoLevel", .5f);
 
@@ -83,9 +91,9 @@ namespace Marching_Cubes
             _trianglesBuffer.SetCounterValue(0);
 
             MarchingShader.Dispatch(kernel, 
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads);
+                GridMetrics.ThreadGroups(),
+                GridMetrics.ThreadGroups(),
+                GridMetrics.ThreadGroups());
 
             Triangle[] triangles = new Triangle[ReadTriangleCount()];
             _trianglesBuffer.GetData(triangles);
@@ -137,6 +145,7 @@ namespace Marching_Cubes
         private int lineSpacing = 50;
 
         public void EditWeights(Vector3 hitPosition, float brushSize, bool add, int brushType) {
+            CreateBuffers();
             int kernel = MarchingShader.FindKernel("UpdateWeights");
 
             _weightsBuffer.SetData(_weights);
@@ -146,8 +155,8 @@ namespace Marching_Cubes
             MarchingShader.SetVector("_HitPosition", hitPosition);
             MarchingShader.SetVector("_ChunkWorldPosition", _chunkWorldPosition); 
             MarchingShader.SetFloat("_BrushSize", brushSize);
-            MarchingShader.SetFloat("_TerraformStrength", add ? 1f : -1f);
-
+            MarchingShader.SetFloat("_TerraformStrength", add ? 2f : -2f);
+            
             MarchingShader.SetFloat("_range", 7.0f);
             MarchingShader.SetInt("_seed", Random.Range(0, int.MaxValue));
             MarchingShader.SetInt("_spacingInterval", spacingInterval);
@@ -155,13 +164,22 @@ namespace Marching_Cubes
             MarchingShader.SetInt("_brushType", brushType);
 
             MarchingShader.Dispatch(kernel,
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
-                GridMetrics.PointsPerChunk / GridMetrics.NumThreads);
+                GridMetrics.ThreadGroups(),
+                GridMetrics.ThreadGroups(),
+                GridMetrics.ThreadGroups());
 
             _weightsBuffer.GetData(_weights);
 
             UpdateMesh();
+            ReleaseBuffers();
+        }
+        
+        private void OnValidate() {
+            if (Application.isPlaying) {
+                Create(_chunkWorldPosition);
+            }
         }
     }
+    
+    
 }
