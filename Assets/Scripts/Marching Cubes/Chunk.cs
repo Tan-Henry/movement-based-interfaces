@@ -155,7 +155,7 @@ namespace Marching_Cubes
             MarchingShader.SetVector("_HitPosition", hitPosition);
             MarchingShader.SetVector("_ChunkWorldPosition", _chunkWorldPosition); 
             MarchingShader.SetFloat("_BrushSize", brushSize);
-            MarchingShader.SetFloat("_TerraformStrength", add ? 1f : -1f);
+            MarchingShader.SetFloat("_TerraformStrength", add ? 2f : -2f);
             
             MarchingShader.SetFloat("_range", 7.0f);
             MarchingShader.SetInt("_seed", Random.Range(0, int.MaxValue));
