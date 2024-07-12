@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction.Input;
 using UnityEngine;
 
 public class InputManager : BaseInputManager
@@ -9,9 +10,11 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRSkeleton rightHandSkeleton;
     [SerializeField] private OVRHand leftHand;
     [SerializeField] private OVRSkeleton leftHandSkeleton;
+    [SerializeField] private Hmd Head;
 
     public override bool RightHandIsDrawing { get; protected set; }
     public override Vector3 RightHandDrawPosition { get; protected set; }
+    public override Vector3 HeadDrawPosition { get; protected set; }
     public override event Action ChangeEffect;
     public override event Action ToggleBrushEraser;
     public override event Action Redo;
@@ -54,6 +57,14 @@ public class InputManager : BaseInputManager
                     }
                 }
             }
+        }
+    }
+    
+    protected override void UpdateHeadDrawing()
+    {
+        if (Head)
+        {
+            HeadDrawPosition = Head.transform.position;
         }
     }
 

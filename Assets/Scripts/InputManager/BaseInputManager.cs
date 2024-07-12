@@ -9,6 +9,8 @@ public abstract class BaseInputManager : MonoBehaviour
     public abstract bool RightHandIsDrawing { get; protected set; }
     public abstract Vector3 RightHandDrawPosition { get; protected set; }
     protected abstract void UpdateRightHandDrawing();
+    public abstract Vector3 HeadDrawPosition { get; protected set; }
+    protected abstract void UpdateHeadDrawing();
     
     //changeEffect
     public abstract event Action ChangeEffect;
@@ -47,5 +49,6 @@ public abstract class BaseInputManager : MonoBehaviour
     protected virtual void Update()
     {
         UpdateRightHandDrawing();
+        UpdateHeadDrawing();
     }
 }
