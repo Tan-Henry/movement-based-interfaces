@@ -1,7 +1,7 @@
 ﻿public static class GridMetrics
 {
     public static float ChunkSize = 15.5f;
-    public const int NumThreads = 8; // Number of threads for ComputeShader dispatch
+    public const int NumThreads = 16; // Number of threads for ComputeShader dispatch
     public const int Scale = 32;
 
     public const int PointsPerChunkTerra = 32; // Number of points per chunk along one axis
@@ -20,7 +20,10 @@
         16,
         24,
         32,
-        40
+        40,
+        80,
+        160,
+        320
     };
     
 }

@@ -6,7 +6,7 @@ namespace Marching_Cubes
 {
     public class Chunk : MonoBehaviour
     {
-        [Range(0, 4)]
+        [Range(0, 7)]
         public int LOD;
         
         public NoiseGenerator NoiseGenerator;
