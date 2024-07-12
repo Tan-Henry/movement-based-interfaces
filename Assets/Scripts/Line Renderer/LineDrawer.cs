@@ -22,7 +22,7 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (inputManager.RightHandIsDrawing)
+        if (inputManager.RightHandIsDrawing2D)
         {
             if (!isDrawing)
             {
@@ -30,7 +30,7 @@ public abstract class LineDrawer : MonoBehaviour
                 InitializeLine();
             }
             
-            linePoints.Add(inputManager.RightHandDrawPosition);
+            linePoints.Add(inputManager.RightHandPosition);
             drawLine.positionCount = linePoints.Count;
             drawLine.SetPositions(linePoints.ToArray());
         }

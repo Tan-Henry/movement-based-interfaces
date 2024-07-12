@@ -17,7 +17,7 @@ public class Rotationreader : MonoBehaviour
         
         _inputManager.ChangeEffect += DoSomething;
 
-        if (_inputManager.RightHandIsDrawing)
+        if (_inputManager.RightHandIsDrawing2D)
         {
             DoSomething();
         }
