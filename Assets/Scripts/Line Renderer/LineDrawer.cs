@@ -4,8 +4,6 @@ using UnityEngine;
 public abstract class LineDrawer : MonoBehaviour
 {
     protected List<Vector3> linePoints;
-    protected float timer;
-    public float timerDelay;
 
     protected GameObject newLine;
     protected LineRenderer drawLine;
@@ -14,7 +12,6 @@ public abstract class LineDrawer : MonoBehaviour
     protected virtual void Start()
     {
         linePoints = new List<Vector3>();
-        timer = timerDelay;
     }
 
     protected virtual void Update()
@@ -25,14 +22,10 @@ public abstract class LineDrawer : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            timer -= Time.deltaTime;
-            if (timer <= 0)
-            {
-                linePoints.Add(GetMousePosition());
-                drawLine.positionCount = linePoints.Count;
-                drawLine.SetPositions(linePoints.ToArray());
-                timer = timerDelay;
-            }
+            
+            linePoints.Add(GetMousePosition());
+            drawLine.positionCount = linePoints.Count;
+            drawLine.SetPositions(linePoints.ToArray());
         }
 
         if (Input.GetMouseButtonUp(0))

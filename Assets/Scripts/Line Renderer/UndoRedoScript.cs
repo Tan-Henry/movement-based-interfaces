@@ -6,7 +6,7 @@ public class UndoRedoScript : MonoBehaviour
     private List<GameObject> _lines = new List<GameObject>();
     private Stack<GameObject> _undoStack = new Stack<GameObject>();
     private Stack<GameObject> _redoStack = new Stack<GameObject>();
-    private int _amountOfSkips = 3; // Number of actions to keep track of
+    private int _amountOfSkips = 5; // Number of actions to keep track of
 
     public void AddLastLineGameObject(GameObject lineObject)
     {
