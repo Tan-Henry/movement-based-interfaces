@@ -10,11 +10,8 @@ public abstract class LineDrawer : MonoBehaviour
     protected GameObject newLine;
     protected LineRenderer drawLine;
     public float lineWidth;
-    
-    public OVRHand rightHand;
-    public OVRSkeleton skeleton;
-    private bool isIndexFingerPinching;
-    private Transform handIndexTipTransform;
+
+    public BaseInputManager inputManager;
     private bool isDrawing;
 
     protected virtual void Start()
@@ -25,47 +22,29 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void Update()
     {
-        //ToDo: Handtracking in anderer Klasse implementieren
-        if (rightHand.IsTracked)
+        if (inputManager.RightHandIsDrawing)
         {
-            // Gather info whether left hand is pinching
-            isIndexFingerPinching = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-
-            // Proceed only if left hand is pinching
-            if (isIndexFingerPinching)
+            if (!isDrawing)
             {
-                if (!isDrawing)
-                {
-                    isDrawing = true;
-                    InitializeLine();
-                }
-                // Loop through all the bones in the skeleton
-                foreach (var b in skeleton.Bones)
-                {
-                    // If bone is the the hand index tip
-                    if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-                    {
-                        // Store its transform and break the loop
-                        handIndexTipTransform = b.Transform;
-                        break;
-                    }
-                }
-                linePoints.Add(handIndexTipTransform.position);
-                drawLine.positionCount = linePoints.Count;
-                drawLine.SetPositions(linePoints.ToArray());
-                
+                isDrawing = true;
+                InitializeLine();
             }
-            // If the user is not pinching
-            else
+            
+            linePoints.Add(inputManager.RightHandDrawPosition);
+            drawLine.positionCount = linePoints.Count;
+            drawLine.SetPositions(linePoints.ToArray());
+        }
+        
+        else
+        {
+            if (isDrawing)
             {
-                if (isDrawing)
-                {
-                    OnLineComplete();
-                    linePoints.Clear();
-                    isDrawing = false;
-                }
+                OnLineComplete();
+                linePoints.Clear();
+                isDrawing = false;
             }
         }
+        
         /*if (Input.GetMouseButtonDown(0))
         {
             InitializeLine();
