@@ -8,21 +8,22 @@ public class NoiseGenerator : MonoBehaviour
     public ComputeShader NoiseShader;
 
     [SerializeField] float noiseScale = 0.08f;
-    [SerializeField] float amplitude = 200;
+    [SerializeField] float amplitude = 5;
     [SerializeField] float frequency = 0.004f;
     [SerializeField] int octaves = 6;
     [SerializeField, Range(0f, 1f)] float groundPercent = 0.2f;
 
 
-    private void Awake() {
+    /*private void Awake() {
         CreateBuffers();
     }
 
     private void OnDestroy() {
         ReleaseBuffers();
-    }
+    }*/
 
     public float[] GetNoise(Vector3 chunkPosition) {
+        CreateBuffers();
         float[] noiseValues =
             new float[GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk];
 
@@ -38,12 +39,13 @@ public class NoiseGenerator : MonoBehaviour
         NoiseShader.SetVector("_ChunkPosition", chunkPosition * 2);
 
         NoiseShader.Dispatch(
-            0, GridMetrics.PointsPerChunk / GridMetrics.NumThreads, GridMetrics.PointsPerChunk / GridMetrics.NumThreads, GridMetrics.PointsPerChunk / GridMetrics.NumThreads
+            0, GridMetrics.ThreadGroups(), GridMetrics.ThreadGroups(), GridMetrics.ThreadGroups()
         );
 
         _weightsBuffer.GetData(noiseValues);
-
+        ReleaseBuffers();
         return noiseValues;
+        
     }
 
     void CreateBuffers() {
