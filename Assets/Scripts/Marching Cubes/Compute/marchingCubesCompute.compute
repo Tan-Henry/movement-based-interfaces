@@ -109,7 +109,9 @@ float random(uint seed)
 [numthreads( numThreads, numThreads, numThreads )]
 void UpdateWeights(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16)
+    //TODO PAUL why here * 16??? 
+    //if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16)
+        if (id.x >= (_ChunkSize - 1) || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1))
     {
         return;
     }

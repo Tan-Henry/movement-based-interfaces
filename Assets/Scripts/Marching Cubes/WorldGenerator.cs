@@ -58,8 +58,8 @@ namespace Marching_Cubes
             // Debug.Log("brushSize: " + brushSize);
             
             // Calculate the affected chunks
-            Vector3Int minChunk = Vector3Int.FloorToInt((hitPoint - Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
-            Vector3Int maxChunk = Vector3Int.FloorToInt((hitPoint + Vector3.one * brushSize) / GridMetrics.PointsPerChunk);
+            Vector3Int minChunk = Vector3Int.FloorToInt((hitPoint - Vector3.one * brushSize) / GridMetrics.PointsPerChunkTerra);
+            Vector3Int maxChunk = Vector3Int.FloorToInt((hitPoint + Vector3.one * brushSize) / GridMetrics.PointsPerChunkTerra);
             
             // Debug.Log("minChunk: " + minChunk);
             // Debug.Log("maxChunk: " + maxChunk);
