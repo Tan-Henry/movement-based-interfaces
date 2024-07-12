@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="12 Brushes Total">
+    <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chunk.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chunk.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/GridMetrics.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +20,13 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/CursorToHandController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/Chunk.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/Marching Cubes/GridMetrics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.meta.xr.sdk.core@65.0.0/Scripts/OVRHaptics.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.11/Runtime/XR/XRPass.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.11/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -127,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718889345488</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks">
+      <created>1720770997898</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1720770997898</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,6 +160,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="MarchingCubes Brushes: First Brushes" />
     <MESSAGE value="12 Brushes Total" />
-    <option name="LAST_COMMIT_MESSAGE" value="12 Brushes Total" />
+    <MESSAGE value="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks" />
   </component>
 </project>
