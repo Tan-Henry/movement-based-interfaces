@@ -6,7 +6,7 @@ using UnityEngine;
 public class CursorToHandController : MonoBehaviour
 {
     public GameObject cursor;
-    
+
     public OVRHand leftHand;
     public OVRSkeleton leftHandSkeleton;
     private bool isIndexFingerPinching;
@@ -23,25 +23,34 @@ public class CursorToHandController : MonoBehaviour
         {
             // Gather info whether left hand is pinching
             isIndexFingerPinching = leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-            cursor.transform.position = leftHand.transform.position;
-            // Proceed only if left hand is pinching
-            if (isIndexFingerPinching)
+            foreach (var b in leftHandSkeleton.Bones)
             {
-                if (!controller.isPainting)
+                // If bone is the the hand index tip
+                if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
                 {
-                    controller.isPainting = true;
+                    Vector3 indexTipPosition = b.Transform.position;
+                    cursor.transform.position = indexTipPosition;
                 }
 
-            }
-            else
-            {
-                if (controller.isPainting)
+                // Proceed only if left hand is pinching
+                if (isIndexFingerPinching)
                 {
-                    controller.isPainting = false;
+                    if (!controller.isPainting)
+                    {
+                        controller.isPainting = true;
+                    }
+
+                }
+                else
+                {
+                    if (controller.isPainting)
+                    {
+                        controller.isPainting = false;
+                    }
                 }
             }
+
         }
-
     }
 }
 
