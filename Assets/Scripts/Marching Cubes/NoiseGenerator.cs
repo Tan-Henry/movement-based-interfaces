@@ -22,14 +22,14 @@ public class NoiseGenerator : MonoBehaviour
         ReleaseBuffers();
     }*/
 
-    public float[] GetNoise(Vector3 chunkPosition, int lod) {
-        CreateBuffers(lod);
+    public float[] GetNoise(Vector3 chunkPosition) {
+        CreateBuffers();
         float[] noiseValues =
-            new float[GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod)];
+            new float[GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk];
 
         NoiseShader.SetBuffer(0, "_Weights", _weightsBuffer);
 
-        NoiseShader.SetInt("_ChunkSize", GridMetrics.PointsPerChunk(lod));
+        NoiseShader.SetInt("_ChunkSize", GridMetrics.PointsPerChunk);
         NoiseShader.SetFloat("_NoiseScale", noiseScale);
         NoiseShader.SetFloat("_Amplitude", amplitude);
         NoiseShader.SetFloat("_Frequency", frequency);
@@ -39,7 +39,7 @@ public class NoiseGenerator : MonoBehaviour
         NoiseShader.SetVector("_ChunkPosition", chunkPosition * 2);
 
         NoiseShader.Dispatch(
-            0, GridMetrics.ThreadGroups(lod), GridMetrics.ThreadGroups(lod), GridMetrics.ThreadGroups(lod)
+            0, GridMetrics.ThreadGroups(), GridMetrics.ThreadGroups(), GridMetrics.ThreadGroups()
         );
 
         _weightsBuffer.GetData(noiseValues);
@@ -48,9 +48,9 @@ public class NoiseGenerator : MonoBehaviour
         
     }
 
-    void CreateBuffers(int lod) {
+    void CreateBuffers() {
         _weightsBuffer = new ComputeBuffer(
-            GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod), sizeof(float)
+            GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk * GridMetrics.PointsPerChunk, sizeof(float)
         );
     }
 

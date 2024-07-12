@@ -64,8 +64,8 @@ namespace Marching_Cubes
             Vector3 maxCorner = hitPoint + Vector3.one * brushSize;
 
             // Calculate min and max chunk coordinates for each axis
-            Vector3Int minChunk = Vector3Int.FloorToInt(minCorner / GridMetrics.PointsPerChunkTerra);
-            Vector3Int maxChunk = Vector3Int.FloorToInt(maxCorner / GridMetrics.PointsPerChunkTerra);
+            Vector3Int minChunk = Vector3Int.FloorToInt(minCorner / GridMetrics.PointsPerChunk);
+            Vector3Int maxChunk = Vector3Int.FloorToInt(maxCorner / GridMetrics.PointsPerChunk);
 
             for (int x = minChunk.x; x <= maxChunk.x; x++) {
                 for (int y = minChunk.y; y <= maxChunk.y; y++) {  // Include y-axis iteration
