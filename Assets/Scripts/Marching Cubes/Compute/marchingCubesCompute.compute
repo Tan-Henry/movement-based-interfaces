@@ -109,8 +109,7 @@ float random(uint seed)
 [numthreads( numThreads, numThreads, numThreads )]
 void UpdateWeights(uint3 id : SV_DispatchThreadID)
 {
-    //TODO PAUL why here * 16??? 
-    //if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16)
+    
         if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) * 16 || id.z >= (_ChunkSize - 1) * 16)
     {
         return;
@@ -127,27 +126,32 @@ void UpdateWeights(uint3 id : SV_DispatchThreadID)
     float angleRound = 10.0 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
     float angleNoise = 2 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
 
+    //TODO Playaround with NoiseValues
     switch (_brushType)
     {
-    case 0: //Standard
+        // 3D Line Brushes
+    case 0: // 3D Sharp
         voxelWorldPosition = float3(id.x, id.y, id.z) + _ChunkWorldPosition * 2;
         break;
-    case 1: //Simple Offset
-        voxelWorldPosition.x += 5.0f;
+    case 1: // 3D Round Line (GPT)
+        voxelWorldPosition = float3(center.x + 20.0f * cos(angleRound), center.y, center.z + 5.0f * sin(angleRound)) +
+            _ChunkWorldPosition * 2;
         break;
-    case 2: //Simple Noise (GPT)
+    case 2: // PseudoSpacedLines
+        voxelWorldPosition = float3(id.x * random(id.x), id.y, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 3: // Simple Noise (GPT)
         uint combinedSeed = id.x + id.y * 57 + id.z + _seed;
         voxelWorldPosition = float3(id.x + random(combinedSeed) * _range, id.y + random(combinedSeed + 1) * _range,
                                     id.z + random(combinedSeed + 1) * _range) + _ChunkWorldPosition * 2;
         break;
-    case 3: //Round (GPT)
-        voxelWorldPosition = float3(center.x + 20.0f * cos(angleRound), center.y, center.z + 5.0f * sin(angleRound)) +
-            _ChunkWorldPosition * 2;
+    case 4: // ColumnNoise
+        voxelWorldPosition = float3(id.x, id.y * cos(noise*0.3), id.z) + _ChunkWorldPosition * 2;
         break;
-    case 4: // Spaced
-        voxelWorldPosition = float3(id.x * random(id.x), id.y, id.z) + _ChunkWorldPosition * 2;
+    case 5: // NoiseField
+        voxelWorldPosition = float3(id.x, id.y + noiseFrac, id.z) + _ChunkWorldPosition * 2;
         break;
-    case 5: // Spaced Lines on x-axis
+    case 6: // Slices
         if ((id.x % _spacingInterval) == 0) // Apply transformation in intervals
         {
             int lineNumber = (id.x / _spacingInterval) % 3;
@@ -165,27 +169,7 @@ void UpdateWeights(uint3 id : SV_DispatchThreadID)
             }
         }
         break;
-    case 6:
-        voxelWorldPosition = float3(SimplexNoise(center.x + 5.0f * cos(angleNoise)), center.y,
-                                    center.z + 5.0f * sin(angleNoise)) + _ChunkWorldPosition * 2;
-        break;
-    case 7:
-        voxelWorldPosition = float3(center.x + 1.0f * cos(noise), sin(noise) * center.y, center.z + 1.0f * sin(noise)) +
-            _ChunkWorldPosition * 2;
-        break;
-    /*case 8:
-        voxelWorldPosition = float3(id.x, noise(id.y * id.y), id.z) + _ChunkWorldPosition * 2;
-        break;*/
-    case 9:
-        voxelWorldPosition = float3(id.x, frac(noise) * id.y, id.z) + _ChunkWorldPosition * 2;
-        break;
-    case 10: //CLOUDMAKER
-        voxelWorldPosition = float3(id.x, id.y * cos(noise*0.3), id.z) + _ChunkWorldPosition * 2;
-        break;
-    case 11: //FRACTAL CAVE
-            voxelWorldPosition = float3(id.x, id.y + noiseFrac, id.z) + _ChunkWorldPosition * 2;
-        break;
-    case 12: //SPIKES
+    case 7: //Spikes
         if (id.z % 2 == 0 || id.x % 2 == 0)
         {
             //voxelWorldPosition = float3(id.x, 2*noise*(id.y+id.y) + frac(id.x), id.z) + _ChunkWorldPosition * 2;
@@ -193,7 +177,23 @@ void UpdateWeights(uint3 id : SV_DispatchThreadID)
             voxelWorldPosition = float3(id.x*(atan(id.x)*(id.y)), noiseSpikes*(id.y*id.y), id.z /*+ noiseFrac*/) + _ChunkWorldPosition * 2;
         }
         break;
-    /*case 13:
+
+        //Old Brushes kept in case. Can be deleted once Brushes finalized.
+        /*case 6:
+        voxelWorldPosition = float3(SimplexNoise(center.x + 5.0f * cos(angleNoise)), center.y,
+                                    center.z + 5.0f * sin(angleNoise)) + _ChunkWorldPosition * 2;
+        break;
+    case 7:
+        voxelWorldPosition = float3(center.x + 1.0f * cos(noise), sin(noise) * center.y, center.z + 1.0f * sin(noise)) +
+            _ChunkWorldPosition * 2;
+        break;
+    case 8:
+        voxelWorldPosition = float3(id.x, noise(id.y * id.y), id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 9:
+        voxelWorldPosition = float3(id.x, frac(noise) * id.y, id.z) + _ChunkWorldPosition * 2;
+        break;
+    case 13:
         if (id.x % 3 == 0 || id.z % 3 == 0)
         {
             voxelWorldPosition = 

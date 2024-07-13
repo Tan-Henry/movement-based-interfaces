@@ -139,8 +139,6 @@ namespace Marching_Cubes
             MeshCollider.sharedMesh = mesh;
         }
         
-        //private int brushType = 10;
-        private int currentBrushType;
         private int spacingInterval = 3;
         private int lineSpacing = 50;
 

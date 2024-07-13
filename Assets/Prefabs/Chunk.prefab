@@ -97,7 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecc6f0e162df9748a834485af7cd735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LOD: 5
   NoiseGenerator: {fileID: 0}
   MarchingShader: {fileID: 7200000, guid: 4cf6aeca5af7a4056b144f98ab8c0cfb, type: 3}
   MeshFilter: {fileID: 5952995887955945037}
