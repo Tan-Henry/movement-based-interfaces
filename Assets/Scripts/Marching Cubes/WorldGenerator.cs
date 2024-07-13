@@ -9,7 +9,7 @@ namespace Marching_Cubes
         public int worldSizeX;
         public int worldSizeZ;
         public int worldSizeY;
-        public int brushType;
+        //public int brushType;
         
         public Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
     

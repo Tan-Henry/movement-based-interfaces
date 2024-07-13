@@ -177,9 +177,9 @@ public class BrushSettings2D
     public float opacity;
 }
 
-public class BrushSettings3D
+public class BrushSettings3D 
 {
-    public float brushSize;
+    public float brushSize { get; set; }
 }
 
 public enum EEffects

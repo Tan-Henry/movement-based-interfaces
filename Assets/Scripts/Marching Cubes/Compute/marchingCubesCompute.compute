@@ -109,8 +109,7 @@ float random(uint seed)
 [numthreads( numThreads, numThreads, numThreads )]
 void UpdateWeights(uint3 id : SV_DispatchThreadID)
 {
-    //TODO PAUL why here * 16??? 
-    //if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) || id.z >= (_ChunkSize - 1) * 16)
+    
         if (id.x >= (_ChunkSize - 1) * 16 || id.y >= (_ChunkSize - 1) * 16 || id.z >= (_ChunkSize - 1) * 16)
     {
         return;
@@ -127,6 +126,7 @@ void UpdateWeights(uint3 id : SV_DispatchThreadID)
     float angleRound = 10.0 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
     float angleNoise = 2 * 3.14159265 * (id.x / 100.0); // with 100 = Range(id.x)
 
+    //TODO Playaround with NoiseValues
     switch (_brushType)
     {
         // 3D Line Brushes
