@@ -449,7 +449,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11415407}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6202def8274d43743bb26efdb14b7d1c, type: 3}
   m_Name: 
@@ -5696,6 +5696,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ColorPicker  1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628931683643677397, guid: e26e5c71d467b5e49aa0968a08410154,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

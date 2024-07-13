@@ -10,12 +10,14 @@ public class ColorPickerManager : MonoBehaviour
     void Start()
     {
         // Instantiate the RGB color picker prefab
-        GameObject rgbColorPickerObject = Instantiate(rgbColorPickerPrefab);
-       colorPicker = rgbColorPickerObject.GetComponent<ColorPickerBase>();
+       
+      
+        //GameObject rgbColorPickerObject = Instantiate(rgbColorPickerPrefab);
+       //colorPicker = rgbColorPickerObject.GetComponent<ColorPickerBase>();
 
         // If you want to use HSV color picker instead, comment the above two lines and uncomment the below lines
-       //  GameObject hsvColorPickerObject = Instantiate(hsvColorPickerPrefab);
-        // colorPicker = hsvColorPickerObject.GetComponent<ColorPickerBase>();
+        GameObject hsvColorPickerObject = Instantiate(hsvColorPickerPrefab);
+         colorPicker = hsvColorPickerObject.GetComponent<ColorPickerBase>();
     }
 
     void Update()

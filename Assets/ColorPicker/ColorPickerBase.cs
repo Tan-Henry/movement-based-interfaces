@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class ColorPickerBase : MonoBehaviour
 {
     public GameObject largerCube;
-    public float edgeThickness = 0.02f;
+    public float edgeThickness = 0.05f; // Increased edge thickness
 
     protected Vector3 largerCubeSize;
     protected Vector3 innerCubeSize;
@@ -25,6 +25,10 @@ public abstract class ColorPickerBase : MonoBehaviour
     protected void InitializeCubes()
     {
         largerCubeSize = largerCube.GetComponent<Renderer>().bounds.size;
+        if (innerCubes != null && innerCubes.Length > 0)
+        {
+            innerCubeSize = innerCubes[0].GetComponent<Renderer>().bounds.size;
+        }
         CreateColoredEdges();
         UpdateSelectedColor();
         lastUseHSV = GetUseHSV();
@@ -42,7 +46,7 @@ public abstract class ColorPickerBase : MonoBehaviour
             }
         }
 
-        Vector3 halfSize = largerCubeSize * 0.27f;
+        Vector3 halfSize = largerCubeSize * 0.28f;
 
         // Bottom edges
         CreateEdge(new Vector3(-halfSize.x, -halfSize.y, -halfSize.z), new Vector3(-halfSize.x, -halfSize.y, halfSize.z));
@@ -93,7 +97,6 @@ public abstract class ColorPickerBase : MonoBehaviour
     {
         if (lastUseHSV != GetUseHSV())
         {
-            CreateColoredEdges();
             lastUseHSV = GetUseHSV();
             UpdateCubeVisibility();
         }
@@ -126,12 +129,18 @@ public abstract class ColorPickerBase : MonoBehaviour
     protected void ConstrainInnerCube(GameObject innerCube, bool constrainX, bool constrainY, bool constrainZ)
     {
         Vector3 pos = innerCube.transform.localPosition;
+
+        // Ensure the inner cube is constrained within the bounds of the larger cube
+        Vector3 halfLargerSize = largerCubeSize * 0.28f;
+        Vector3 halfInnerSize = innerCubeSize * 0.28f;
+
         if (constrainX)
-            pos.x = Mathf.Clamp(pos.x, -largerCubeSize.x / 2 + innerCubeSize.x / 2, largerCubeSize.x / 2 - innerCubeSize.x / 2);
+            pos.x = Mathf.Clamp(pos.x, -halfLargerSize.x + halfInnerSize.x, halfLargerSize.x - halfInnerSize.x);
         if (constrainY)
-            pos.y = Mathf.Clamp(pos.y, -largerCubeSize.y / 2 + innerCubeSize.y / 2, largerCubeSize.y / 2 - innerCubeSize.y / 2);
+            pos.y = Mathf.Clamp(pos.y, -halfLargerSize.y + halfInnerSize.y, halfLargerSize.y - halfInnerSize.y);
         if (constrainZ)
-            pos.z = Mathf.Clamp(pos.z, -largerCubeSize.z / 2 + innerCubeSize.z / 2, largerCubeSize.z / 2 - innerCubeSize.z / 2);
+            pos.z = Mathf.Clamp(pos.z, -halfLargerSize.z + halfInnerSize.z, halfLargerSize.z - halfInnerSize.z);
+
         innerCube.transform.localPosition = pos;
     }
 }
