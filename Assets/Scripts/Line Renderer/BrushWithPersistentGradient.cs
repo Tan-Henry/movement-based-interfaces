@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrushWithReversingGradient : MonoBehaviour
+public class BrushWithConitinuousGradient : MonoBehaviour
 {
     private List<Vector3> linePoints;
     private List<float> lineDistances;

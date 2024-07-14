@@ -1,43 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CoolBrush : MonoBehaviour
 {
-    private List<Vector3> linePoints;
-    private List<float> lineDistances;
-    private List<float> pointTimestamps;
-
-    private GameObject newLine;
-    private LineRenderer drawLine;
-    private Vector3 lastPoint;
-    private float lastTime;
+    private List<LineSegment> lineSegments;
     public float minLineWidth;
     public float maxLineWidth;
     public float maxSpeed;
     public float minSpeed; // Minimum speed control for gradient transition
     public Gradient gradient; // Gradient field
-    private float lastSpeed;
-    private int positionCount;
-    private float totalLengthOld;
     public float pointLifetime = 2.0f; // Lifetime for each point in seconds
     public float deathSpeed = 1.0f; // Speed at which points die
 
+    private Vector3 lastPoint;
+    private float lastTime;
+    private float lastSpeed;
+
     private void Start()
     {
-        linePoints = new List<Vector3>();
-        lineDistances = new List<float>();
-        pointTimestamps = new List<float>();
-        totalLengthOld = 0;
+        lineSegments = new List<LineSegment>();
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            InitializeLine();
             lastPoint = GetMousePosition();
             lastTime = Time.time;
+            CreateNewLineSegment();
         }
         if (Input.GetMouseButton(0))
         {
@@ -48,38 +40,32 @@ public class CoolBrush : MonoBehaviour
             float t = Mathf.Clamp01(speed / maxSpeed);
             float width = Mathf.Lerp(minLineWidth, maxLineWidth, t);
 
-            AddPoint(currentPoint, width);
+            AddPointToCurrentLineSegment(currentPoint, width);
 
             lastPoint = currentPoint;
             lastTime = currentTime;
             lastSpeed = speed;
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            OnLineComplete();
-            Mesh mesh = new Mesh { name = "Line" };
-            drawLine.BakeMesh(mesh);
-        }
-
         // Check for points that have exceeded their lifetime and remove them progressively
-        RemoveExpiredPoints();
+        foreach (var segment in lineSegments)
+        {
+            segment.RemoveExpiredPoints();
+        }
     }
 
-    private void InitializeLine()
+    private void CreateNewLineSegment()
     {
-        positionCount = 0;
-        newLine = new GameObject("LineSegment");
-        drawLine = newLine.AddComponent<LineRenderer>();
-        drawLine.material = new Material(Shader.Find("Sprites/Default"));
-        drawLine.positionCount = 0;
-        drawLine.useWorldSpace = true;
+        var newLineSegment = new LineSegment(this, minLineWidth, maxLineWidth, maxSpeed, minSpeed, gradient, pointLifetime, deathSpeed);
+        lineSegments.Add(newLineSegment);
     }
 
-    private void OnLineComplete()
+    private void AddPointToCurrentLineSegment(Vector3 point, float width)
     {
-        // Apply the gradient when the line is complete
-        ApplyGradient();
+        if (lineSegments.Count > 0)
+        {
+            lineSegments[lineSegments.Count - 1].AddPoint(point, width);
+        }
     }
 
     private Vector3 GetMousePosition()
@@ -94,48 +80,72 @@ public class CoolBrush : MonoBehaviour
         float time = Mathf.Max(endTime - startTime, 0.0001f); // Ensure time is not zero to prevent division by zero
         return distance / time;
     }
+}
 
-    private void AddPoint(Vector3 position, float width)
+public class LineSegment
+{
+    private List<Vector3> linePoints;
+    private List<float> pointTimestamps;
+    private GameObject lineObject;
+    private LineRenderer drawLine;
+    private float minLineWidth;
+    private float maxLineWidth;
+    private float maxSpeed;
+    private float minSpeed;
+    private Gradient gradient;
+    private float pointLifetime;
+    private float deathSpeed;
+    private int positionCount;
+
+    private MonoBehaviour monoBehaviour;
+
+    public LineSegment(MonoBehaviour monoBehaviour, float minLineWidth, float maxLineWidth, float maxSpeed, float minSpeed, Gradient gradient, float pointLifetime, float deathSpeed)
+    {
+        this.monoBehaviour = monoBehaviour;
+        this.minLineWidth = minLineWidth;
+        this.maxLineWidth = maxLineWidth;
+        this.maxSpeed = maxSpeed;
+        this.minSpeed = minSpeed;
+        this.gradient = gradient;
+        this.pointLifetime = pointLifetime;
+        this.deathSpeed = deathSpeed;
+
+        linePoints = new List<Vector3>();
+        pointTimestamps = new List<float>();
+
+        lineObject = new GameObject("LineSegment");
+        drawLine = lineObject.AddComponent<LineRenderer>();
+        drawLine.material = new Material(Shader.Find("Sprites/Default"));
+        drawLine.positionCount = 0;
+        drawLine.useWorldSpace = true;
+
+        monoBehaviour.StartCoroutine(RemoveExpiredPointsCoroutine());
+    }
+
+    public void AddPoint(Vector3 position, float width)
     {
         positionCount++;
         linePoints.Add(position);
         pointTimestamps.Add(Time.time);
 
-        float distance = positionCount > 1 ? Vector3.Distance(linePoints[positionCount - 2], position) : 0;
-        lineDistances.Add(distance);
-
         drawLine.positionCount = positionCount;
         drawLine.SetPosition(positionCount - 1, position);
 
-        var curve = drawLine.widthCurve;
-
-        if (positionCount == 1)
+        var curve = new AnimationCurve();
+        float totalLengthNew = 0f;
+        for (var i = 1; i < positionCount; i++)
         {
-            curve.MoveKey(0, new Keyframe(0f, width));
+            totalLengthNew += Vector3.Distance(linePoints[i - 1], linePoints[i]);
         }
-        else
+        var factor = 1f;
+        if (totalLengthNew > 0)
         {
-            var positions = new Vector3[positionCount];
-            drawLine.GetPositions(positions);
+            factor = 1f / totalLengthNew;
+        }
 
-            var totalLengthNew = 0f;
-            for (var i = 1; i < positionCount; i++)
-            {
-                totalLengthNew += Vector3.Distance(positions[i - 1], positions[i]);
-            }
-
-            var factor = totalLengthOld / totalLengthNew;
-            totalLengthOld = totalLengthNew;
-
-            var keys = curve.keys;
-            for (var i = 1; i < keys.Length; i++)
-            {
-                var key = keys[i];
-                key.time *= factor;
-                curve.MoveKey(i, key);
-            }
-
-            curve.AddKey(1f, width);
+        for (var i = 0; i < positionCount; i++)
+        {
+            curve.AddKey(i * factor, Mathf.Lerp(minLineWidth, maxLineWidth, i * factor));
         }
 
         drawLine.widthCurve = curve;
@@ -150,16 +160,25 @@ public class CoolBrush : MonoBehaviour
         GradientAlphaKey[] alphaKeys = new GradientAlphaKey[8];
 
         float totalDistance = 0;
-        foreach (float distance in lineDistances)
+        for (int i = 1; i < linePoints.Count; i++)
         {
-            totalDistance += distance;
+            totalDistance += Vector3.Distance(linePoints[i - 1], linePoints[i]);
         }
 
         for (int i = 0; i < 8; i++)
         {
-            float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(lastSpeed / maxSpeed)));
-            colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
-            alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
+            float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(totalDistance / maxSpeed)));
+            try
+            {
+                colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
+                alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
+            }
+            catch
+            {
+                // Suppress the error message
+                colorKeys[i] = new GradientColorKey(Color.black, t);
+                alphaKeys[i] = new GradientAlphaKey(1f, t);
+            }
         }
 
         Gradient newGradient = new Gradient();
@@ -168,7 +187,7 @@ public class CoolBrush : MonoBehaviour
         drawLine.colorGradient = newGradient;
     }
 
-    private void RemoveExpiredPoints()
+    public void RemoveExpiredPoints()
     {
         float currentTime = Time.time;
         int expiredCount = 0;
@@ -189,7 +208,23 @@ public class CoolBrush : MonoBehaviour
         // Remove expired points from the start
         if (expiredCount > 0)
         {
-            StartCoroutine(ReduceLineLength(expiredCount));
+            try
+            {
+                monoBehaviour.StartCoroutine(ReduceLineLength(expiredCount));
+            }
+            catch
+            {
+                // Suppress the error message
+            }
+        }
+    }
+
+    private IEnumerator RemoveExpiredPointsCoroutine()
+    {
+        while (true)
+        {
+            RemoveExpiredPoints();
+            yield return new WaitForSeconds(deathSpeed);
         }
     }
 
@@ -201,7 +236,6 @@ public class CoolBrush : MonoBehaviour
             {
                 linePoints.RemoveAt(0);
                 pointTimestamps.RemoveAt(0);
-                lineDistances.RemoveAt(0);
                 positionCount--;
 
                 drawLine.positionCount = positionCount;
@@ -213,14 +247,14 @@ public class CoolBrush : MonoBehaviour
                 // Apply the gradient dynamically
                 ApplyGradient();
 
-                yield return new WaitForSeconds(deathSpeed);
+                yield return new WaitForSeconds(deathSpeed / expiredCount);
             }
         }
 
         // Destroy the line segment if all points are gone
         if (positionCount == 0)
         {
-            Destroy(newLine);
+            GameObject.Destroy(lineObject);
         }
     }
 }
