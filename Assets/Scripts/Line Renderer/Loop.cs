@@ -4,6 +4,7 @@ using UnityEngine;
 public class Loop : MonoBehaviour
 {
     public LineDrawer lineDrawer;
+    public float loopDurationInSec = 10.0f; // Loop duration in seconds
     private List<Vector3> recordedPoints;
     private List<float> recordedTimes;
     private List<int> strokeIndices;
@@ -81,15 +82,15 @@ public class Loop : MonoBehaviour
     {
         float elapsedTime = (Time.time - playbackStartTime);
 
-        if (elapsedTime >= (recordingEndTime - recordingStartTime))
+        if (elapsedTime >= loopDurationInSec)
         {
-            // Playback is complete, reset to start over
+            // Loop duration has ended, stop playback
+            isPlaying = false;
             ClearAllLines();
-            playbackStartTime = Time.time;
-            InitializePlaybackLines();
             return; // Exit the function to prevent further execution
         }
 
+        float normalizedTime = (elapsedTime % (recordingEndTime - recordingStartTime));
         int currentStrokeIndex = 0;
 
         for (int i = 0; i < recordedPoints.Count; i++)
@@ -104,7 +105,7 @@ public class Loop : MonoBehaviour
                 currentStrokeIndex++;
             }
 
-            if (recordedTimes[i] <= elapsedTime)
+            if (recordedTimes[i] <= normalizedTime)
             {
                 if (lineRenderers.Count > 0 && currentStrokeIndex - 1 < lineRenderers.Count)
                 {
