@@ -2,28 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DynamicLineDrawing : MonoBehaviour
+public class DynamicLineDrawing : LineDrawer
 {
-    private List<Vector3> linePoints;
-
-    private GameObject newLine;
-    private LineRenderer drawLine;
     private Vector3 lastPoint;
     private float lastTime;
     public float minLineWidth;
     public float maxLineWidth;
     public float maxSpeed;
-    private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
 
-    private void Start()
+    protected override void Start()
     {
         linePoints = new List<Vector3>();
         totalLengthOld = 0;
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -43,36 +38,23 @@ public class DynamicLineDrawing : MonoBehaviour
 
             lastPoint = currentPoint;
             lastTime = currentTime;
-            lastSpeed = speed;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             OnLineComplete();
-            // Mesh mesh = new Mesh { name = "Line" };
-            // drawLine.BakeMesh(mesh);
             linePoints.Clear();
         }
     }
 
-    private void InitializeLine()
+    protected override void InitializeLine()
     {
-        positionCount = 0;
-        newLine = new GameObject("LineSegment");
-        drawLine = newLine.AddComponent<LineRenderer>();
-        drawLine.material = new Material(Shader.Find("Sprites/Default"));
+        base.InitializeLine();
+        drawLine.startColor = Color.black;
+        drawLine.endColor = Color.black;
         drawLine.positionCount = 0;
-        drawLine.startColor = Color.blue;
-        drawLine.endColor = Color.blue;
+        positionCount = 0;
         drawLine.useWorldSpace = true;
-    }
-
-    private void OnLineComplete() { }
-
-    private Vector3 GetMousePosition()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return ray.origin + ray.direction * 3;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)
