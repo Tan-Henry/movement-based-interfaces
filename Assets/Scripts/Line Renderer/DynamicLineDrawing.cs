@@ -9,12 +9,13 @@ public class DynamicLineDrawing : LineDrawer
     public float minLineWidth;
     public float maxLineWidth;
     public float maxSpeed;
+    private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
 
     protected override void Start()
     {
-        linePoints = new List<Vector3>();
+        base.Start();
         totalLengthOld = 0;
     }
 
@@ -38,6 +39,7 @@ public class DynamicLineDrawing : LineDrawer
 
             lastPoint = currentPoint;
             lastTime = currentTime;
+            lastSpeed = speed;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -49,11 +51,13 @@ public class DynamicLineDrawing : LineDrawer
 
     protected override void InitializeLine()
     {
-        base.InitializeLine();
-        drawLine.startColor = Color.black;
-        drawLine.endColor = Color.black;
-        drawLine.positionCount = 0;
         positionCount = 0;
+        newLine = new GameObject("LineSegment");
+        drawLine = newLine.AddComponent<LineRenderer>();
+        drawLine.material = new Material(Shader.Find("Sprites/Default"));
+        drawLine.positionCount = 0;
+        drawLine.startColor = Color.blue;
+        drawLine.endColor = Color.blue;
         drawLine.useWorldSpace = true;
     }
 
@@ -110,7 +114,6 @@ public class DynamicLineDrawing : LineDrawer
             {
                 var key = keys[i];
                 key.time *= factor;
-                //Ich habe 10 Jahre dafuer gebraucht...
                 if (!key.time.Equals(Single.NaN))
                 {
                     curve.MoveKey(i, key);
