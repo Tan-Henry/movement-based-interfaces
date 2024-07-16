@@ -4,51 +4,35 @@ using UnityEngine;
 public abstract class LineDrawer : MonoBehaviour
 {
     protected List<Vector3> linePoints;
-    protected float timer;
-    public float timerDelay;
 
     protected GameObject newLine;
     protected LineRenderer drawLine;
     public float lineWidth;
 
-    public BaseInputManager inputManager;
-    private bool isDrawing;
-
     protected virtual void Start()
     {
         linePoints = new List<Vector3>();
-        timer = timerDelay;
     }
 
     protected virtual void Update()
     {
-        if (inputManager.RightHandIsDrawing2D)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (!isDrawing)
-            {
-                isDrawing = true;
-                InitializeLine();
-            }
+            InitializeLine();
+        }
+        if (Input.GetMouseButton(0))
+        {
             
-            linePoints.Add(inputManager.RightHandPosition);
+            linePoints.Add(GetMousePosition());
             drawLine.positionCount = linePoints.Count;
             drawLine.SetPositions(linePoints.ToArray());
         }
-        
-        else
+
+        if (Input.GetMouseButtonUp(0))
         {
-            if (isDrawing)
-            {
-                OnLineComplete();
-                linePoints.Clear();
-                isDrawing = false;
-            }
+            OnLineComplete();
+            linePoints.Clear();
         }
-        
-        /*if (Input.GetMouseButtonDown(0))
-        {
-            InitializeLine();
-        }*/
     }
 
     protected virtual void InitializeLine()
@@ -62,5 +46,16 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.endColor = Color.clear;
     }
 
-    protected virtual void OnLineComplete() { }
+
+    protected virtual void OnLineComplete()
+    {
+        UndoRedoScript undoRedoScript = GetComponent<UndoRedoScript>();
+        undoRedoScript.AddLastLineGameObject(newLine);
+    }
+
+    protected Vector3 GetMousePosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return ray.origin + ray.direction * 3;
+    }
 }
