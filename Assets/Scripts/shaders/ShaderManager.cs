@@ -13,6 +13,7 @@ public class ShaderManager : MonoBehaviour
     }
 
     public List<ShaderKeyMapping> shaderMappings = new List<ShaderKeyMapping>();
+    public Color defaultNonShaderLinesColor = Color.white; // Default color for non-shader lines
     private int currentShaderIndex = 0;
     private bool isShaderApplied = false;
 
@@ -61,11 +62,11 @@ public class ShaderManager : MonoBehaviour
         {
             if (isShaderApplied)
             {
-                brush.ApplyMaterial(shaderMappings[currentShaderIndex].material);
+                brush.ApplyMaterialToShaderLines(shaderMappings[currentShaderIndex].material);
             }
             else
             {
-                brush.RevertMaterial();
+                brush.SetNonShaderLinesColor(defaultNonShaderLinesColor);
             }
         }
     }
@@ -92,7 +93,7 @@ public class ShaderManager : MonoBehaviour
         {
             foreach (var brush in FindObjectsOfType<DynamicBrushDrawer>())
             {
-                brush.ApplyMaterial(shaderMappings[currentShaderIndex].material);
+                brush.ApplyMaterialToShaderLines(shaderMappings[currentShaderIndex].material);
             }
         }
     }
@@ -105,5 +106,14 @@ public class ShaderManager : MonoBehaviour
     public bool IsShaderApplied()
     {
         return isShaderApplied;
+    }
+
+    public void SetNonShaderLinesColor(Color color)
+    {
+        defaultNonShaderLinesColor = color;
+        foreach (var brush in FindObjectsOfType<DynamicBrushDrawer>())
+        {
+            brush.SetNonShaderLinesColor(color);
+        }
     }
 }

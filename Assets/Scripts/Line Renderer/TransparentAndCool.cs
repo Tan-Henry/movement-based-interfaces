@@ -1,11 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TransparentAndCool : MonoBehaviour
 {
     private List<Vector3> linePoints;
-    private List<float> lineDistances;
-
+    private List<float> pointTimestamps;
     private GameObject newLine;
     private LineRenderer drawLine;
     private Vector3 lastPoint;
@@ -18,13 +19,16 @@ public class TransparentAndCool : MonoBehaviour
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
+    public float pointLifetime = 2.0f; // Lifetime for each point in seconds
+    public float deathSpeed = 1.0f; // Speed at which points die
     public float blendingThreshold = 0.1f; // Blending threshold to avoid overblending
 
     private void Start()
     {
         linePoints = new List<Vector3>();
-        lineDistances = new List<float>();
+        pointTimestamps = new List<float>();
         totalLengthOld = 0;
+        StartCoroutine(RemoveExpiredPointsCoroutine());
     }
 
     private void Update()
@@ -57,7 +61,7 @@ public class TransparentAndCool : MonoBehaviour
             Mesh mesh = new Mesh { name = "Line" };
             drawLine.BakeMesh(mesh);
             linePoints.Clear();
-            lineDistances.Clear();
+            pointTimestamps.Clear();
         }
     }
 
@@ -96,9 +100,7 @@ public class TransparentAndCool : MonoBehaviour
     {
         positionCount++;
         linePoints.Add(position);
-
-        float distance = positionCount > 1 ? Vector3.Distance(linePoints[positionCount - 2], position) : 0;
-        lineDistances.Add(distance);
+        pointTimestamps.Add(Time.time);
 
         drawLine.positionCount = positionCount;
         drawLine.SetPosition(positionCount - 1, position);
@@ -146,9 +148,9 @@ public class TransparentAndCool : MonoBehaviour
         GradientAlphaKey[] alphaKeys = new GradientAlphaKey[8];
 
         float totalDistance = 0;
-        foreach (float distance in lineDistances)
+        for (int i = 1; i < linePoints.Count; i++)
         {
-            totalDistance += distance;
+            totalDistance += Vector3.Distance(linePoints[i - 1], linePoints[i]);
         }
 
         for (int i = 0; i < 8; i++)
@@ -164,5 +166,69 @@ public class TransparentAndCool : MonoBehaviour
         newGradient.SetKeys(colorKeys, alphaKeys);
 
         drawLine.colorGradient = newGradient;
+    }
+
+    private IEnumerator RemoveExpiredPointsCoroutine()
+    {
+        while (true)
+        {
+            RemoveExpiredPoints();
+            yield return new WaitForSeconds(deathSpeed);
+        }
+    }
+
+    private void RemoveExpiredPoints()
+    {
+        float currentTime = Time.time;
+        int expiredCount = 0;
+
+        // Count how many points have expired
+        for (int i = 0; i < pointTimestamps.Count; i++)
+        {
+            if (currentTime - pointTimestamps[i] > pointLifetime)
+            {
+                expiredCount++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        // Remove expired points from the start
+        if (expiredCount > 0)
+        {
+            StartCoroutine(ReduceLineLength(expiredCount));
+        }
+    }
+
+    private IEnumerator ReduceLineLength(int expiredCount)
+    {
+        for (int i = 0; i < expiredCount; i++)
+        {
+            if (linePoints.Count > 0)
+            {
+                linePoints.RemoveAt(0);
+                pointTimestamps.RemoveAt(0);
+                positionCount--;
+
+                drawLine.positionCount = positionCount;
+                for (int j = 0; j < positionCount; j++)
+                {
+                    drawLine.SetPosition(j, linePoints[j]);
+                }
+
+                // Apply the gradient dynamically
+                ApplyGradient();
+
+                yield return new WaitForSeconds(deathSpeed / expiredCount);
+            }
+        }
+
+        // Destroy the line segment if all points are gone
+        if (positionCount == 0)
+        {
+            GameObject.Destroy(newLine);
+        }
     }
 }

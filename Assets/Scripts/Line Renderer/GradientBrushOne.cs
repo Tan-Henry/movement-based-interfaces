@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class GradientBrushOne : MonoBehaviour
 {
     private List<Vector3> linePoints;
     private List<float> lineDistances;
+    private List<Color> lineColors; // Track colors at each point
 
     private GameObject newLine;
     private LineRenderer drawLine;
@@ -18,11 +20,14 @@ public class GradientBrushOne : MonoBehaviour
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
+    private float totalUsageTime; // Track total brush usage time
+    public float gradientSpeed = 1.0f; // Speed of the gradient transition
 
     private void Start()
     {
         linePoints = new List<Vector3>();
         lineDistances = new List<float>();
+        lineColors = new List<Color>(); // Initialize color list
         totalLengthOld = 0;
     }
 
@@ -43,7 +48,7 @@ public class GradientBrushOne : MonoBehaviour
             float t = Mathf.Clamp01(speed / maxSpeed);
             float width = Mathf.Lerp(minLineWidth, maxLineWidth, t);
 
-            AddPoint(currentPoint, width);
+            AddPoint(currentPoint, width, (currentTime - lastTime) * gradientSpeed);
 
             lastPoint = currentPoint;
             lastTime = currentTime;
@@ -57,6 +62,7 @@ public class GradientBrushOne : MonoBehaviour
             drawLine.BakeMesh(mesh);
             linePoints.Clear();
             lineDistances.Clear();
+            lineColors.Clear();
         }
     }
 
@@ -89,7 +95,7 @@ public class GradientBrushOne : MonoBehaviour
         return distance / time;
     }
 
-    private void AddPoint(Vector3 position, float width)
+    private void AddPoint(Vector3 position, float width, float deltaTime)
     {
         positionCount++;
         linePoints.Add(position);
@@ -134,25 +140,43 @@ public class GradientBrushOne : MonoBehaviour
         drawLine.widthCurve = curve;
 
         // Apply the gradient dynamically
-        ApplyGradient();
+        totalUsageTime += deltaTime;
+        Color color = gradient.Evaluate(totalUsageTime / maxSpeed);
+        lineColors.Add(color);
+
+        ApplyDynamicGradient();
     }
 
     private void ApplyGradient()
     {
-        GradientColorKey[] colorKeys = new GradientColorKey[8];
-        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[8];
+        GradientColorKey[] colorKeys = new GradientColorKey[Mathf.Min(lineColors.Count, 8)];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[Mathf.Min(lineColors.Count, 8)];
 
-        float totalDistance = 0;
-        foreach (float distance in lineDistances)
+        for (int i = 0; i < colorKeys.Length; i++)
         {
-            totalDistance += distance;
+            float t = (float)i / (colorKeys.Length - 1);
+            int colorIndex = Mathf.RoundToInt(t * (lineColors.Count - 1));
+            colorKeys[i] = new GradientColorKey(lineColors[colorIndex], t);
+            alphaKeys[i] = new GradientAlphaKey(lineColors[colorIndex].a, t);
         }
 
-        for (int i = 0; i < 8; i++)
+        Gradient newGradient = new Gradient();
+        newGradient.SetKeys(colorKeys, alphaKeys);
+
+        drawLine.colorGradient = newGradient;
+    }
+
+    private void ApplyDynamicGradient()
+    {
+        GradientColorKey[] colorKeys = new GradientColorKey[Mathf.Min(lineColors.Count, 8)];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[Mathf.Min(lineColors.Count, 8)];
+
+        for (int i = 0; i < colorKeys.Length; i++)
         {
-            float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(lastSpeed / maxSpeed)));
-            colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
-            alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
+            float t = (float)i / (colorKeys.Length - 1);
+            int colorIndex = Mathf.RoundToInt(t * (lineColors.Count - 1));
+            colorKeys[i] = new GradientColorKey(lineColors[colorIndex], t);
+            alphaKeys[i] = new GradientAlphaKey(lineColors[colorIndex].a, t);
         }
 
         Gradient newGradient = new Gradient();

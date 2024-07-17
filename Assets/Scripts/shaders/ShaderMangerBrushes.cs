@@ -1,12 +1,15 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DynamicBrushDrawer : LineDrawer
 {
     public float initialLineWidth = 0.1f; // Starting width
     public float maxLineWidth = 1.0f;     // Maximum width
-    public Color color = Color.white;     // Color of the line
+    public Color color = Color.white;     // Default color of the line
     private Material defaultMaterial;     // Store the default material
+
+    private static List<LineRenderer> shaderLines = new List<LineRenderer>(); // Store lines with shaders
+    private static List<LineRenderer> nonShaderLines = new List<LineRenderer>(); // Store lines without shaders
 
     protected override void Start()
     {
@@ -70,6 +73,36 @@ public class DynamicBrushDrawer : LineDrawer
         {
             OnLineComplete();
             linePoints.Clear();
+            if (ShaderManager.Instance != null && ShaderManager.Instance.IsShaderApplied())
+            {
+                shaderLines.Add(drawLine);
+            }
+            else
+            {
+                nonShaderLines.Add(drawLine);
+            }
+        }
+    }
+
+    public void ApplyMaterialToShaderLines(Material material)
+    {
+        foreach (var line in shaderLines)
+        {
+            line.material = material;
+        }
+    }
+
+    public void SetNonShaderLinesColor(Color color)
+    {
+        foreach (var line in nonShaderLines)
+        {
+            // Only set the color if it's not already set to something other than the default
+            if (line.startColor == ShaderManager.Instance.defaultNonShaderLinesColor &&
+                line.endColor == ShaderManager.Instance.defaultNonShaderLinesColor)
+            {
+                line.startColor = color;
+                line.endColor = color;
+            }
         }
     }
 

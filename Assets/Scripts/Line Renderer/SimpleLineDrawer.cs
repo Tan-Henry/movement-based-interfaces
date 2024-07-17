@@ -3,10 +3,12 @@ using UnityEngine;
 public class SimpleLineDrawer : LineDrawer
 {
     public Color color;
+    private Material defaultMaterial;
 
     protected override void Start()
     {
         base.Start();
+        defaultMaterial = new Material(Shader.Find("Sprites/Default"));
     }
 
     public override void InitializeLine()
@@ -15,11 +17,6 @@ public class SimpleLineDrawer : LineDrawer
         LineRenderer lineRenderer = GetDrawLine();
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
-
-        // Apply the current material from the ShaderManager if shader is applied
-        if (ShaderManager.Instance != null && ShaderManager.Instance.GetCurrentMaterial() != null)
-        {
-            lineRenderer.material = ShaderManager.Instance.GetCurrentMaterial();
-        }
+        lineRenderer.material = defaultMaterial; // Always use the default material
     }
 }
