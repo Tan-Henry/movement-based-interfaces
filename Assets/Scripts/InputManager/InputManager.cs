@@ -11,6 +11,7 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRHand leftHand;
     [SerializeField] private OVRSkeleton leftHandSkeleton;
     [SerializeField] private Hmd Head;
+    [SerializeField] private TCPServer tcpServer;
 
     //Input-Events and Values
 
@@ -60,6 +61,8 @@ public class InputManager : BaseInputManager
     private void Start()
     {
         InitializeState();
+        tcpServer.ShakeLeft += OnUndo;
+        tcpServer.ShakeRight += OnRedo;
     }
 
     protected override void Update()
@@ -70,8 +73,6 @@ public class InputManager : BaseInputManager
         CheckTurnOffColorPicker();
         CheckSwitchMode();
         CheckMainMenu();
-        CheckUndo();
-        CheckRedo();
         CheckToggleBrushEraser();
     }
 
@@ -217,18 +218,6 @@ public class InputManager : BaseInputManager
         {
             OnTurnOffColorPicker();
         }
-    }
-
-    private void CheckUndo()
-    {
-        //shake left leg
-        
-    }
-
-    private void CheckRedo()
-    {
-        //shake right leg
-        
     }
 
     private void CheckToggleBrushEraser()
