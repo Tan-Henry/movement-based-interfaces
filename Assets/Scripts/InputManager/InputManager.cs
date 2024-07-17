@@ -36,6 +36,7 @@ public class InputManager : BaseInputManager
 
     // App-State
 
+    //True -> Drawing, False -> Erasing
     public override bool IsDrawingState { get; set; }
     public override EMode CurrentMode { get; set; }
     public override EBrushCategory CurrentBrushCategory { get; set; }
@@ -78,16 +79,22 @@ public class InputManager : BaseInputManager
     {
         if (rightHand.IsTracked)
         {
-            RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-            if (RightHandIsDrawing2D)
+            if (IsDrawingState)
             {
-                foreach (var b in rightHandSkeleton.Bones)
+                RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsErasing2D = false;
+            }else
+            {
+                RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsDrawing2D = false;
+            }
+            
+            foreach (var b in rightHandSkeleton.Bones)
+            {
+                if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-                    {
-                        RightHandPosition = b.Transform.position;
-                        break;
-                    }
+                    RightHandPosition = b.Transform.position;
+                    break;
                 }
             }
         }
