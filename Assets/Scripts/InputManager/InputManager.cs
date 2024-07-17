@@ -20,6 +20,7 @@ public class InputManager : BaseInputManager
     public override bool RightHandIsErasing2D { get; protected set; }
     public override bool RightHandIsErasing3D { get; protected set; }
     public override Vector3 RightHandPosition { get; protected set; }
+    public override Vector3 LeftHandPosition { get; protected set; }
     public override Vector3 HeadDrawPosition { get; protected set; }
     public override event Action ChangeEffect;
     public override event Action ToggleBrushEraser;
@@ -29,6 +30,7 @@ public class InputManager : BaseInputManager
     public override event Action TurnOnColorPicker;
     public override event Action TurnOffColorPicker;
     public override event Action Undo;
+    public override event Action ResetMenu;
 
     private int pinchCounter = 0;
     private float lastPinchTime = 0.0f;
@@ -63,6 +65,7 @@ public class InputManager : BaseInputManager
         InitializeState();
         tcpServer.ShakeLeft += OnUndo;
         tcpServer.ShakeRight += OnRedo;
+        tcpServer.ShakeBoth += OnResetMenu;
     }
 
     protected override void Update()
@@ -82,12 +85,42 @@ public class InputManager : BaseInputManager
         {
             if (IsDrawingState)
             {
-                RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                RightHandIsErasing2D = false;
+                if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
+                {
+                    RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                    RightHandIsErasing2D = false;
+                    
+                    RightHandIsErasing3D = false;
+                    RightHandIsDrawing3D = false;
+                }
+                if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
+                {
+                    RightHandIsDrawing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                    RightHandIsErasing3D = false;
+                    
+                    RightHandIsErasing2D = false;
+                    RightHandIsDrawing2D = false;
+                }
+                
             }else
             {
-                RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                RightHandIsDrawing2D = false;
+                if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
+                {
+                    RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                    RightHandIsDrawing2D = false;
+                    
+                    RightHandIsDrawing3D = false;
+                    RightHandIsErasing3D = false;
+                }
+
+                if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
+                {
+                    RightHandIsErasing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                    RightHandIsDrawing3D = false;
+                    
+                    RightHandIsDrawing2D = false;
+                    RightHandIsErasing2D = false;
+                }
             }
             
             foreach (var b in rightHandSkeleton.Bones)
@@ -101,6 +134,21 @@ public class InputManager : BaseInputManager
         }
     }
 
+    protected override void UpdateLeftHand()
+    {
+        if (leftHand.IsTracked)
+        {
+            foreach (var b in leftHandSkeleton.Bones)
+            {
+                if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
+                {
+                    LeftHandPosition = b.Transform.position;
+                    break;
+                }
+            }
+        }
+    }
+    
     protected override void UpdateHeadDrawing()
     {
         if (Head)
@@ -136,7 +184,7 @@ public class InputManager : BaseInputManager
 
     private void CheckSwitchMode()
     {
-        //rightHand fist on leftHand palm
+        //leftHand fist on rightHand palm
 
         if (!leftHand.IsTracked) return;
         if (!rightHand.IsTracked) return;
@@ -330,6 +378,11 @@ public class InputManager : BaseInputManager
     {
         IsDrawingState = !IsDrawingState;
         ToggleBrushEraser?.Invoke();
+    }
+    
+    protected override void OnResetMenu()
+    {
+        ResetMenu?.Invoke();
     }
 
     private void InitializeState()

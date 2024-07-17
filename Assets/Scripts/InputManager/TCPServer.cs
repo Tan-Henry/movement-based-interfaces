@@ -14,6 +14,11 @@ public class TCPServer : MonoBehaviour
     
     public event Action ShakeLeft;
     public event Action ShakeRight;
+    public event Action ShakeBoth;
+    
+    private float shakeLeftTime = -1f;
+    private float shakeRightTime = -1f;
+    private float simultaneousTimeWindow = 0.5f;
     
     // Start is called before the first frame update
     void Start()
@@ -48,14 +53,52 @@ public class TCPServer : MonoBehaviour
                     // check if data contains the word "shake"
                     if (data.Contains("shakeleft"))
                     {
-                        ShakeLeft?.Invoke();
+                        HandleShakeLeft();
                     }
                     else if (data.Contains("shakeright"))
                     {
-                        ShakeRight?.Invoke();
+                        HandleShakeRight();
                     }
                     
                 }
+            }
+        }
+    }
+    
+    void HandleShakeLeft()
+    {
+        shakeLeftTime = Time.time;
+        StartCoroutine(CheckSimultaneousShakes());
+    }
+
+    void HandleShakeRight()
+    {
+        shakeRightTime = Time.time;
+        StartCoroutine(CheckSimultaneousShakes());
+    }
+
+    IEnumerator CheckSimultaneousShakes()
+    {
+        yield return new WaitForSeconds(simultaneousTimeWindow);
+
+        if (Math.Abs(shakeLeftTime - shakeRightTime) <= simultaneousTimeWindow)
+        {
+            ShakeBoth?.Invoke();
+            shakeLeftTime = -1f;
+            shakeRightTime = -1f;
+        }
+        else
+        {
+            if (shakeLeftTime > 0)
+            {
+                ShakeLeft?.Invoke();
+                shakeLeftTime = -1f;
+            }
+
+            if (shakeRightTime > 0)
+            {
+                ShakeRight?.Invoke();
+                shakeRightTime = -1f;
             }
         }
     }

@@ -10,6 +10,10 @@ public abstract class BaseInputManager : MonoBehaviour
     //right-hand 
     public abstract Vector3 RightHandPosition { get; protected set; }
     protected abstract void UpdateRightHand();
+    
+    //left-hand
+    public abstract Vector3 LeftHandPosition { get; protected set; }
+    protected abstract void UpdateLeftHand();
 
     //draw-action 2D right hand
     public abstract bool RightHandIsDrawing2D { get; protected set; }
@@ -58,6 +62,10 @@ public abstract class BaseInputManager : MonoBehaviour
     //ToggleBrushEraser
     public abstract event Action ToggleBrushEraser;
     protected abstract void OnToggleBrushEraser();
+    
+    //Reset
+    public abstract event Action ResetMenu;
+    protected abstract void OnResetMenu();
 
 
     // App-State
@@ -99,6 +107,7 @@ public abstract class BaseInputManager : MonoBehaviour
     protected virtual void Update()
     {
         UpdateRightHand();
+        UpdateLeftHand();
         UpdateHeadDrawing();
     }
 }
