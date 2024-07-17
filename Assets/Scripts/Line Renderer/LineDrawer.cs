@@ -4,10 +4,13 @@ using UnityEngine;
 public abstract class LineDrawer : MonoBehaviour
 {
     protected List<Vector3> linePoints;
-
+    
     protected GameObject newLine;
     protected LineRenderer drawLine;
+    private bool _initialized;
+    private bool _drawing;
     public float lineWidth;
+    [SerializeField] protected BaseInputManager inputManager;
 
     protected virtual void Start()
     {
@@ -16,19 +19,19 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (inputManager.RightHandIsDrawing2D && !_initialized)
         {
             InitializeLine();
         }
-        if (Input.GetMouseButton(0))
+        if (inputManager.RightHandIsDrawing2D)
         {
-            
-            linePoints.Add(GetMousePosition());
+            linePoints.Add(inputManager.RightHandPosition);
             drawLine.positionCount = linePoints.Count;
             drawLine.SetPositions(linePoints.ToArray());
+            _drawing = true;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (!inputManager.RightHandIsDrawing2D && _drawing)
         {
             OnLineComplete();
             linePoints.Clear();
@@ -44,6 +47,7 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.endWidth = lineWidth;
         drawLine.startColor = Color.clear;
         drawLine.endColor = Color.clear;
+        _initialized = true;
     }
 
 
@@ -51,11 +55,7 @@ public abstract class LineDrawer : MonoBehaviour
     {
         UndoRedoScript undoRedoScript = GetComponent<UndoRedoScript>();
         undoRedoScript.AddLastLineGameObject(newLine);
-    }
-
-    protected Vector3 GetMousePosition()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        return ray.origin + ray.direction * 3;
+        _initialized = false;
+        _drawing = false;
     }
 }

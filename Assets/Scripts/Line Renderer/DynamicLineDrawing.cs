@@ -12,6 +12,8 @@ public class DynamicLineDrawing : LineDrawer
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
+    private bool _initialized = false;
+    private bool _drawing = false;
 
     protected override void Start()
     {
@@ -21,15 +23,15 @@ public class DynamicLineDrawing : LineDrawer
 
     protected override void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (inputManager.RightHandIsDrawing2D && !_initialized)
         {
             InitializeLine();
-            lastPoint = GetMousePosition();
+            lastPoint = inputManager.RightHandPosition;
             lastTime = Time.time;
         }
-        if (Input.GetMouseButton(0))
+        if (inputManager.RightHandIsDrawing2D)
         {
-            Vector3 currentPoint = GetMousePosition();
+            Vector3 currentPoint = inputManager.RightHandPosition;
             float currentTime = Time.time;
             float speed = CalculateSpeed(lastPoint, currentPoint, lastTime, currentTime);
 
@@ -40,9 +42,11 @@ public class DynamicLineDrawing : LineDrawer
             lastPoint = currentPoint;
             lastTime = currentTime;
             lastSpeed = speed;
+
+            _drawing = true;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (!inputManager.RightHandIsDrawing2D && _drawing)
         {
             OnLineComplete();
             linePoints.Clear();
@@ -59,6 +63,7 @@ public class DynamicLineDrawing : LineDrawer
         drawLine.startColor = Color.blue;
         drawLine.endColor = Color.blue;
         drawLine.useWorldSpace = true;
+        _initialized = true;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)
