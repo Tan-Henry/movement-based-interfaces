@@ -221,18 +221,14 @@ public class InputManager : BaseInputManager
 
     private void CheckUndo()
     {
-        if (!leftHand.IsTracked) return;
-        if (!rightHand.IsTracked) return;
-
         //shake left leg
+        
     }
 
     private void CheckRedo()
     {
-        if (!leftHand.IsTracked) return;
-        if (!rightHand.IsTracked) return;
-
         //shake right leg
+        
     }
 
     private void CheckToggleBrushEraser()
@@ -274,16 +270,48 @@ public class InputManager : BaseInputManager
 
     protected override void OnChangeEffect()
     {
+        if (CurrentMode != EMode.PRESENT)
+        {
+            return;
+        }
+        
+        //switch current effect to next effect in list of available effects, if current effect is the last one, switch to the first one
+        int currentIndex = AvailableEffects.IndexOf(CurrentEffect);
+        if (currentIndex == AvailableEffects.Count - 1)
+        {
+            CurrentEffect = AvailableEffects[0];
+        }
+        else
+        {
+            CurrentEffect = AvailableEffects[currentIndex + 1];
+        }
+        
         ChangeEffect?.Invoke();
     }
 
     protected override void OnSwitchMode()
     {
+        if (CurrentMode is EMode.MAIN_MENU or EMode.TUTORIAL)
+        {
+            return;
+        }
+        
+        if (CurrentMode == EMode.CREATE)
+        {
+            CurrentMode = EMode.PRESENT;
+        }
+        else
+        {
+            CurrentMode = EMode.CREATE;
+        }
+        
         SwitchMode?.Invoke();
     }
 
     protected override void OnMainMenu()
     {
+        CurrentMode = EMode.MAIN_MENU;
+        
         MainMenu?.Invoke();
     }
 
@@ -311,6 +339,7 @@ public class InputManager : BaseInputManager
 
     protected override void OnToggleBrushEraser()
     {
+        IsDrawingState = !IsDrawingState;
         ToggleBrushEraser?.Invoke();
     }
 
