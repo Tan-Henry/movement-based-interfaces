@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +23,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scenes/Cubes VR.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -117,7 +120,8 @@
       <workItem from="1718889092639" duration="1371000" />
       <workItem from="1720809521540" duration="1112000" />
       <workItem from="1720860154337" duration="2780000" />
-      <workItem from="1721282217461" duration="2729000" />
+      <workItem from="1721282217461" duration="3502000" />
+      <workItem from="1721298877376" duration="3038000" />
     </task>
     <task id="LOCAL-00001" summary="MarchingCubes Brushes: First Brushes">
       <created>1718354925661</created>
@@ -154,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1720848892477</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Introduction Menu Structure added to GrabMenu&#10;Unupdated Textfields added&#10;Next &amp; GetStarted Button added">
+      <created>1721288284551</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1721288284551</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +192,7 @@
     <MESSAGE value="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks" />
     <MESSAGE value="FinalScale&#10;- still adjustable&#10;- (InteractorElements need adjusting in function of final UI Scaling)" />
     <MESSAGE value="Cleaned up Brushes:&#10;- now in right order&#10;- unused commented out" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up Brushes:&#10;- now in right order&#10;- unused commented out" />
+    <MESSAGE value="Introduction Menu Structure added to GrabMenu&#10;Unupdated Textfields added&#10;Next &amp; GetStarted Button added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduction Menu Structure added to GrabMenu&#10;Unupdated Textfields added&#10;Next &amp; GetStarted Button added" />
   </component>
 </project>
