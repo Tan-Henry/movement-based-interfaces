@@ -196,3 +196,11 @@ public enum EEffects
     // TODO add effects ask Johanna
     NONE,
 }
+
+public static class Limits
+{
+    public const int MAX_BRUSH_SIZE = 5;
+    public const int MIN_BRUSH_SIZE = 1;
+    public const float MAX_OPACITY = 1.0f;
+    public const float MIN_OPACITY = 0.1f;
+}
