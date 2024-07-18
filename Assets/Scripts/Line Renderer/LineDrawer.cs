@@ -7,8 +7,7 @@ public abstract class LineDrawer : MonoBehaviour
     
     protected GameObject newLine;
     protected LineRenderer drawLine;
-    private bool _initialized;
-    private bool _drawing;
+    private bool _isDrawing;
     public float lineWidth;
     [SerializeField] protected BaseInputManager inputManager;
 
@@ -19,22 +18,25 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (inputManager.RightHandIsDrawing2D && !_initialized)
-        {
-            InitializeLine();
-        }
         if (inputManager.RightHandIsDrawing2D)
         {
+            if (!_isDrawing)
+            {
+                InitializeLine();
+                _isDrawing = true;
+            }
             linePoints.Add(inputManager.RightHandPosition);
             drawLine.positionCount = linePoints.Count;
             drawLine.SetPositions(linePoints.ToArray());
-            _drawing = true;
         }
-
-        if (!inputManager.RightHandIsDrawing2D && _drawing)
+        else
         {
-            OnLineComplete();
-            linePoints.Clear();
+            if (_isDrawing)
+            {
+                OnLineComplete();
+                linePoints.Clear();
+                _isDrawing = false;
+            }
         }
     }
 
@@ -47,7 +49,6 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.endWidth = lineWidth;
         drawLine.startColor = Color.clear;
         drawLine.endColor = Color.clear;
-        _initialized = true;
     }
 
 
@@ -55,7 +56,5 @@ public abstract class LineDrawer : MonoBehaviour
     {
         UndoRedoScript undoRedoScript = GetComponent<UndoRedoScript>();
         undoRedoScript.AddLastLineGameObject(newLine);
-        _initialized = false;
-        _drawing = false;
     }
 }
