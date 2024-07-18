@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,32 +8,15 @@ public class UndoRedoScript : MonoBehaviour
     private Stack<GameObject> _undoStack = new Stack<GameObject>();
     private Stack<GameObject> _redoStack = new Stack<GameObject>();
     private int _amountOfSkips = 5; // Number of actions to keep track of
+    [SerializeField] private BaseInputManager inputManager;
 
-    public void AddLastLineGameObject(GameObject lineObject)
+    private void Start()
     {
-        if (_lines.Count >= _amountOfSkips)
-        {
-            _lines.RemoveAt(0);
-        }
-        _lines.Add(lineObject);
-
-        // Clear the redo stack since we are adding a new action
-        _redoStack.Clear();
+        inputManager.Undo += OnUndo;
+        inputManager.Redo += OnRedo;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K)) // Undo
-        {
-            Undo();
-        }
-        if (Input.GetKeyDown(KeyCode.L)) // Redo
-        {
-            Redo();
-        }
-    }
-
-    private void Undo()
+    private void OnUndo()
     {
         if (_lines.Count > 0)
         {
@@ -45,8 +29,7 @@ public class UndoRedoScript : MonoBehaviour
             }
         }
     }
-
-    private void Redo()
+    private void OnRedo()
     {
         if (_undoStack.Count > 0)
         {
@@ -55,5 +38,16 @@ public class UndoRedoScript : MonoBehaviour
             _redoStack.Push(lineToRedo);
             _lines.Add(lineToRedo);
         }
+    }
+    public void AddLastLineGameObject(GameObject lineObject)
+    {
+        if (_lines.Count >= _amountOfSkips)
+        {
+            _lines.RemoveAt(0);
+        }
+        _lines.Add(lineObject);
+
+        // Clear the redo stack since we are adding a new action
+        _redoStack.Clear();
     }
 }
