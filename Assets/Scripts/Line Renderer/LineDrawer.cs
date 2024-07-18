@@ -9,10 +9,12 @@ public abstract class LineDrawer : MonoBehaviour
     protected LineRenderer drawLine;
     protected bool isDrawing;
     public float lineWidth;
+    private UndoRedoScript _undoRedoScript;
     [SerializeField] protected BaseInputManager inputManager;
 
     protected virtual void Start()
     {
+        _undoRedoScript = GetComponent<UndoRedoScript>();
         linePoints = new List<Vector3>();
     }
 
@@ -43,6 +45,7 @@ public abstract class LineDrawer : MonoBehaviour
     protected virtual void InitializeLine()
     {
         newLine = new GameObject();
+        newLine.tag = "Line";
         drawLine = newLine.AddComponent<LineRenderer>();
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.startWidth = lineWidth;
@@ -54,7 +57,13 @@ public abstract class LineDrawer : MonoBehaviour
 
     protected virtual void OnLineComplete()
     {
-        UndoRedoScript undoRedoScript = GetComponent<UndoRedoScript>();
-        undoRedoScript.AddLastLineGameObject(newLine);
+        _undoRedoScript.AddLastLineGameObject(newLine);
+        
+        Mesh mesh = new Mesh();
+        drawLine.BakeMesh(mesh);
+
+        MeshCollider meshCollider = newLine.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
+        meshCollider.isTrigger = true;
     }
 }

@@ -56,7 +56,8 @@ public class DynamicLineDrawing : LineDrawer
     protected override void InitializeLine()
     {
         positionCount = 0;
-        newLine = new GameObject("LineSegment");
+        newLine = new GameObject();
+        newLine.tag = "Line";
         drawLine = newLine.AddComponent<LineRenderer>();
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;
