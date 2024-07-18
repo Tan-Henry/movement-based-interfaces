@@ -35,6 +35,12 @@ public class InputManager : BaseInputManager
     private int pinchCounter = 0;
     private float lastPinchTime = 0.0f;
     private bool isPinching = false;
+    
+    private bool middleFingerPinching = false;
+    private Vector3 lastMiddleFingerPosition = Vector3.zero;
+    private bool ringFingerPinching = false;
+    private Vector3 lastRingFingerPosition = Vector3.zero;
+    private float sensitivity = 0.01f;
 
 
     // App-State
@@ -83,54 +89,176 @@ public class InputManager : BaseInputManager
     {
         if (rightHand.IsTracked)
         {
-            if (IsDrawingState)
+            //index finger pinching
+            CheckIndexFingerPinching();
+
+            //middle finger pinching
+            CheckMiddleFingerPinching();
+            
+            //ring finger pinching
+            CheckRingFingerPinching();
+        }
+    }
+
+    private void CheckIndexFingerPinching()
+    {
+        if (IsDrawingState)
+        {
+            if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
             {
+                RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsErasing2D = false;
+
+                RightHandIsErasing3D = false;
+                RightHandIsDrawing3D = false;
+            }
+
+            if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
+            {
+                RightHandIsDrawing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsErasing3D = false;
+
+                RightHandIsErasing2D = false;
+                RightHandIsDrawing2D = false;
+            }
+        }
+        else
+        {
+            if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
+            {
+                RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsDrawing2D = false;
+
+                RightHandIsDrawing3D = false;
+                RightHandIsErasing3D = false;
+            }
+
+            if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
+            {
+                RightHandIsErasing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
+                RightHandIsDrawing3D = false;
+
+                RightHandIsDrawing2D = false;
+                RightHandIsErasing2D = false;
+            }
+        }
+
+        foreach (var b in rightHandSkeleton.Bones)
+        {
+            if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
+            {
+                RightHandPosition = b.Transform.position;
+                break;
+            }
+        }
+    }
+
+    private void CheckMiddleFingerPinching()
+    {
+        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
+        {
+            //if index finger is also pinching, no action
+            if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) || CurrentMode != EMode.CREATE || CurrentBrushCategory == EBrushCategory.NONE || rightHand.GetFingerIsPinching(OVRHand.HandFinger.Ring))
+            {
+                return;
+            }
+            
+            // map middle finger movement to brush size
+            if (!middleFingerPinching)
+            {
+                middleFingerPinching = true;
+                foreach (var b in rightHandSkeleton.Bones)
+                {
+                    if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
+                    {
+                        lastMiddleFingerPosition = b.Transform.position;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Vector3 currentMiddleFingerPosition = Vector3.zero;
+                foreach (var b in rightHandSkeleton.Bones)
+                {
+                    if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
+                    {
+                        currentMiddleFingerPosition = b.Transform.position;
+                        break;
+                    }
+                }
+
+                float verticalMovement = currentMiddleFingerPosition.y - lastMiddleFingerPosition.y;
+                int valueChange = Mathf.RoundToInt(verticalMovement);
+                lastMiddleFingerPosition = currentMiddleFingerPosition;
+
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
                 {
-                    RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                    RightHandIsErasing2D = false;
-                    
-                    RightHandIsErasing3D = false;
-                    RightHandIsDrawing3D = false;
-                }
-                if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
-                {
-                    RightHandIsDrawing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                    RightHandIsErasing3D = false;
-                    
-                    RightHandIsErasing2D = false;
-                    RightHandIsDrawing2D = false;
-                }
-                
-            }else
-            {
-                if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
-                {
-                    RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                    RightHandIsDrawing2D = false;
-                    
-                    RightHandIsDrawing3D = false;
-                    RightHandIsErasing3D = false;
+                    Current2DBrushSettings.brushSize = Mathf.Clamp(Current2DBrushSettings.brushSize + valueChange,
+                        Limits.MIN_BRUSH_SIZE, Limits.MAX_BRUSH_SIZE);
                 }
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
                 {
-                    RightHandIsErasing3D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-                    RightHandIsDrawing3D = false;
-                    
-                    RightHandIsDrawing2D = false;
-                    RightHandIsErasing2D = false;
+                    Current3DBrushSettings.brushSize = Mathf.Clamp(Current3DBrushSettings.brushSize + valueChange,
+                        Limits.MIN_BRUSH_SIZE, Limits.MAX_BRUSH_SIZE);
                 }
             }
-            
-            foreach (var b in rightHandSkeleton.Bones)
+        }
+        else
+        {
+            middleFingerPinching = false;
+        
+        }
+    }
+
+    private void CheckRingFingerPinching()
+    {
+        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Ring))
+        {
+            //if index finger is also pinching, no action
+            if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) || CurrentMode != EMode.CREATE || CurrentBrushCategory != EBrushCategory.BRUSH_2D || rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
             {
-                if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
+                return;
+            }
+                
+            // map ring finger movement to brush size
+            if (!ringFingerPinching)
+            {
+                ringFingerPinching = true;
+                foreach (var b in rightHandSkeleton.Bones)
                 {
-                    RightHandPosition = b.Transform.position;
-                    break;
+                    if (b.Id == OVRSkeleton.BoneId.Hand_RingTip)
+                    {
+                        lastRingFingerPosition = b.Transform.position;
+                        break;
+                    }
                 }
             }
+            else
+            {
+                Vector3 currentRingFingerPosition = Vector3.zero;
+                foreach (var b in rightHandSkeleton.Bones)
+                {
+                    if (b.Id == OVRSkeleton.BoneId.Hand_RingTip)
+                    {
+                        currentRingFingerPosition = b.Transform.position;
+                        break;
+                    }
+                }
+                    
+                float verticalMovement = currentRingFingerPosition.y - lastRingFingerPosition.y;
+                float valueChange = verticalMovement * sensitivity;
+                lastRingFingerPosition = currentRingFingerPosition;
+                Current2DBrushSettings.opacity = Mathf.Clamp(Current2DBrushSettings.opacity + valueChange, Limits.MIN_OPACITY, Limits.MAX_OPACITY);
+                    
+            }
+                
+        }
+        else
+        {
+            ringFingerPinching = false;
+            
         }
     }
 
