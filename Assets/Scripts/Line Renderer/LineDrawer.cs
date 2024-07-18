@@ -7,7 +7,7 @@ public abstract class LineDrawer : MonoBehaviour
     
     protected GameObject newLine;
     protected LineRenderer drawLine;
-    private bool _isDrawing;
+    protected bool isDrawing;
     public float lineWidth;
     [SerializeField] protected BaseInputManager inputManager;
 
@@ -20,10 +20,10 @@ public abstract class LineDrawer : MonoBehaviour
     {
         if (inputManager.RightHandIsDrawing2D)
         {
-            if (!_isDrawing)
+            if (!isDrawing)
             {
                 InitializeLine();
-                _isDrawing = true;
+                isDrawing = true;
             }
             linePoints.Add(inputManager.RightHandPosition);
             drawLine.positionCount = linePoints.Count;
@@ -31,11 +31,11 @@ public abstract class LineDrawer : MonoBehaviour
         }
         else
         {
-            if (_isDrawing)
+            if (isDrawing)
             {
                 OnLineComplete();
                 linePoints.Clear();
-                _isDrawing = false;
+                isDrawing = false;
             }
         }
     }

@@ -12,7 +12,6 @@ public class DynamicLineDrawing : LineDrawer
     private float lastSpeed;
     private int positionCount;
     private float totalLengthOld;
-    private bool _isDrawing;
 
     protected override void Start()
     {
@@ -24,12 +23,12 @@ public class DynamicLineDrawing : LineDrawer
     {
         if (inputManager.RightHandIsDrawing2D)
         {
-            if (!_isDrawing)
+            if (!isDrawing)
             {
                 InitializeLine();
                 lastPoint = inputManager.RightHandPosition;
                 lastTime = Time.time;
-                _isDrawing = true;
+                isDrawing = true;
             }
             Vector3 currentPoint = inputManager.RightHandPosition;
             float currentTime = Time.time;
@@ -45,11 +44,11 @@ public class DynamicLineDrawing : LineDrawer
         }
         else
         {
-            if (_isDrawing)
+            if (isDrawing)
             {
                 OnLineComplete();
                 linePoints.Clear();
-                _isDrawing = false;
+                isDrawing = false;
             }
         }
     }
