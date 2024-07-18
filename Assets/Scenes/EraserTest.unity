@@ -607,6 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1746544024}
+  _undoRedoScript: {fileID: 1836264133}
 --- !u!54 &412775408
 Rigidbody:
   m_ObjectHideFlags: 0

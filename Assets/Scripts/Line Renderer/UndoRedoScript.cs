@@ -24,9 +24,13 @@ public class UndoRedoScript : MonoBehaviour
             if (lastLine.activeSelf)
             {
                 lastLine.SetActive(false);
-                _undoStack.Push(lastLine);
-                _lines.RemoveAt(_lines.Count - 1);
             }
+            else
+            {
+                lastLine.SetActive(true); //Undo deletion of line
+            }
+            _undoStack.Push(lastLine);
+            _lines.RemoveAt(_lines.Count - 1);
         }
     }
     private void OnRedo()
@@ -34,7 +38,14 @@ public class UndoRedoScript : MonoBehaviour
         if (_undoStack.Count > 0)
         {
             GameObject lineToRedo = _undoStack.Pop();
-            lineToRedo.SetActive(true);
+            if (!lineToRedo.activeSelf)
+            {
+                lineToRedo.SetActive(true);
+            }
+            else
+            {
+                lineToRedo.SetActive(false); //Redo deletion of line
+            }
             _redoStack.Push(lineToRedo);
             _lines.Add(lineToRedo);
         }

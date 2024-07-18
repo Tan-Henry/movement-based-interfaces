@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class LineEraser2D : MonoBehaviour
 {
-    [SerializeField] protected BaseInputManager inputManager;
+    [SerializeField] private BaseInputManager inputManager;
+    [SerializeField] private UndoRedoScript _undoRedoScript;
 
     private void OnTriggerEnter(Collider other)
     {
         if (inputManager.RightHandIsErasing2D && other.gameObject.CompareTag("Line"))
         {
+            _undoRedoScript.AddLastLineGameObject(other.gameObject);
             other.gameObject.SetActive(false);
         }
     }
+    
 }
