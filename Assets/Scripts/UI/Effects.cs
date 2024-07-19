@@ -11,14 +11,14 @@ namespace UI
         [SerializeField] private Toggle bubblesToggle;
         [SerializeField] private Toggle coolToggle;
         [SerializeField] private Toggle heatMapToggle;
-        [SerializeField] private Button noneToggle;
+        [SerializeField] private Toggle noneToggle;
         
         private void Start()
         {
             bubblesToggle.onValueChanged.AddListener(OnBubblesToggleValueChanged);
             coolToggle.onValueChanged.AddListener(OnCoolToggleValueChanged);
             heatMapToggle.onValueChanged.AddListener(OnHeatMapToggleValueChanged);
-            noneToggle.onClick.AddListener(OnNoneToggleClicked);
+            noneToggle.onValueChanged.AddListener(OnNoneToggleValueChanged);
         }
 
         private void Update()
@@ -26,7 +26,7 @@ namespace UI
             bubblesToggle.SetIsOnWithoutNotify(inputManager.CurrentEffect == EEffects.BUBBLES);
             coolToggle.SetIsOnWithoutNotify(inputManager.CurrentEffect == EEffects.COOL);
             heatMapToggle.SetIsOnWithoutNotify(inputManager.CurrentEffect == EEffects.HEATMAP);
-            noneToggle.interactable = inputManager.CurrentEffect != EEffects.NONE;
+            noneToggle.SetIsOnWithoutNotify(inputManager.CurrentEffect == EEffects.NONE);
         }
 
         private void OnBubblesToggleValueChanged(bool value)
@@ -44,7 +44,7 @@ namespace UI
             inputManager.CurrentEffect = EEffects.HEATMAP;
         }
         
-        public void OnNoneToggleClicked()
+        private void OnNoneToggleValueChanged(bool value)
         {
             inputManager.CurrentEffect = EEffects.NONE;
         }
