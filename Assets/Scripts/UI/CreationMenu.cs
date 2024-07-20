@@ -38,7 +38,7 @@ namespace UI
         {
             eraserToggle.isOn = !inputManager.IsDrawingState;
 
-            DisableButtons(inputManager.IsTutorialMode);
+            DisableButtons(inputManager.CurrentMode == EMode.TUTORIAL);
         }
         
         private void DisableButtons(bool isTutorialMode)

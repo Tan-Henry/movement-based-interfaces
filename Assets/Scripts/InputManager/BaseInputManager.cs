@@ -97,7 +97,6 @@ public abstract class BaseInputManager : MonoBehaviour
 
     // Other Functions
     public abstract bool IsDrawingState { get; set; }
-    public abstract bool IsTutorialMode { get; set; }
 
     protected virtual void Update()
     {

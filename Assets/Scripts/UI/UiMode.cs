@@ -30,6 +30,11 @@ namespace UI
                     CreationMenu.SetActive(false);
                     PresentationMenu.SetActive(true);
                     break;
+                case EMode.TUTORIAL:
+                    MainMenu.SetActive(false);
+                    CreationMenu.SetActive(true);
+                    PresentationMenu.SetActive(false);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

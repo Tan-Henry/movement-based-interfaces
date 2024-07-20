@@ -13,7 +13,7 @@ public class IntroductionTextManager : MonoBehaviour
 
     void Update()
     {
-        if (inputManager.CurrentMode == EMode.CREATE && inputManager.IsTutorialMode)
+        if (inputManager.CurrentMode == EMode.TUTORIAL)
         { tutorialCanvas.gameObject.SetActive(true); }
         else
         { tutorialCanvas.gameObject.SetActive(false); }
@@ -63,7 +63,7 @@ public class IntroductionTextManager : MonoBehaviour
 
     void TurnOffTutorial()
     {
-        inputManager.IsTutorialMode = false;
+        inputManager.CurrentMode = EMode.CREATE;
     }
 
     /*void OnButtonClicked()
