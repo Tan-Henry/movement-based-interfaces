@@ -778,6 +778,12 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &775549283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3735308978872475011, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
+    type: 3}
+  m_PrefabInstance: {fileID: 14564691}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &894982426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -916,6 +922,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ba90b96275a4442c80a886d7a9e884d, type: 3}
+--- !u!1 &1105411482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3735308977764735467, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
+    type: 3}
+  m_PrefabInstance: {fileID: 14564691}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1169696502 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5177445101394963505, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
@@ -1102,6 +1114,8 @@ MonoBehaviour:
   leftHand: {fileID: 14564696}
   leftHandSkeleton: {fileID: 14564695}
   Head: {fileID: 14564694}
+  rightHandCursor: {fileID: 775549283}
+  leftHandCursor: {fileID: 1105411482}
 --- !u!4 &1746544025
 Transform:
   m_ObjectHideFlags: 0
