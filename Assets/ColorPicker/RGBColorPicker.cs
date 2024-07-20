@@ -7,14 +7,6 @@ public class RGBColorPicker : ColorPickerBase
     [Range(0, 255)] public int green = 0;
     [Range(0, 255)] public int blue = 0;
 
-    [SerializeField]
-    private Color selectedColor;
-    public Color SelectedColor
-    {
-        get { return selectedColor; }
-        private set { selectedColor = value; }
-    }
-
     protected override void Start()
     {
         innerCubes = new GameObject[] { innerCubeRGB };

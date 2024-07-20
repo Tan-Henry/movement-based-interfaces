@@ -9,14 +9,6 @@ public class HSVColorPicker : ColorPickerBase
     [Range(0, 100)] public int saturation = 0;
     [Range(0, 100)] public int value = 0;
 
-    [SerializeField]
-    private Color selectedColor;
-    public Color SelectedColor
-    {
-        get { return selectedColor; }
-        private set { selectedColor = value; }
-    }
-
     protected override void Start()
     {
         innerCubes = new GameObject[] { innerCubeHue, innerCubeSaturation, innerCubeValue };
@@ -43,6 +35,7 @@ public class HSVColorPicker : ColorPickerBase
         innerCubeValue.transform.localPosition = new Vector3(
             0, 0, (value / 100f) * largerCubeSize.z - largerCubeSize.z / 2);
     }
+    
 
     protected override void UpdateSelectedColor()
     {
@@ -60,7 +53,7 @@ public class HSVColorPicker : ColorPickerBase
         innerCubeValue.GetComponent<Renderer>().material.color = SelectedColor;
     }
 
-    protected override void UpdateCubeVisibility()
+    protected override void UpdateCubeVisibility() 
     {
         innerCubeHue.SetActive(true);
         innerCubeSaturation.SetActive(true);
