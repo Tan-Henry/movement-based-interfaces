@@ -128,6 +128,17 @@ public class InputManager : BaseInputManager
     {
         if (IsDrawingState)
         {
+            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            {
+                RightHandIsDrawing2D = false;
+                RightHandIsErasing2D = false;
+                
+                RightHandIsDrawing3D = false;
+                RightHandIsErasing3D = false;
+                Debug.Log("Blocking drawing and erasing");
+                return;
+            }
+            
             if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
             {
                 RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
@@ -148,6 +159,17 @@ public class InputManager : BaseInputManager
         }
         else
         {
+            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            {
+                RightHandIsDrawing2D = false;
+                RightHandIsErasing2D = false;
+                
+                RightHandIsDrawing3D = false;
+                RightHandIsErasing3D = false;
+                Debug.Log("Blocking drawing and erasing");
+                return;
+            }
+            
             if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
             {
                 RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
