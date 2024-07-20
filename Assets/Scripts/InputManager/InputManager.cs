@@ -23,7 +23,6 @@ public class InputManager : BaseInputManager
     public override Vector3 LeftHandPosition { get; protected set; }
     public override Vector3 HeadDrawPosition { get; protected set; }
     public override event Action ChangeEffect;
-    public override event Action ToggleBrushEraser;
     public override event Action Redo;
     public override event Action SwitchMode;
     public override event Action MainMenu;
@@ -359,7 +358,7 @@ public class InputManager : BaseInputManager
 
         if (Vector3.Distance(leftHand.transform.position, rightHand.transform.position) < 10.0f)
         {
-            OnMainMenu();
+            //OnMainMenu();
         }
     }
 
@@ -487,7 +486,6 @@ public class InputManager : BaseInputManager
     {
         if (CurrentMode != EMode.CREATE) return;
         IsDrawingState = !IsDrawingState;
-        ToggleBrushEraser?.Invoke();
     }
     
     protected override void OnResetMenu()

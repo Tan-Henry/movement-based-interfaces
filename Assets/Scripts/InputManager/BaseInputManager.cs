@@ -59,7 +59,6 @@ public abstract class BaseInputManager : MonoBehaviour
     public abstract void OnRedo();
 
     //ToggleBrushEraser
-    public abstract event Action ToggleBrushEraser;
     public abstract void OnToggleBrushEraser();
     
     //Reset
