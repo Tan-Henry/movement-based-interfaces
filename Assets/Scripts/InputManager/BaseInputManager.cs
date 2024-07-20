@@ -38,7 +38,7 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //MainMenu
     public abstract event Action MainMenu;
-    protected abstract void OnMainMenu();
+    public abstract void OnMainMenu();
 
     //TurnOnColorPicker
     public abstract event Action TurnOnColorPicker;

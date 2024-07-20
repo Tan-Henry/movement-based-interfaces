@@ -85,7 +85,9 @@ namespace UI
         
         private void OnHomeButtonClicked()
         {
-            inputManager.CurrentMode = EMode.MAIN_MENU;
+            brushMenuToggle.isOn = false;
+            colorMenuToggle.isOn = false;
+            inputManager.OnMainMenu();
         }
         
         private void OnHelpButtonClicked()

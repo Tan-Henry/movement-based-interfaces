@@ -287,7 +287,7 @@ public class InputManager : BaseInputManager
         SwitchMode?.Invoke();
     }
 
-    protected override void OnMainMenu()
+    public override void OnMainMenu()
     {
         MainMenu?.Invoke();
     }
@@ -321,7 +321,7 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = true;
-        CurrentMode = EMode.TUTORIAL;
+        CurrentMode = EMode.MAIN_MENU;
         CurrentBrushCategory = EBrushCategory.NONE;
         Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
