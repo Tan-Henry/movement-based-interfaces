@@ -21,6 +21,8 @@ public class InputManager : BaseInputManager
     public override bool RightHandIsDrawing3D { get; protected set; }
     public override bool RightHandIsErasing2D { get; protected set; }
     public override bool RightHandIsErasing3D { get; protected set; }
+    public override bool RightHandIsEffecting { get; protected set; }
+    public override bool LeftHandIsEffecting { get; protected set; }
     public override Vector3 RightHandPosition { get; protected set; }
     public override Vector3 LeftHandPosition { get; protected set; }
     public override Vector3 HeadDrawPosition { get; protected set; }
@@ -40,6 +42,8 @@ public class InputManager : BaseInputManager
     private float sensitivity = 0.01f;
     private bool leftIndexFingerPinching = false;
     private bool isPointingAtUI = false;
+
+    public override bool BlockedByHandle { get; set; }
 
     // App-State
 
@@ -94,6 +98,7 @@ public class InputManager : BaseInputManager
         CheckSwitchMode();
         CheckMainMenu();
         CheckToggleBrushEraser();
+        CheckHandsEffecting();
     }
     
     private void CheckIsPointingAtUI()
@@ -114,6 +119,13 @@ public class InputManager : BaseInputManager
     {
         if (!rightHand.IsTracked) return;
         
+        foreach (var b in rightHandSkeleton.Bones)
+        {
+            if (b.Id != OVRSkeleton.BoneId.Hand_IndexTip) continue;
+            RightHandPosition = b.Transform.position;
+            break;
+        }
+        
         //index finger pinching
         CheckIndexFingerPinching();
 
@@ -128,14 +140,13 @@ public class InputManager : BaseInputManager
     {
         if (IsDrawingState)
         {
-            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            if (((BlockedByHandle || isPointingAtUI) && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D) || CurrentMode != EMode.CREATE)
             {
                 RightHandIsDrawing2D = false;
                 RightHandIsErasing2D = false;
                 
                 RightHandIsDrawing3D = false;
                 RightHandIsErasing3D = false;
-                Debug.Log("Blocking drawing and erasing");
                 return;
             }
             
@@ -159,14 +170,13 @@ public class InputManager : BaseInputManager
         }
         else
         {
-            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            if (((BlockedByHandle || isPointingAtUI) && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D) || CurrentMode != EMode.CREATE)
             {
                 RightHandIsDrawing2D = false;
                 RightHandIsErasing2D = false;
                 
                 RightHandIsDrawing3D = false;
                 RightHandIsErasing3D = false;
-                Debug.Log("Blocking drawing and erasing");
                 return;
             }
             
@@ -187,13 +197,6 @@ public class InputManager : BaseInputManager
                 RightHandIsDrawing2D = false;
                 RightHandIsErasing2D = false;
             }
-        }
-
-        foreach (var b in rightHandSkeleton.Bones)
-        {
-            if (b.Id != OVRSkeleton.BoneId.Hand_IndexTip) continue;
-            RightHandPosition = b.Transform.position;
-            break;
         }
     }
 
@@ -302,6 +305,21 @@ public class InputManager : BaseInputManager
             rightRingFingerPinching = false;
             
         }
+    }
+
+    private void CheckHandsEffecting()
+    {
+        if (BlockedByHandle || isPointingAtUI || CurrentMode != EMode.PRESENT)
+        {
+            RightHandIsEffecting = false;
+            LeftHandIsEffecting = false;
+            return;
+        }
+
+        RightHandIsEffecting = rightHand.IsTracked;
+        LeftHandIsEffecting = leftHand.IsTracked;
+        Debug.Log("RightHandIsEffecting: " + RightHandIsEffecting);
+        Debug.Log("LeftHandIsEffecting: " + LeftHandIsEffecting);
     }
 
     protected override void UpdateLeftHand()
@@ -435,7 +453,7 @@ public class InputManager : BaseInputManager
     private void CheckToggleBrushEraser()
     {
         //left hand index finger pinching
-        if (!leftHand.IsTracked || RightHandIsDrawing2D || RightHandIsErasing2D || RightHandIsDrawing3D || RightHandIsErasing3D) return;
+        if (!leftHand.IsTracked || RightHandIsDrawing2D || RightHandIsErasing2D || RightHandIsDrawing3D || RightHandIsErasing3D || isPointingAtUI || BlockedByHandle) return;
 
         if (leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
         {

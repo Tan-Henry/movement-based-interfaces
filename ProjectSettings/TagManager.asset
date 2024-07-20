@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SamplesInfoPanel
   - Line
+  - Handle
   layers:
   - Default
   - TransparentFX

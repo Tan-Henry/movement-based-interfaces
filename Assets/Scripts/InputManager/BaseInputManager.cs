@@ -19,6 +19,12 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //draw-action 3D right hand
     public abstract bool RightHandIsDrawing3D { get; protected set; }
+    
+    //effect-action right hand
+    public abstract bool RightHandIsEffecting { get; protected set; }
+    
+    //effect-action left hand
+    public abstract bool LeftHandIsEffecting { get; protected set; }
 
     //erase-action 2D right hand
     public abstract bool RightHandIsErasing2D { get; protected set; }
@@ -102,6 +108,7 @@ public abstract class BaseInputManager : MonoBehaviour
 
     // Other Functions
     public abstract bool IsDrawingState { get; set; }
+    public abstract bool BlockedByHandle { get; set; }
 
     protected virtual void Update()
     {
