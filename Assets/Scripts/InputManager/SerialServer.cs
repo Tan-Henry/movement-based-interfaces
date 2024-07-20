@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
@@ -17,6 +18,7 @@ public class SerialServer : BaseSensorServer
     private bool isRunning;
     private bool shakeLeftDetected;
     private bool shakeRightDetected;
+    private ConcurrentQueue<string> messageQueue;
 
     void Start()
     {
@@ -30,9 +32,11 @@ public class SerialServer : BaseSensorServer
         isRunning = true;
         shakeLeftDetected = false;
         shakeRightDetected = false;
+        messageQueue = new ConcurrentQueue<string>();
 
         // Start the thread that reads data
         readThread = new Thread(ReadSerialData);
+        readThread.IsBackground = true;
         readThread.Start();
         Debug.Log("SerialServer started");
     }
@@ -40,7 +44,38 @@ public class SerialServer : BaseSensorServer
     // Update is called once per frame
     void Update()
     {
+        while (messageQueue.TryDequeue(out string message))
+        {
+            if (message == "shakeleft")
+            {
+                shakeLeftDetected = true;
+            }
+            else if (message == "shakeright")
+            {
+                shakeRightDetected = true;
+            }
+        }
         
+        if (shakeLeftDetected && shakeRightDetected)
+        {
+            ShakeBoth?.Invoke();
+            shakeLeftDetected = false;
+            shakeRightDetected = false;
+        }
+        else
+        {
+            if (shakeLeftDetected)
+            {
+                ShakeLeft?.Invoke();
+                shakeLeftDetected = false;
+            }
+
+            if (shakeRightDetected)
+            {
+                ShakeRight?.Invoke();
+                shakeRightDetected = false;
+            }
+        }
     }
     
     void ReadSerialData()
@@ -54,7 +89,7 @@ public class SerialServer : BaseSensorServer
                     string dataLeft = serialPortLeft.ReadLine().Trim();
                     if (dataLeft.Contains("shake"))
                     {
-                        shakeLeftDetected = true;
+                        messageQueue.Enqueue("shakeleft");
                     }
                 }
 
@@ -63,28 +98,7 @@ public class SerialServer : BaseSensorServer
                     string dataRight = serialPortRight.ReadLine().Trim();
                     if (dataRight.Contains("shake"))
                     {
-                        shakeRightDetected = true;
-                    }
-                }
-                
-                if (shakeLeftDetected && shakeRightDetected)
-                {
-                    ShakeBoth?.Invoke();
-                    shakeLeftDetected = false;
-                    shakeRightDetected = false;
-                }
-                else
-                {
-                    if (shakeLeftDetected)
-                    {
-                        ShakeLeft?.Invoke();
-                        shakeLeftDetected = false;
-                    }
-
-                    if (shakeRightDetected)
-                    {
-                        ShakeRight?.Invoke();
-                        shakeRightDetected = false;
+                        messageQueue.Enqueue("shakeright");
                     }
                 }
             }
