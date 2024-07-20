@@ -1,6 +1,7 @@
     using System;
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using Oculus.Interaction.Input;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRHand leftHand;
     [SerializeField] private OVRSkeleton leftHandSkeleton;
     [SerializeField] private Hmd Head;
+
 
     //Input-Events and Values
 
@@ -32,7 +34,7 @@ public class InputManager : BaseInputManager
     private int pinchCounter = 0;
     private float lastPinchTime = 0.0f;
     private bool isPinching = false;
-
+    private bool isPointingAtUI = false;
 
     // App-State
 
@@ -71,10 +73,13 @@ public class InputManager : BaseInputManager
     private void Start()
     {
         InitializeState();
+        PointableCanvasModule.WhenSelectableHovered += (_) => isPointingAtUI = true;
+        PointableCanvasModule.WhenSelectableUnhovered += (_) => isPointingAtUI = false;
     }
 
     protected override void Update()
     {
+        Debug.Log(isPointingAtUI);
         base.Update();
         CheckChangeEffect();
         CheckTurnOnColorPicker();
