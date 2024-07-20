@@ -585,26 +585,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 612142703}
-  - component: {fileID: 612142702}
+  - component: {fileID: 612142704}
   m_Layer: 0
-  m_Name: TcpServer
+  m_Name: SensorServer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &612142702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 612142701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbb1229ba740f034db4a3f01ca999b5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &612142703
 Transform:
   m_ObjectHideFlags: 0
@@ -620,6 +608,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612142704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612142701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6249c75f79a18204897e2343f0dc074c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &628971040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,7 +1105,7 @@ MonoBehaviour:
   leftHand: {fileID: 14564696}
   leftHandSkeleton: {fileID: 14564695}
   Head: {fileID: 14564694}
-  tcpServer: {fileID: 612142702}
+  sensorServer: {fileID: 612142704}
 --- !u!4 &1746544025
 Transform:
   m_ObjectHideFlags: 0

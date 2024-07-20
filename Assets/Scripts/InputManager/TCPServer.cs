@@ -7,14 +7,14 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-public class TCPServer : MonoBehaviour
+public class TCPServer : BaseSensorServer
 {
     private TcpListener listener;
     private Thread listenerThread;
     
-    public event Action ShakeLeft;
-    public event Action ShakeRight;
-    public event Action ShakeBoth;
+    public override event Action ShakeLeft;
+    public override event Action ShakeRight;
+    public override event Action ShakeBoth;
     
     private float shakeLeftTime = -1f;
     private float shakeRightTime = -1f;
@@ -51,13 +51,20 @@ public class TCPServer : MonoBehaviour
                 {
                     string data = Encoding.ASCII.GetString(bytes, 0, i);
                     // check if data contains the word "shake"
-                    if (data.Contains("shakeleft"))
+                    if (data.Contains("shakeleft") && data.Contains("shakeright"))
                     {
-                        HandleShakeLeft();
+                        //HandleShakeBoth();
+                        ShakeBoth?.Invoke();
+                    }
+                    else if (data.Contains("shakeleft"))
+                    {
+                        //HandleShakeLeft();
+                        ShakeLeft?.Invoke();
                     }
                     else if (data.Contains("shakeright"))
                     {
-                        HandleShakeRight();
+                        //HandleShakeRight();
+                        ShakeRight?.Invoke();
                     }
                     
                 }
@@ -65,6 +72,7 @@ public class TCPServer : MonoBehaviour
         }
     }
     
+    /*
     void HandleShakeLeft()
     {
         shakeLeftTime = Time.time;
@@ -102,6 +110,7 @@ public class TCPServer : MonoBehaviour
             }
         }
     }
+    */
     
     void OnApplicationQuit()
     {
