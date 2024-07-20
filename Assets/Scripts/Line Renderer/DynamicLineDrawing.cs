@@ -53,7 +53,7 @@ public class DynamicLineDrawing : LineDrawer
         }
     }
 
-    protected override void InitializeLine()
+    public override void InitializeLine()
     {
         positionCount = 0;
         newLine = new GameObject();
