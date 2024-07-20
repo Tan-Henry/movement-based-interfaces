@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,15 +52,15 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //Undo
     public abstract event Action Undo;
-    protected abstract void OnUndo();
+    public abstract void OnUndo();
 
     //Redo
     public abstract event Action Redo;
-    protected abstract void OnRedo();
+    public abstract void OnRedo();
 
     //ToggleBrushEraser
     public abstract event Action ToggleBrushEraser;
-    protected abstract void OnToggleBrushEraser();
+    public abstract void OnToggleBrushEraser();
     
     //Reset
     public abstract event Action ResetMenu;
@@ -76,6 +75,7 @@ public abstract class BaseInputManager : MonoBehaviour
     // Brush-Category
 
     public abstract EBrushCategory CurrentBrushCategory { get; set; }
+    public abstract event Action<EBrushCategory> OnBrushCategoryChanged;
 
     // 2D Brushes
     public abstract EBrushType2D Current2DBrushType { get; set; }
@@ -193,8 +193,10 @@ public class BrushSettings3D
 
 public enum EEffects
 {
-    // TODO add effects ask Johanna
     NONE,
+    BUBBLES,
+    COOL,
+    HEATMAP,
 }
 
 public static class Limits
