@@ -21,15 +21,16 @@ public class DynamicLineDrawing : LineDrawer
 
     protected override void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (inputManager.RightHandIsDrawing2D)
         {
-            InitializeLine();
-            lastPoint = GetMousePosition();
-            lastTime = Time.time;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            Vector3 currentPoint = GetMousePosition();
+            if (!isDrawing)
+            {
+                InitializeLine();
+                lastPoint = inputManager.RightHandPosition;
+                lastTime = Time.time;
+                isDrawing = true;
+            }
+            Vector3 currentPoint = inputManager.RightHandPosition;
             float currentTime = Time.time;
             float speed = CalculateSpeed(lastPoint, currentPoint, lastTime, currentTime);
 
@@ -41,18 +42,22 @@ public class DynamicLineDrawing : LineDrawer
             lastTime = currentTime;
             lastSpeed = speed;
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            OnLineComplete();
-            linePoints.Clear();
+            if (isDrawing)
+            {
+                OnLineComplete();
+                linePoints.Clear();
+                isDrawing = false;
+            }
         }
     }
 
     protected override void InitializeLine()
     {
         positionCount = 0;
-        newLine = new GameObject("LineSegment");
+        newLine = new GameObject();
+        newLine.tag = "Line";
         drawLine = newLine.AddComponent<LineRenderer>();
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;

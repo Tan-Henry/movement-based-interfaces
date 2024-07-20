@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1626048433227980778}
   - component: {fileID: 1748686884436953153}
   - component: {fileID: 5417209072018526579}
+  - component: {fileID: 141200282566195397}
   m_Layer: 0
   m_Name: Line Drawer
   m_TagString: Untagged
@@ -46,30 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161a456ec08c04337b46b441fac54015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerDelay: 0
   lineWidth: 1
-  rightHand: {fileID: 0}
-  skeleton: {fileID: 0}
+  inputManager: {fileID: 0}
   visualEffectAsset: {fileID: 8926484042661614526, guid: a48bb54b10d724d0d8aa064308e936bd,
     type: 3}
+  vfxSpawntime: 5
 --- !u!114 &1748686884436953153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2890387739050424606}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a02988b7ff333456db8072deab13083d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerDelay: 0
-  lineWidth: 0.05
-  rightHand: {fileID: 0}
-  skeleton: {fileID: 0}
-  color: {r: 0, g: 0, b: 1, a: 1}
---- !u!114 &5417209072018526579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,11 +61,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 2890387739050424606}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02988b7ff333456db8072deab13083d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineWidth: 1
+  inputManager: {fileID: 0}
+  color: {r: 0, g: 0, b: 1, a: 1}
+--- !u!114 &5417209072018526579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890387739050424606}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73c55f1c31a644f8da3ad217c75cbe37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerDelay: 0
-  lineWidth: 0.05
-  rightHand: {fileID: 0}
-  skeleton: {fileID: 0}
+  lineWidth: 1
+  inputManager: {fileID: 0}
   material: {fileID: 2100000, guid: 97f6b5f06cfd44ffdaf833c4e6a443b6, type: 2}
+--- !u!114 &141200282566195397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890387739050424606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adccdcbcc358a4a4b81db7ccff6c7518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 0}
