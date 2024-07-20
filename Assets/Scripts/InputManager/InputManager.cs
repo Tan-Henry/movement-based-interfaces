@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Oculus.Interaction.Input;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class InputManager : BaseInputManager
 {
@@ -11,7 +12,7 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRHand leftHand;
     [SerializeField] private OVRSkeleton leftHandSkeleton;
     [SerializeField] private Hmd Head;
-    [SerializeField] private TCPServer tcpServer;
+    [SerializeField] private BaseSensorServer sensorServer;
 
     //Input-Events and Values
 
@@ -31,16 +32,13 @@ public class InputManager : BaseInputManager
     public override event Action TurnOffColorPicker;
     public override event Action Undo;
     public override event Action ResetMenu;
-
-    private int pinchCounter = 0;
-    private float lastPinchTime = 0.0f;
-    private bool isPinching = false;
     
-    private bool middleFingerPinching = false;
+    private bool rightMiddleFingerPinching = false;
     private Vector3 lastMiddleFingerPosition = Vector3.zero;
-    private bool ringFingerPinching = false;
+    private bool rightRingFingerPinching = false;
     private Vector3 lastRingFingerPosition = Vector3.zero;
     private float sensitivity = 0.01f;
+    private bool leftIndexFingerPinching = false;
 
 
     // App-State
@@ -69,9 +67,9 @@ public class InputManager : BaseInputManager
     private void Start()
     {
         InitializeState();
-        tcpServer.ShakeLeft += OnUndo;
-        tcpServer.ShakeRight += OnRedo;
-        tcpServer.ShakeBoth += OnResetMenu;
+        sensorServer.ShakeLeft += OnUndo;
+        sensorServer.ShakeRight += OnRedo;
+        sensorServer.ShakeBoth += OnResetMenu;
     }
 
     protected override void Update()
@@ -87,17 +85,16 @@ public class InputManager : BaseInputManager
 
     protected override void UpdateRightHand()
     {
-        if (rightHand.IsTracked)
-        {
-            //index finger pinching
-            CheckIndexFingerPinching();
+        if (!rightHand.IsTracked) return;
+        
+        //index finger pinching
+        CheckIndexFingerPinching();
 
-            //middle finger pinching
-            CheckMiddleFingerPinching();
+        //middle finger pinching
+        CheckMiddleFingerPinching();
             
-            //ring finger pinching
-            CheckRingFingerPinching();
-        }
+        //ring finger pinching
+        CheckRingFingerPinching();
     }
 
     private void CheckIndexFingerPinching()
@@ -145,11 +142,9 @@ public class InputManager : BaseInputManager
 
         foreach (var b in rightHandSkeleton.Bones)
         {
-            if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-            {
-                RightHandPosition = b.Transform.position;
-                break;
-            }
+            if (b.Id != OVRSkeleton.BoneId.Hand_IndexTip) continue;
+            RightHandPosition = b.Transform.position;
+            break;
         }
     }
 
@@ -164,9 +159,9 @@ public class InputManager : BaseInputManager
             }
             
             // map middle finger movement to brush size
-            if (!middleFingerPinching)
+            if (!rightMiddleFingerPinching)
             {
-                middleFingerPinching = true;
+                rightMiddleFingerPinching = true;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
                     if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
@@ -181,11 +176,9 @@ public class InputManager : BaseInputManager
                 Vector3 currentMiddleFingerPosition = Vector3.zero;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
-                    {
-                        currentMiddleFingerPosition = b.Transform.position;
-                        break;
-                    }
+                    if (b.Id != OVRSkeleton.BoneId.Hand_MiddleTip) continue;
+                    currentMiddleFingerPosition = b.Transform.position;
+                    break;
                 }
 
                 float verticalMovement = currentMiddleFingerPosition.y - lastMiddleFingerPosition.y;
@@ -207,7 +200,7 @@ public class InputManager : BaseInputManager
         }
         else
         {
-            middleFingerPinching = false;
+            rightMiddleFingerPinching = false;
         
         }
     }
@@ -223,9 +216,9 @@ public class InputManager : BaseInputManager
             }
                 
             // map ring finger movement to brush size
-            if (!ringFingerPinching)
+            if (!rightRingFingerPinching)
             {
-                ringFingerPinching = true;
+                rightRingFingerPinching = true;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
                     if (b.Id == OVRSkeleton.BoneId.Hand_RingTip)
@@ -257,23 +250,19 @@ public class InputManager : BaseInputManager
         }
         else
         {
-            ringFingerPinching = false;
+            rightRingFingerPinching = false;
             
         }
     }
 
     protected override void UpdateLeftHand()
     {
-        if (leftHand.IsTracked)
+        if (!leftHand.IsTracked) return;
+        foreach (var b in leftHandSkeleton.Bones)
         {
-            foreach (var b in leftHandSkeleton.Bones)
-            {
-                if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-                {
-                    LeftHandPosition = b.Transform.position;
-                    break;
-                }
-            }
+            if (b.Id != OVRSkeleton.BoneId.Hand_IndexTip) continue;
+            LeftHandPosition = b.Transform.position;
+            break;
         }
     }
     
@@ -290,21 +279,19 @@ public class InputManager : BaseInputManager
         if (!leftHand.IsTracked) return;
         if (!rightHand.IsTracked) return;
 
-        Vector3 LeftHandIndexPosition = Vector3.zero;
+        Vector3 leftHandIndexPosition = Vector3.zero;
 
         foreach (var b in leftHandSkeleton.Bones)
         {
-            if (b.Id == OVRSkeleton.BoneId.Hand_IndexTip)
-            {
-                LeftHandIndexPosition = b.Transform.position;
-                break;
-            }
+            if (b.Id != OVRSkeleton.BoneId.Hand_IndexTip) continue;
+            leftHandIndexPosition = b.Transform.position;
+            break;
         }
 
         if (rightHand.transform.rotation.eulerAngles is { y: > 250.0f } &&
             leftHand.GetFingerIsPinching(OVRHand.HandFinger.Middle) &&
             !leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) &&
-            Vector3.Distance(LeftHandIndexPosition, rightHand.transform.position) < 10.0f)
+            Vector3.Distance(leftHandIndexPosition, rightHand.transform.position) < 10.0f)
         {
             OnChangeEffect();
         }
@@ -398,39 +385,23 @@ public class InputManager : BaseInputManager
 
     private void CheckToggleBrushEraser()
     {
-        //rightHand pinch twice quickly
-        //TODO: block drawing while double clicking
-        if (!rightHand.IsTracked) return;
+        //left hand index finger pinching
+        if (!leftHand.IsTracked || RightHandIsDrawing2D || RightHandIsErasing2D || RightHandIsDrawing3D || RightHandIsErasing3D) return;
 
-        //check if right index finger pinches twice quickly in a short time
-        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
+        if (leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
         {
-            if (!isPinching)
+            if (leftIndexFingerPinching)
             {
-                isPinching = true;
-                float currentTime = Time.time;
-
-                if (pinchCounter == 0 || (currentTime - lastPinchTime) < 0.5f)
-                {
-                    pinchCounter++;
-                    lastPinchTime = currentTime;
-
-                    if (pinchCounter == 2)
-                    {
-                        pinchCounter = 0;
-                        OnToggleBrushEraser();
-                    }
-                }
-                else
-                {
-                    pinchCounter = 0;
-                }
+                return;
             }
-            else
-            {
-                isPinching = false;
-            }
+            leftIndexFingerPinching = true;
+            OnToggleBrushEraser();
         }
+        else
+        {
+            leftIndexFingerPinching = false;
+        }
+        
     }
 
     protected override void OnChangeEffect()
@@ -456,20 +427,18 @@ public class InputManager : BaseInputManager
 
     protected override void OnSwitchMode()
     {
-        if (CurrentMode is EMode.MAIN_MENU or EMode.TUTORIAL)
+        switch (CurrentMode)
         {
-            return;
+            case EMode.MAIN_MENU or EMode.TUTORIAL:
+                return;
+            case EMode.CREATE:
+                CurrentMode = EMode.PRESENT;
+                break;
+            default:
+                CurrentMode = EMode.CREATE;
+                break;
         }
-        
-        if (CurrentMode == EMode.CREATE)
-        {
-            CurrentMode = EMode.PRESENT;
-        }
-        else
-        {
-            CurrentMode = EMode.CREATE;
-        }
-        
+
         SwitchMode?.Invoke();
     }
 
@@ -482,28 +451,33 @@ public class InputManager : BaseInputManager
 
     protected override void OnTurnOnColorPicker()
     {
+        if (CurrentMode != EMode.CREATE) return;
         TurnOnColorPicker?.Invoke();
     }
-
-
+    
     protected override void OnTurnOffColorPicker()
     {
+        if (CurrentMode != EMode.CREATE) return;
         TurnOffColorPicker?.Invoke();
     }
 
     protected override void OnUndo()
     {
+        if (CurrentMode != EMode.CREATE) return;
+        Debug.Log("Undo");
         Undo?.Invoke();
     }
 
-
     protected override void OnRedo()
     {
+        if (CurrentMode != EMode.CREATE) return;
+        Debug.Log("Redo");
         Redo?.Invoke();
     }
 
     protected override void OnToggleBrushEraser()
     {
+        if (CurrentMode != EMode.CREATE) return;
         IsDrawingState = !IsDrawingState;
         ToggleBrushEraser?.Invoke();
     }
@@ -516,7 +490,7 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = false;
-        CurrentMode = EMode.MAIN_MENU;
+        CurrentMode = EMode.CREATE;
         CurrentBrushCategory = EBrushCategory.NONE;
         Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
