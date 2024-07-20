@@ -12,6 +12,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Serial.flush();
   
   // Get accelerometer readings: values are between -10 and 10, 0 is neutral position
   float x = CircuitPlayground.motionX();
@@ -23,9 +24,11 @@ void loop() {
   shake *= shake;
   filteredShake = (shake * 0.1) + (filteredShake * (1 - 0.1));
 
-  if (filteredShake > 1) {
-    isShaking = true;
-    Serial.println("shake");
+  if (filteredShake > 15) {
+    if (!isShaking){
+      isShaking = true;
+      Serial.println("shake");
+    }
   } else {
     isShaking = false;
   }
