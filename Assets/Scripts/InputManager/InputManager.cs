@@ -37,6 +37,7 @@ public class InputManager : BaseInputManager
     // App-State
 
     public override bool IsDrawingState { get; set; }
+    public override bool IsTutorialMode { get; set; }
     public override EMode CurrentMode { get; set; }
     public override EBrushCategory CurrentBrushCategory { get; set; }
     public override EBrushType2D Current2DBrushType { get; set; }
@@ -310,7 +311,8 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = false;
-        CurrentMode = EMode.MAIN_MENU;
+        CurrentMode = EMode.CREATE;
+        IsTutorialMode = true;
         CurrentBrushCategory = EBrushCategory.NONE;
         Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));

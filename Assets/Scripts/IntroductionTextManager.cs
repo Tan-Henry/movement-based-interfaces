@@ -1,29 +1,55 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IntroductionTextManager : MonoBehaviour
 {
+    [SerializeField] private BaseInputManager inputManager;
+    [SerializeField] private GameObject tutorialCanvas;
     public GameObject[] textFields;
     public Button nextButton;
     public Button getStartedButton;
+    public Button startTutorialButton;
     private int currentIndex = 0;
 
+    void Update()
+    {
+        if (inputManager.CurrentMode == EMode.CREATE && inputManager.IsTutorialMode)
+        { tutorialCanvas.gameObject.SetActive(true); }
+        else
+        { tutorialCanvas.gameObject.SetActive(false); }
+    }
+    
     void Start()
     {
-        for (int i = 0; i < textFields.Length; i++)
+        // Ensure all text fields are initially inactive
+        foreach (GameObject textField in textFields)
         {
-            textFields[i].SetActive(i == currentIndex);
+            textField.SetActive(false);
         }
-        // Add listener to the Next button
+
+        // Set the first text field active
+        if (textFields.Length > 0)
+        {
+            textFields[0].SetActive(true);
+        }
+
+        // Ensure GetStartedButton is initially inactive
+        getStartedButton.gameObject.SetActive(false);
+
+        // Ensure the tutorialCanvas is initially inactive
+        tutorialCanvas.gameObject.SetActive(false);
+
+        // Add listeners to nextButton
         nextButton.onClick.AddListener(ActivateNextTextField);
+        getStartedButton.onClick.AddListener(TurnOffTutorial);
     }
 
+    
     void ActivateNextTextField()
     {
+        // if (currentIndex != 0)
+        // {
         textFields[currentIndex].SetActive(false);
         currentIndex = (currentIndex + 1) % textFields.Length;
         textFields[currentIndex].SetActive(true);
@@ -33,6 +59,17 @@ public class IntroductionTextManager : MonoBehaviour
             nextButton.GameObject().SetActive(false);
             getStartedButton.GameObject().SetActive(true);
         }
+        // }
     }
-}
 
+    void TurnOffTutorial()
+    {
+        inputManager.IsTutorialMode = false;
+    }
+
+    /*void OnButtonClicked()
+    {
+        inputManager.IsTutorialMode = true;
+        currentIndex = 0;
+    }*/
+}
