@@ -4,7 +4,7 @@ public class SimpleLineDrawerVR : LineDrawer
 {
     public Color color;
 
-    protected override void InitializeLine()
+    public override void InitializeLine()
     {
         base.InitializeLine();
         drawLine.startColor = color;

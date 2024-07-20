@@ -3,11 +3,12 @@ using UnityEngine;
 public class MaskBrushDrawer : LineDrawer
 {
     public Material material;
-    protected override void InitializeLine()
+
+    public override void InitializeLine()
     {
         base.InitializeLine();
-        drawLine.textureMode = LineTextureMode.Tile;
-        drawLine.material = material;
+        LineRenderer lineRenderer = GetDrawLine();
+        lineRenderer.textureMode = LineTextureMode.Tile;
+        lineRenderer.material = material;
     }
-    
 }
