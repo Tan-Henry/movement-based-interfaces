@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: 617794225574364367, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 617794226559516839, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
         type: 3}
@@ -776,8 +776,8 @@ MonoBehaviour:
   noiseScale: 1.5
   amplitude: 18
   frequency: 0.0025
-  octaves: 20
-  groundPercent: 0.399
+  octaves: 0
+  groundPercent: 0
 --- !u!4 &628971042
 Transform:
   m_ObjectHideFlags: 0
