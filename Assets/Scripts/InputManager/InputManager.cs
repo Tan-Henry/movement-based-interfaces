@@ -12,6 +12,8 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRHand leftHand;
     [SerializeField] private OVRSkeleton leftHandSkeleton;
     [SerializeField] private Hmd Head;
+    [SerializeField] private GameObject rightHandCursor;
+    [SerializeField] private GameObject leftHandCursor;
 
 
     //Input-Events and Values
@@ -73,13 +75,11 @@ public class InputManager : BaseInputManager
     private void Start()
     {
         InitializeState();
-        PointableCanvasModule.WhenSelectableHovered += (_) => isPointingAtUI = true;
-        PointableCanvasModule.WhenSelectableUnhovered += (_) => isPointingAtUI = false;
     }
 
     protected override void Update()
     {
-        Debug.Log(isPointingAtUI);
+        CheckIsPointingAtUI();
         base.Update();
         CheckChangeEffect();
         CheckTurnOnColorPicker();
@@ -89,6 +89,20 @@ public class InputManager : BaseInputManager
         CheckUndo();
         CheckRedo();
         CheckToggleBrushEraser();
+    }
+    
+    private void CheckIsPointingAtUI()
+    {
+        if (!rightHand.IsTracked && !leftHand.IsTracked) return;
+        
+        if (rightHandCursor.activeSelf || leftHandCursor.activeSelf)
+        {
+            isPointingAtUI = true;
+        }
+        else
+        {
+            isPointingAtUI = false;
+        }
     }
 
     protected override void UpdateRightHand()
