@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -168,13 +167,14 @@ public class GradientBrushOne : MonoBehaviour
 
     private void ApplyDynamicGradient()
     {
-        GradientColorKey[] colorKeys = new GradientColorKey[Mathf.Min(lineColors.Count, 8)];
-        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[Mathf.Min(lineColors.Count, 8)];
+        int colorCount = Mathf.Min(lineColors.Count, 8); // Ensure the index is within the range of the lineColors list
+        GradientColorKey[] colorKeys = new GradientColorKey[colorCount];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[colorCount];
 
         for (int i = 0; i < colorKeys.Length; i++)
         {
             float t = (float)i / (colorKeys.Length - 1);
-            int colorIndex = Mathf.RoundToInt(t * (lineColors.Count - 1));
+            int colorIndex = Mathf.Clamp(Mathf.RoundToInt(t * (lineColors.Count - 1)), 0, lineColors.Count - 1); // Clamp index
             colorKeys[i] = new GradientColorKey(lineColors[colorIndex], t);
             alphaKeys[i] = new GradientAlphaKey(lineColors[colorIndex].a, t);
         }
