@@ -3,49 +3,54 @@ using UnityEngine;
 
 public abstract class LineDrawer : MonoBehaviour
 {
-    public List<Vector3> linePoints;
+    protected List<Vector3> linePoints;
+    protected float timer;
     public float timerDelay;
+
     protected GameObject newLine;
     protected LineRenderer drawLine;
-    protected float timer; // Changed from private to protected
+    protected bool isDrawing;
     public float lineWidth;
+    private UndoRedoScript _undoRedoScript;
+    [SerializeField] protected BaseInputManager inputManager;
     private Material originalMaterial;
 
     protected virtual void Start()
     {
+        _undoRedoScript = GetComponent<UndoRedoScript>();
         linePoints = new List<Vector3>();
         timer = timerDelay;
     }
 
     protected virtual void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (inputManager.RightHandIsDrawing2D)
         {
-            InitializeLine();
-        }
-        if (Input.GetMouseButton(0))
-        {
-            timer -= Time.deltaTime;
-            if (timer <= 0)
+            if (!isDrawing)
             {
-                Vector3 mousePosition = GetMousePosition();
-                linePoints.Add(mousePosition);
-                drawLine.positionCount = linePoints.Count;
-                drawLine.SetPositions(linePoints.ToArray());
-                timer = timerDelay;
+                InitializeLine();
+                isDrawing = true;
             }
+            linePoints.Add(inputManager.RightHandPosition);
+            drawLine.positionCount = linePoints.Count;
+            drawLine.SetPositions(linePoints.ToArray());
+            timer = timerDelay;
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            OnLineComplete();
-            linePoints.Clear();
+            if (isDrawing)
+            {
+                OnLineComplete();
+                linePoints.Clear();
+                isDrawing = false;
+            }
         }
     }
 
     public virtual void InitializeLine()
     {
         newLine = new GameObject();
+        newLine.tag = "Line";
         drawLine = newLine.AddComponent<LineRenderer>();
         originalMaterial = drawLine.material;
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
@@ -54,7 +59,7 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.startColor = Color.clear;
         drawLine.endColor = Color.clear;
     }
-
+    
     public void ClearLine()
     {
         linePoints.Clear();
@@ -71,8 +76,17 @@ public abstract class LineDrawer : MonoBehaviour
         drawLine.SetPositions(linePoints.ToArray());
     }
 
-    protected virtual void OnLineComplete() { }
+    protected virtual void OnLineComplete()
+    {
+        _undoRedoScript.AddLastLineGameObject(newLine);
+        
+        Mesh mesh = new Mesh();
+        drawLine.BakeMesh(mesh);
 
+        MeshCollider meshCollider = newLine.AddComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
+    }
+    
     public Vector3 GetMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
