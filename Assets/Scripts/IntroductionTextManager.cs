@@ -9,7 +9,6 @@ public class IntroductionTextManager : MonoBehaviour
     public GameObject[] textFields;
     public Button nextButton;
     public Button getStartedButton;
-    public Button startTutorialButton;
     private int currentIndex = 0;
 
     void Update()
