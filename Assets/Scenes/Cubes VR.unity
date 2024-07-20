@@ -911,6 +911,12 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &775549283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3735308978872475011, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
+    type: 3}
+  m_PrefabInstance: {fileID: 14564691}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &788446240 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1796153167414617715, guid: 528be6aeaf52e492e8387ad775b861ae,
@@ -1452,6 +1458,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 841252043}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1105411482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3735308977764735467, guid: 5c9ea32b5f79c4eb5950ef9e0c5d101e,
+    type: 3}
+  m_PrefabInstance: {fileID: 14564691}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1169696502 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5177445101394963505, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
@@ -1719,6 +1731,8 @@ MonoBehaviour:
   leftHandSkeleton: {fileID: 14564695}
   Head: {fileID: 14564694}
   sensorServer: {fileID: 612142704}
+  rightHandCursor: {fileID: 775549283}
+  leftHandCursor: {fileID: 1105411482}
 --- !u!4 &1746544025
 Transform:
   m_ObjectHideFlags: 0
@@ -2643,6 +2657,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4407958767295397107, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
+        type: 3}
+      propertyPath: _handAligment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4407958767295397107, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
+        type: 3}
+      propertyPath: _supportedGrabTypes
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4787881003756512754, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
         type: 3}

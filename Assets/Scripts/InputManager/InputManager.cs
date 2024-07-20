@@ -1,5 +1,4 @@
-    using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using Oculus.Interaction.Input;
 using UnityEngine;
@@ -12,6 +11,9 @@ public class InputManager : BaseInputManager
     [SerializeField] private OVRSkeleton leftHandSkeleton;
     [SerializeField] private Hmd Head;
     [SerializeField] private BaseSensorServer sensorServer;
+    [SerializeField] private GameObject rightHandCursor;
+    [SerializeField] private GameObject leftHandCursor;
+
 
     //Input-Events and Values
 
@@ -37,7 +39,7 @@ public class InputManager : BaseInputManager
     private Vector3 lastRingFingerPosition = Vector3.zero;
     private float sensitivity = 0.01f;
     private bool leftIndexFingerPinching = false;
-
+    private bool isPointingAtUI = false;
 
     // App-State
 
@@ -84,6 +86,7 @@ public class InputManager : BaseInputManager
 
     protected override void Update()
     {
+        CheckIsPointingAtUI();
         base.Update();
         CheckChangeEffect();
         CheckTurnOnColorPicker();
@@ -91,6 +94,20 @@ public class InputManager : BaseInputManager
         CheckSwitchMode();
         CheckMainMenu();
         CheckToggleBrushEraser();
+    }
+    
+    private void CheckIsPointingAtUI()
+    {
+        if (!rightHand.IsTracked && !leftHand.IsTracked) return;
+        
+        if (rightHandCursor.activeSelf || leftHandCursor.activeSelf)
+        {
+            isPointingAtUI = true;
+        }
+        else
+        {
+            isPointingAtUI = false;
+        }
     }
 
     protected override void UpdateRightHand()
@@ -111,6 +128,17 @@ public class InputManager : BaseInputManager
     {
         if (IsDrawingState)
         {
+            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            {
+                RightHandIsDrawing2D = false;
+                RightHandIsErasing2D = false;
+                
+                RightHandIsDrawing3D = false;
+                RightHandIsErasing3D = false;
+                Debug.Log("Blocking drawing and erasing");
+                return;
+            }
+            
             if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
             {
                 RightHandIsDrawing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
@@ -131,6 +159,17 @@ public class InputManager : BaseInputManager
         }
         else
         {
+            if (isPointingAtUI && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D)
+            {
+                RightHandIsDrawing2D = false;
+                RightHandIsErasing2D = false;
+                
+                RightHandIsDrawing3D = false;
+                RightHandIsErasing3D = false;
+                Debug.Log("Blocking drawing and erasing");
+                return;
+            }
+            
             if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
             {
                 RightHandIsErasing2D = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
