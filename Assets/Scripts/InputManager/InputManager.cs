@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Oculus.Interaction.Input;
@@ -39,7 +39,19 @@ public class InputManager : BaseInputManager
     public override bool IsDrawingState { get; set; }
     public override bool IsTutorialMode { get; set; }
     public override EMode CurrentMode { get; set; }
-    public override EBrushCategory CurrentBrushCategory { get; set; }
+    
+    private EBrushCategory currentBrushCategory;
+    public override EBrushCategory CurrentBrushCategory
+    {
+        get => currentBrushCategory;
+        set
+        {
+            if (currentBrushCategory == value) return;
+            currentBrushCategory = value;
+            OnBrushCategoryChanged?.Invoke(currentBrushCategory);
+        }
+    }
+    public override event Action<EBrushCategory> OnBrushCategoryChanged;
     public override EBrushType2D Current2DBrushType { get; set; }
     public override List<ELineBrushes2D> Available2DLineBrushes { get; set; }
     public override ELineBrushes2D Current2DLineBrush { get; set; }
@@ -292,27 +304,26 @@ public class InputManager : BaseInputManager
         TurnOffColorPicker?.Invoke();
     }
 
-    protected override void OnUndo()
+    public override void OnUndo()
     {
         Undo?.Invoke();
     }
-
-
-    protected override void OnRedo()
+    
+    public override void OnRedo()
     {
         Redo?.Invoke();
     }
 
-    protected override void OnToggleBrushEraser()
+    public override void OnToggleBrushEraser()
     {
         ToggleBrushEraser?.Invoke();
     }
 
     private void InitializeState()
     {
-        IsDrawingState = false;
-        CurrentMode = EMode.CREATE;
-        IsTutorialMode = true;
+        IsDrawingState = true;
+        IsTutorialMode = false;
+        CurrentMode = EMode.MAIN_MENU;
         CurrentBrushCategory = EBrushCategory.NONE;
         Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
