@@ -6,16 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chunk.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chunk.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CursorToHandController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CursorToHandController.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/Compute/marchingCubesCompute.compute" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Marching Cubes/WorldGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,15 +19,18 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="marching-cubes_brushes" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/CursorToHandController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.meta.xr.sdk.interaction@66.0.0/Runtime/Scripts/Interaction/Core/ActiveStateTracker.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.meta.xr.sdk.interaction@66.0.0/Runtime/Scripts/Interaction/Core/UniqueIdentifier.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/mady-/Desktop/Uni/ART/mvBased/Assets/Scripts/InputManager/BaseInputManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.meta.xr.sdk.core@66.0.0/Scripts/OVRManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.meta.xr.sdk.interaction@66.0.0/Runtime/Scripts/Extensions/MonoBehaviourStartExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.11/Runtime/XR/XRPass.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.11/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -51,7 +48,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;3DBrushes__InputState&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;introduction__menu&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -125,6 +122,11 @@
       <workItem from="1718889092639" duration="1371000" />
       <workItem from="1720809521540" duration="1112000" />
       <workItem from="1720860154337" duration="2780000" />
+      <workItem from="1721282217461" duration="3502000" />
+      <workItem from="1721298877376" duration="4146000" />
+      <workItem from="1721328864678" duration="2661000" />
+      <workItem from="1721375754486" duration="5522000" />
+      <workItem from="1721457625785" duration="3565000" />
     </task>
     <task id="LOCAL-00001" summary="MarchingCubes Brushes: First Brushes">
       <created>1718354925661</created>
@@ -161,7 +163,21 @@
       <option name="project" value="LOCAL" />
       <updated>1720848892477</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Introduction Menu Structure added to GrabMenu&#10;Unupdated Textfields added&#10;Next &amp; GetStarted Button added">
+      <created>1721288284551</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1721288284551</updated>
+    </task>
+    <task id="LOCAL-00007" summary="- Implemented Button walkthrough&#10;- Added TestObject with Text &amp; Placeholder for img (adjusted Button position)">
+      <created>1721308460797</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1721308460797</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,7 +191,15 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="173" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="138" />
+                  <entry key="Table.Space.CommitStatus.ColumnIdWidth" value="126" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -188,6 +212,8 @@
     <MESSAGE value="Added WorldSizeY for Height Adjustement&#10;- includes new TerraformAtPoint Logic that considers vertically stacked Chunks" />
     <MESSAGE value="FinalScale&#10;- still adjustable&#10;- (InteractorElements need adjusting in function of final UI Scaling)" />
     <MESSAGE value="Cleaned up Brushes:&#10;- now in right order&#10;- unused commented out" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned up Brushes:&#10;- now in right order&#10;- unused commented out" />
+    <MESSAGE value="Introduction Menu Structure added to GrabMenu&#10;Unupdated Textfields added&#10;Next &amp; GetStarted Button added" />
+    <MESSAGE value="- Implemented Button walkthrough&#10;- Added TestObject with Text &amp; Placeholder for img (adjusted Button position)" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Implemented Button walkthrough&#10;- Added TestObject with Text &amp; Placeholder for img (adjusted Button position)" />
   </component>
 </project>

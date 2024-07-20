@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using UnityEngine;
 
 public abstract class BaseInputManager : MonoBehaviour
@@ -11,6 +9,10 @@ public abstract class BaseInputManager : MonoBehaviour
     //right-hand 
     public abstract Vector3 RightHandPosition { get; protected set; }
     protected abstract void UpdateRightHand();
+    
+    //left-hand
+    public abstract Vector3 LeftHandPosition { get; protected set; }
+    protected abstract void UpdateLeftHand();
 
     //draw-action 2D right hand
     public abstract bool RightHandIsDrawing2D { get; protected set; }
@@ -38,7 +40,7 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //MainMenu
     public abstract event Action MainMenu;
-    protected abstract void OnMainMenu();
+    public abstract void OnMainMenu();
 
     //TurnOnColorPicker
     public abstract event Action TurnOnColorPicker;
@@ -57,8 +59,11 @@ public abstract class BaseInputManager : MonoBehaviour
     public abstract void OnRedo();
 
     //ToggleBrushEraser
-    public abstract event Action ToggleBrushEraser;
     public abstract void OnToggleBrushEraser();
+    
+    //Reset
+    public abstract event Action ResetMenu;
+    protected abstract void OnResetMenu();
 
 
     // App-State
@@ -101,6 +106,7 @@ public abstract class BaseInputManager : MonoBehaviour
     protected virtual void Update()
     {
         UpdateRightHand();
+        UpdateLeftHand();
         UpdateHeadDrawing();
     }
 }

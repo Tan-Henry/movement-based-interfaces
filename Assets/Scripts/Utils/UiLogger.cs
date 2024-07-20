@@ -23,7 +23,6 @@ public class UiLogger : MonoBehaviour
         inputManager.TurnOffColorPicker += () => Log("TurnOffColorPicker",2);
         inputManager.Undo += () => Log("Undo",2);
         inputManager.Redo += () => Log("Redo",2);
-        inputManager.ToggleBrushEraser += () => Log("ToggleBrushEraser",2);
     }
 
     public void Log(string message, int output = 1)

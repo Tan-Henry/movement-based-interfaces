@@ -42,7 +42,8 @@ namespace UI
       
       private void OnHomeButtonClicked()
       {
-         inputManager.CurrentMode = EMode.MAIN_MENU;
+         effectsMenuToggle.isOn = false;
+         inputManager.OnMainMenu();
       }
       
       private void OnHelpButtonClicked()

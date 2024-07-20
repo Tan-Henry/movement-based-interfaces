@@ -11,6 +11,8 @@ namespace UI
         [SerializeField] private Button newButton;
         [SerializeField] private Button loadButton;
         
+        private bool tutorialViewed = false;
+        
         // Start is called before the first frame update
         void Start()
         {
@@ -20,7 +22,14 @@ namespace UI
 
         private void OnNewButtonClicked()
         {
-            inputManager.CurrentMode = EMode.CREATE;
+            if (tutorialViewed)
+            {
+                inputManager.CurrentMode = EMode.CREATE;
+            } else
+            {
+                inputManager.CurrentMode = EMode.TUTORIAL;
+                tutorialViewed = true;
+            }
         }
         
         private void OnLoadButtonClicked()
