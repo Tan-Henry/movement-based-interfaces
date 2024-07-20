@@ -36,7 +36,10 @@ namespace UI
 
         private void Update()
         {
-            eraserToggle.isOn = !inputManager.IsDrawingState;
+            if (inputManager.IsDrawingState == eraserToggle.isOn)
+            {
+                eraserToggle.SetIsOnWithoutNotify(!inputManager.IsDrawingState);
+            }
         }
 
         private bool ToolbarActive
