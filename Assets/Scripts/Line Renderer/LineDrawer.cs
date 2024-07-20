@@ -64,6 +64,5 @@ public abstract class LineDrawer : MonoBehaviour
 
         MeshCollider meshCollider = newLine.AddComponent<MeshCollider>();
         meshCollider.sharedMesh = mesh;
-        meshCollider.isTrigger = true;
     }
 }
