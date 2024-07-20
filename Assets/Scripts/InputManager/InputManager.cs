@@ -451,9 +451,18 @@ public class InputManager : BaseInputManager
         SwitchMode?.Invoke();
     }
 
-    protected override void OnMainMenu()
+    public override void OnMainMenu()
     {
         CurrentMode = EMode.MAIN_MENU;
+        CurrentEffect = EEffects.NONE;
+        Current2DBrushType = EBrushType2D.NONE;
+        Current3DBrushType = EBrushType3D.NONE;
+        CurrentBrushCategory = EBrushCategory.NONE;
+        Current2DLineBrush = ELineBrushes2D.NONE;
+        Current2DDynamicBrush = EDynamicBrushes2D.NONE;
+        Current3DLineBrush = ELineBrushes3D.NONE;
+        Current3DTexturedBrush = ETexturedBrushes3D.NONE;
+        Current3DStructuralBrush = EStructuralBrushes3D.NONE;
         
         MainMenu?.Invoke();
     }

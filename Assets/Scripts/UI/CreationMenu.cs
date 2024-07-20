@@ -40,6 +40,20 @@ namespace UI
             {
                 eraserToggle.SetIsOnWithoutNotify(!inputManager.IsDrawingState);
             }
+            
+            DisableButtons(inputManager.CurrentMode == EMode.TUTORIAL);
+        }
+        
+        private void DisableButtons(bool isTutorialMode)
+        {
+            modeButton.interactable = !isTutorialMode;
+            homeButton.interactable = !isTutorialMode;
+            brushMenuToggle.interactable = !isTutorialMode;
+            helpButton.interactable = !isTutorialMode;
+            undoToggle.interactable = !isTutorialMode;
+            redoToggle.interactable = !isTutorialMode;
+            eraserToggle.interactable = !isTutorialMode;
+            colorMenuToggle.interactable = !isTutorialMode;
         }
 
         private bool ToolbarActive
@@ -74,7 +88,9 @@ namespace UI
         
         private void OnHomeButtonClicked()
         {
-            inputManager.CurrentMode = EMode.MAIN_MENU;
+            brushMenuToggle.isOn = false;
+            colorMenuToggle.isOn = false;
+            inputManager.OnMainMenu();
         }
         
         private void OnHelpButtonClicked()
