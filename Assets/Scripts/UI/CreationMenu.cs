@@ -37,6 +37,20 @@ namespace UI
         private void Update()
         {
             eraserToggle.isOn = !inputManager.IsDrawingState;
+
+            DisableButtons(inputManager.IsTutorialMode);
+        }
+        
+        private void DisableButtons(bool isTutorialMode)
+        {
+            modeButton.interactable = !isTutorialMode;
+            homeButton.interactable = !isTutorialMode;
+            brushMenuToggle.interactable = !isTutorialMode;
+            helpButton.interactable = !isTutorialMode;
+            undoToggle.interactable = !isTutorialMode;
+            redoToggle.interactable = !isTutorialMode;
+            eraserToggle.interactable = !isTutorialMode;
+            colorMenuToggle.interactable = !isTutorialMode;
         }
 
         private bool ToolbarActive

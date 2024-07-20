@@ -21,6 +21,7 @@ namespace UI
         private void OnNewButtonClicked()
         {
             inputManager.CurrentMode = EMode.CREATE;
+            inputManager.IsTutorialMode = true;
         }
         
         private void OnLoadButtonClicked()
