@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CoolBrush : MonoBehaviour
 {
-    private List<LineSegment> lineSegments;
-    public float minLineWidth;
-    public float maxLineWidth;
-    public float maxSpeed;
-    public float minSpeed; // Minimum speed control for gradient transition
-    public Gradient gradient; // Gradient field
-    public float pointLifetime = 2.0f; // Lifetime for each point in seconds
-    public float deathSpeed = 1.0f; // Speed at which points die
+    private List<CoolBrushSegment> lineSegments;
+    [SerializeField] private float minLineWidth;
+    [SerializeField] private float maxLineWidth;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minSpeed; // Minimum speed control for gradient transition
+    [SerializeField] private Gradient gradient; // Gradient field
+    [SerializeField] private float pointLifetime = 2.0f; // Lifetime for each point in seconds
+    [SerializeField] private bool enablePointLifetime = true; // Toggle for point lifetime
 
     private Vector3 lastPoint;
     private float lastTime;
@@ -20,7 +19,7 @@ public class CoolBrush : MonoBehaviour
 
     private void Start()
     {
-        lineSegments = new List<LineSegment>();
+        lineSegments = new List<CoolBrushSegment>();
     }
 
     private void Update()
@@ -48,15 +47,18 @@ public class CoolBrush : MonoBehaviour
         }
 
         // Check for points that have exceeded their lifetime and remove them progressively
-        foreach (var segment in lineSegments)
+        if (enablePointLifetime)
         {
-            segment.RemoveExpiredPoints();
+            foreach (var segment in lineSegments)
+            {
+                segment.RemoveExpiredPoints();
+            }
         }
     }
 
     private void CreateNewLineSegment()
     {
-        var newLineSegment = new LineSegment(this, minLineWidth, maxLineWidth, maxSpeed, minSpeed, gradient, pointLifetime, deathSpeed);
+        var newLineSegment = new CoolBrushSegment(this, minLineWidth, maxLineWidth, maxSpeed, minSpeed, gradient, pointLifetime,  enablePointLifetime);
         lineSegments.Add(newLineSegment);
     }
 
@@ -82,7 +84,7 @@ public class CoolBrush : MonoBehaviour
     }
 }
 
-public class LineSegment
+public class CoolBrushSegment
 {
     private List<Vector3> linePoints;
     private List<float> pointTimestamps;
@@ -96,10 +98,11 @@ public class LineSegment
     private float pointLifetime;
     private float deathSpeed;
     private int positionCount;
+    private bool enablePointLifetime;
 
     private MonoBehaviour monoBehaviour;
 
-    public LineSegment(MonoBehaviour monoBehaviour, float minLineWidth, float maxLineWidth, float maxSpeed, float minSpeed, Gradient gradient, float pointLifetime, float deathSpeed)
+    public CoolBrushSegment(MonoBehaviour monoBehaviour, float minLineWidth, float maxLineWidth, float maxSpeed, float minSpeed, Gradient gradient, float pointLifetime,  bool enablePointLifetime)
     {
         this.monoBehaviour = monoBehaviour;
         this.minLineWidth = minLineWidth;
@@ -109,17 +112,23 @@ public class LineSegment
         this.gradient = gradient;
         this.pointLifetime = pointLifetime;
         this.deathSpeed = deathSpeed;
+        this.enablePointLifetime = enablePointLifetime;
 
         linePoints = new List<Vector3>();
         pointTimestamps = new List<float>();
 
-        lineObject = new GameObject("LineSegment");
+        lineObject = new GameObject("CoolBrushSegment");
         drawLine = lineObject.AddComponent<LineRenderer>();
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;
         drawLine.useWorldSpace = true;
+        drawLine.startColor = new Color(1, 1, 1, 0.5f); // Adjust transparency
+        drawLine.endColor = new Color(1, 1, 1, 0.5f);   // Adjust transparency
 
-        monoBehaviour.StartCoroutine(RemoveExpiredPointsCoroutine());
+        if (enablePointLifetime)
+        {
+            monoBehaviour.StartCoroutine(RemoveExpiredPointsCoroutine());
+        }
     }
 
     public void AddPoint(Vector3 position, float width)
@@ -165,26 +174,30 @@ public class LineSegment
             totalDistance += Vector3.Distance(linePoints[i - 1], linePoints[i]);
         }
 
-        for (int i = 0; i < 8; i++)
+        if (totalDistance > 0)
         {
-            float t = Mathf.Clamp01((float)i / 7 * totalDistance / Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(totalDistance / maxSpeed)));
-            try
+            for (int i = 0; i < 8; i++)
             {
+                float t = Mathf.Clamp01((float)i / 7);
+                float distanceFactor = Mathf.Lerp(minSpeed, maxSpeed, Mathf.Clamp01(totalDistance / maxSpeed));
+                if (distanceFactor > 0)
+                {
+                    t *= totalDistance / distanceFactor;
+                }
+                else
+                {
+                    t = 0; // Ensure t is valid
+                }
+
                 colorKeys[i] = new GradientColorKey(gradient.Evaluate(t), t);
                 alphaKeys[i] = new GradientAlphaKey(gradient.Evaluate(t).a, t);
             }
-            catch
-            {
-                // Suppress the error message
-                colorKeys[i] = new GradientColorKey(Color.black, t);
-                alphaKeys[i] = new GradientAlphaKey(1f, t);
-            }
+
+            Gradient newGradient = new Gradient();
+            newGradient.SetKeys(colorKeys, alphaKeys);
+
+            drawLine.colorGradient = newGradient;
         }
-
-        Gradient newGradient = new Gradient();
-        newGradient.SetKeys(colorKeys, alphaKeys);
-
-        drawLine.colorGradient = newGradient;
     }
 
     public void RemoveExpiredPoints()
@@ -208,14 +221,7 @@ public class LineSegment
         // Remove expired points from the start
         if (expiredCount > 0)
         {
-            try
-            {
-                monoBehaviour.StartCoroutine(ReduceLineLength(expiredCount));
-            }
-            catch
-            {
-                // Suppress the error message
-            }
+            monoBehaviour.StartCoroutine(ReduceLineLength(expiredCount));
         }
     }
 
