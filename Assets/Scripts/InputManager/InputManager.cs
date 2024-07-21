@@ -562,16 +562,16 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = true;
-        CurrentMode = EMode.MAIN_MENU;
+        CurrentMode = EMode.CREATE;
         CurrentBrushCategory = EBrushCategory.NONE;
         Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
         Current2DLineBrush = ELineBrushes2D.NONE;
         Available2DDynamicBrushes = new List<EDynamicBrushes2D>((EDynamicBrushes2D[])Enum.GetValues(typeof(EDynamicBrushes2D)));
         Current2DDynamicBrush = EDynamicBrushes2D.NONE;
-        Current3DBrushType = EBrushType3D.NONE;
+        Current3DBrushType = EBrushType3D.LINE;
         Available3DLineBrushes = new List<ELineBrushes3D>((ELineBrushes3D[])Enum.GetValues(typeof(ELineBrushes3D)));
-        Current3DLineBrush = ELineBrushes3D.NONE;
+        Current3DLineBrush = ELineBrushes3D.SMOOTH;
         Available3DTexturedBrushes = new List<ETexturedBrushes3D>((ETexturedBrushes3D[])Enum.GetValues(typeof(ETexturedBrushes3D)));
         Current3DTexturedBrush = ETexturedBrushes3D.NONE;
         Available3DStructuralBrushes = new List<EStructuralBrushes3D>((EStructuralBrushes3D[])Enum.GetValues(typeof(EStructuralBrushes3D)));

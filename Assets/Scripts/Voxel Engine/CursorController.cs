@@ -1,6 +1,8 @@
 using System;
+using System.Numerics;
 using Marching_Cubes;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public class CursorController : MonoBehaviour
 {
@@ -8,15 +10,15 @@ public class CursorController : MonoBehaviour
     public WorldGenerator worldGenerator;
 
     private int finalBrushType;
-    
-    void Update()
+    private Vector3 handPos;
+    private float brushSize;
+
+    void setBrushSettings()
     {
-        if (inputManager.RightHandIsDrawing3D)
-        {
-            Vector3 handPos = inputManager.RightHandPosition;
+        handPos = inputManager.RightHandPosition;
             transform.position = handPos;
             
-            float brushSize = inputManager.Current3DBrushSettings.brushSize;
+            brushSize = inputManager.Current3DBrushSettings.brushSize;
             // Additional Settings can be added here
             EBrushType3D brushType = inputManager.Current3DBrushType;
             switch (brushType)
@@ -76,8 +78,18 @@ public class CursorController : MonoBehaviour
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+    }
+    void Update()
+    {
+        if (inputManager.RightHandIsDrawing3D)
+        {
+            setBrushSettings();
             // deactivate the voxel at the cursor position and the surrounding voxels
             ChangeVoxelAt(handPos, brushSize, true);
+        } else if (inputManager.RightHandIsErasing3D)
+        {
+            setBrushSettings();
+            ChangeVoxelAt(handPos,brushSize, false );
         }
     }
 
