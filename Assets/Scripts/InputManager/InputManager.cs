@@ -256,7 +256,6 @@ public class InputManager : BaseInputManager
         else
         {
             rightMiddleFingerPinching = false;
-        
         }
     }
 
@@ -299,14 +298,11 @@ public class InputManager : BaseInputManager
                 float valueChange = verticalMovement * sensitivity;
                 lastRingFingerPosition = currentRingFingerPosition;
                 Current2DBrushSettings.opacity = Mathf.Clamp(Current2DBrushSettings.opacity + valueChange, Limits.MIN_OPACITY, Limits.MAX_OPACITY);
-                    
             }
-                
         }
         else
         {
             rightRingFingerPinching = false;
-            
         }
     }
 
@@ -405,29 +401,24 @@ public class InputManager : BaseInputManager
 
         if (!leftHand.IsTracked) return;
         if (!rightHand.IsTracked) return;
+        if (CurrentMode == EMode.MAIN_MENU) return;
 
-        //check no fingers on both hands are pinching
-        if (leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ||
-            leftHand.GetFingerIsPinching(OVRHand.HandFinger.Middle) ||
-            leftHand.GetFingerIsPinching(OVRHand.HandFinger.Ring) ||
-            leftHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
+        //check all fingers are straight on both hands
+        if(!IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
+        if(!IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
+        
+        //check if palms are facing each other
+        if (leftHand.transform.rotation.eulerAngles.x < 5f || leftHand.transform.rotation.eulerAngles.x > 20f ||
+            leftHand.transform.rotation.eulerAngles.y < 150f || leftHand.transform.rotation.eulerAngles.y > 170f ||
+            leftHand.transform.rotation.eulerAngles.z < 75f || leftHand.transform.rotation.eulerAngles.z > 95f) return;
+        
+        if (rightHand.transform.rotation.eulerAngles.x < 340f || rightHand.transform.rotation.eulerAngles.x > 355f ||
+            rightHand.transform.rotation.eulerAngles.y < 340f || rightHand.transform.rotation.eulerAngles.y > 360f ||
+            rightHand.transform.rotation.eulerAngles.z < 270f || rightHand.transform.rotation.eulerAngles.z > 290f) return;
+        
+        if (Vector3.Distance(leftHand.transform.position, rightHand.transform.position) < 4.0f)
         {
-            return;
-        }
-
-        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ||
-            rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle) ||
-            rightHand.GetFingerIsPinching(OVRHand.HandFinger.Ring) ||
-            rightHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
-        {
-            return;
-        }
-
-        //TODO: check if both palms are facing each other
-
-        if (Vector3.Distance(leftHand.transform.position, rightHand.transform.position) < 10.0f)
-        {
-            //OnMainMenu();
+            OnMainMenu();
         }
     }
 
@@ -505,7 +496,6 @@ public class InputManager : BaseInputManager
 
     protected override void OnSwitchMode()
     {
-        Debug.Log("SwitchMode");
         switch (CurrentMode)
         {
             case EMode.MAIN_MENU or EMode.TUTORIAL:
@@ -580,6 +570,15 @@ public class InputManager : BaseInputManager
         float distance = Vector3.Distance(fingerTip.position, palm.position);
         //Debug.Log("Distance: " + distance);
         return distance < 2.35f;
+    }
+    
+    private bool IsFingerStraight(OVRSkeleton skeleton, OVRSkeleton.BoneId fingerTipId)
+    {
+        var fingerTip = skeleton.Bones[(int)fingerTipId].Transform;
+        var palm = skeleton.Bones[(int)OVRSkeleton.BoneId.Hand_WristRoot].Transform;
+
+        float distance = Vector3.Distance(fingerTip.position, palm.position);
+        return distance > 5f;
     }
 
     private void InitializeState()
