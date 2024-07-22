@@ -35,6 +35,7 @@ public class InputManager : BaseInputManager
     public override event Action Undo;
     public override event Action ResetMenu;
     
+    // util variables
     private bool rightMiddleFingerPinching = false;
     private Vector3 lastMiddleFingerPosition = Vector3.zero;
     private bool rightRingFingerPinching = false;
@@ -43,6 +44,7 @@ public class InputManager : BaseInputManager
     private bool leftIndexFingerPinching = false;
     private bool isPointingAtUI = false;
     private bool isChangingEffect = false;
+    private bool isSwitchingMode = false;
 
     public override bool BlockedByHandle { get; set; }
 
@@ -346,6 +348,7 @@ public class InputManager : BaseInputManager
     {
         if (!leftHand.IsTracked) return;
         if (!rightHand.IsTracked) return;
+        if (CurrentMode != EMode.PRESENT) return;
 
         Vector3 leftHandIndexPosition = Vector3.zero;
 
@@ -377,20 +380,22 @@ public class InputManager : BaseInputManager
 
         if (!leftHand.IsTracked) return;
         if (!rightHand.IsTracked) return;
+        if (CurrentMode == EMode.TUTORIAL || CurrentMode == EMode.MAIN_MENU) return;
 
-        //check if all fingers of the left hand are pinching
-        if (!leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ||
-            !leftHand.GetFingerIsPinching(OVRHand.HandFinger.Middle) ||
-            !leftHand.GetFingerIsPinching(OVRHand.HandFinger.Ring) ||
-            !leftHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
+        if(!IsFingerBent(leftHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerBent(leftHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
+
+        if (rightHand.transform.rotation.eulerAngles is { y: > 225.0f } &&
+            Vector3.Distance(leftHand.transform.position, rightHand.transform.position) < 4f)
         {
-            return;
+            if (!isSwitchingMode)
+            {
+                OnSwitchMode();
+                isSwitchingMode = true;
+            }
         }
-
-        if (rightHand.transform.rotation.eulerAngles is { y: > 250.0f } &&
-            Vector3.Distance(leftHand.transform.position, rightHand.transform.position) < 10.0f)
+        else
         {
-            OnSwitchMode();
+            isSwitchingMode = false;
         }
     }
 
@@ -479,7 +484,6 @@ public class InputManager : BaseInputManager
 
     protected override void OnChangeEffect()
     {
-        Debug.Log("Change Effect");
         if (CurrentMode != EMode.PRESENT)
         {
             return;
@@ -501,6 +505,7 @@ public class InputManager : BaseInputManager
 
     protected override void OnSwitchMode()
     {
+        Debug.Log("SwitchMode");
         switch (CurrentMode)
         {
             case EMode.MAIN_MENU or EMode.TUTORIAL:
@@ -565,6 +570,16 @@ public class InputManager : BaseInputManager
     protected override void OnResetMenu()
     {
         ResetMenu?.Invoke();
+    }
+    
+    private bool IsFingerBent(OVRSkeleton skeleton, OVRSkeleton.BoneId fingerTipId)
+    {
+        var fingerTip = skeleton.Bones[(int)fingerTipId].Transform;
+        var palm = skeleton.Bones[(int)OVRSkeleton.BoneId.Hand_WristRoot].Transform;
+
+        float distance = Vector3.Distance(fingerTip.position, palm.position);
+        //Debug.Log("Distance: " + distance);
+        return distance < 2.35f;
     }
 
     private void InitializeState()
