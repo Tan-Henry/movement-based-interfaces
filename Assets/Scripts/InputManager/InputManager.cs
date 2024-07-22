@@ -42,6 +42,7 @@ public class InputManager : BaseInputManager
     private float sensitivity = 0.01f;
     private bool leftIndexFingerPinching = false;
     private bool isPointingAtUI = false;
+    private bool isChangingEffect = false;
 
     public override bool BlockedByHandle { get; set; }
 
@@ -354,13 +355,19 @@ public class InputManager : BaseInputManager
             leftHandIndexPosition = b.Transform.position;
             break;
         }
-
-        if (rightHand.transform.rotation.eulerAngles is { y: > 250.0f } &&
-            leftHand.GetFingerIsPinching(OVRHand.HandFinger.Middle) &&
+        
+        if (rightHand.transform.rotation.eulerAngles is { y: > 215.0f } &&
             !leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) &&
-            Vector3.Distance(leftHandIndexPosition, rightHand.transform.position) < 10.0f)
+            Vector3.Distance(leftHandIndexPosition, rightHand.transform.position) < 2.5f)
         {
-            OnChangeEffect();
+            if (!isChangingEffect)
+            {
+                isChangingEffect = true;
+                OnChangeEffect();
+            }
+        }else
+        {
+            isChangingEffect = false;
         }
     }
 
@@ -472,6 +479,7 @@ public class InputManager : BaseInputManager
 
     protected override void OnChangeEffect()
     {
+        Debug.Log("Change Effect");
         if (CurrentMode != EMode.PRESENT)
         {
             return;
