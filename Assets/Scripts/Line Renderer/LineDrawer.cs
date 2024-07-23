@@ -13,7 +13,6 @@ public abstract class LineDrawer : MonoBehaviour
     public float lineWidth;
     private UndoRedoScript _undoRedoScript;
     [SerializeField] protected BaseInputManager inputManager;
-    private Material originalMaterial;
 
     protected virtual void Start()
     {
@@ -52,7 +51,6 @@ public abstract class LineDrawer : MonoBehaviour
         newLine = new GameObject();
         newLine.tag = "Line";
         drawLine = newLine.AddComponent<LineRenderer>();
-        originalMaterial = drawLine.material;
         drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.startWidth = lineWidth;
         drawLine.endWidth = lineWidth;
@@ -96,26 +94,5 @@ public abstract class LineDrawer : MonoBehaviour
     public LineRenderer GetDrawLine()
     {
         return drawLine;
-    }
-
-    public GameObject GetNewLine()
-    {
-        return newLine;
-    }
-
-    public void ApplyMaterial(Material material)
-    {
-        if (drawLine != null && material != null)
-        {
-            drawLine.material = material;
-        }
-    }
-
-    public void RevertMaterial()
-    {
-        if (drawLine != null && originalMaterial != null)
-        {
-            drawLine.material = originalMaterial;
-        }
     }
 }

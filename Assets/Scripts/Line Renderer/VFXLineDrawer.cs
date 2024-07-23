@@ -8,7 +8,7 @@ public class VFXLineDrawer : LineDrawer
     public float vfxSpawntime = 5;
     private float elapsedTime;
 
-    public override void InitializeLine()
+    protected override void Update()
     {
         base.Update();
         if (isDrawing)
@@ -23,15 +23,19 @@ public class VFXLineDrawer : LineDrawer
             visualEffect.Play();
             elapsedTime += Time.deltaTime;
         }
-        GameObject currentLine = GetNewLine();
-        visualEffect = currentLine.AddComponent<VisualEffect>();
     }
+    // protected override void InitializeLine()
+    // {
+    //     base.InitializeLine();
+    //     visualEffect = newLine.AddComponent<VisualEffect>();
+    //     visualEffect.visualEffectAsset = visualEffectAsset;
+    // }
 
     protected override void OnLineComplete()
     {
         base.OnLineComplete();
         Mesh mesh = new Mesh { name = "Line" };
-        GetDrawLine().BakeMesh(mesh);
+        drawLine.BakeMesh(mesh);
         visualEffect.SetMesh("LineMesh", mesh);
         elapsedTime = 0f;
     }

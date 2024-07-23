@@ -7,7 +7,6 @@ using UnityEngine;
 public class LineManager : MonoBehaviour
 {
     [SerializeField] private BaseInputManager inputManager;
-    [SerializeField] private GameObject lineDrawer;
     private MaskBrushDrawer _maskBrushDrawer;
     private SimpleLineDrawer _simpleLineDrawer;
     private DynamicLineDrawing _dynamicLineDrawing;
@@ -19,10 +18,10 @@ public class LineManager : MonoBehaviour
     {
         inputManager.ChangeEffect += OnChangeEffect;
         
-        _maskBrushDrawer = lineDrawer.GetComponent<MaskBrushDrawer>();
-        _simpleLineDrawer = lineDrawer.GetComponent<SimpleLineDrawer>();
-        _dynamicLineDrawing = lineDrawer.GetComponent<DynamicLineDrawing>();
-        _vfxLineDrawer = lineDrawer.GetComponent<VFXLineDrawer>();
+        _maskBrushDrawer = GetComponent<MaskBrushDrawer>();
+        _simpleLineDrawer = GetComponent<SimpleLineDrawer>();
+        _dynamicLineDrawing = GetComponent<DynamicLineDrawing>();
+        _vfxLineDrawer = GetComponent<VFXLineDrawer>();
         
         _lineComponents.Add(_maskBrushDrawer);
         _lineComponents.Add(_simpleLineDrawer);
