@@ -92,7 +92,7 @@ public class ColorPicker : MonoBehaviour
             }
         }
 
-        Vector3 halfSize = largerCubeSize * 0.27f;
+        Vector3 halfSize = largerCubeSize * 0.34f;
 
         // Bottom edges
         CreateEdge(new Vector3(-halfSize.x, -halfSize.y, -halfSize.z), new Vector3(-halfSize.x, -halfSize.y, halfSize.z));
