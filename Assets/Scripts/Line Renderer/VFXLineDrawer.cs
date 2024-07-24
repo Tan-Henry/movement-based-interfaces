@@ -10,7 +10,27 @@ public class VFXLineDrawer : LineDrawer
 
     protected override void Update()
     {
-        base.Update();
+        if (inputManager.RightHandIsEffecting)
+        {
+            if (!isDrawing)
+            {
+                InitializeLine();
+                isDrawing = true;
+            }
+            linePoints.Add(inputManager.RightHandPosition);
+            drawLine.positionCount = linePoints.Count;
+            drawLine.SetPositions(linePoints.ToArray());
+            timer = timerDelay;
+        }
+        else
+        {
+            if (isDrawing)
+            {
+                OnLineComplete();
+                linePoints.Clear();
+                isDrawing = false;
+            }
+        }
         if (isDrawing)
         {
             Mesh mesh = new Mesh { name = "Line" };
@@ -24,6 +44,8 @@ public class VFXLineDrawer : LineDrawer
             elapsedTime += Time.deltaTime;
         }
     }
+    
+    
     // protected override void InitializeLine()
     // {
     //     base.InitializeLine();

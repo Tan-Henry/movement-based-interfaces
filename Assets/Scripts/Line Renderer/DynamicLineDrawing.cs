@@ -11,6 +11,7 @@ public class DynamicLineDrawing : LineDrawer
     public float maxSpeed;
     private int positionCount;
     private float totalLengthOld;
+    public Color color;
 
     protected override void Start()
     {
@@ -53,15 +54,13 @@ public class DynamicLineDrawing : LineDrawer
 
     public override void InitializeLine()
     {
+        base.InitializeLine();
         positionCount = 0;
-        newLine = new GameObject();
-        newLine.tag = "Line";
-        drawLine = newLine.AddComponent<LineRenderer>();
-        drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;
-        drawLine.startColor = Color.blue;
-        drawLine.endColor = Color.blue;
         drawLine.useWorldSpace = true;
+
+        drawLine.startColor = color;
+        drawLine.endColor = color;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)

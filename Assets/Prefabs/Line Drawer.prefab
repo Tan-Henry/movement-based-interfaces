@@ -52,6 +52,7 @@ MonoBehaviour:
   timerDelay: 0
   lineWidth: 1
   inputManager: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   visualEffectAsset: {fileID: 8926484042661614526, guid: a48bb54b10d724d0d8aa064308e936bd,
     type: 3}
   vfxSpawntime: 5
@@ -70,6 +71,7 @@ MonoBehaviour:
   timerDelay: 0
   lineWidth: 1
   inputManager: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   color: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &5417209072018526579
 MonoBehaviour:
@@ -86,6 +88,7 @@ MonoBehaviour:
   timerDelay: 0
   lineWidth: 1
   inputManager: {fileID: 0}
+  lineMaterial: {fileID: 0}
   material: {fileID: 2100000, guid: 97f6b5f06cfd44ffdaf833c4e6a443b6, type: 2}
 --- !u!114 &141200282566195397
 MonoBehaviour:
@@ -128,6 +131,8 @@ MonoBehaviour:
   timerDelay: 0
   lineWidth: 1
   inputManager: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   minLineWidth: 0.2
   maxLineWidth: 3
   maxSpeed: 0
+  color: {r: 0, g: 0, b: 0, a: 0}
