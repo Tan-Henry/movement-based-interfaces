@@ -29,13 +29,19 @@ public class ColorPicker : MonoBehaviour
 
     [SerializeField]
     private Color selectedColor;
-    public Color SelectedColor
+
+    private Color SelectedColor
     {
-        get { return selectedColor; }
-        private set { selectedColor = value; }
+        get => selectedColor;
+        set => selectedColor = value;
     }
 
     private bool lastUseHSV;
+    
+    private Renderer innerCubeRGBRenderer;
+    private Renderer innerCubeHueRenderer;
+    private Renderer innerCubeSaturationRenderer;
+    private Renderer innerCubeValueRenderer;
 
     private void Start()
     {
@@ -64,6 +70,13 @@ public class ColorPicker : MonoBehaviour
 
         // Initialize inner cubes position based on inspector values
         UpdateInnerCubePositions();
+        
+        innerCubeRGBRenderer = innerCubeRGB.GetComponent<Renderer>();
+        innerCubeHueRenderer = innerCubeHue.GetComponent<Renderer>();
+        innerCubeSaturationRenderer = innerCubeSaturation.GetComponent<Renderer>();
+        innerCubeValueRenderer = innerCubeValue.GetComponent<Renderer>();
+        
+        UpdateCubeVisibility();
     }
 
     private void CreateColoredEdges()
@@ -225,15 +238,20 @@ public class ColorPicker : MonoBehaviour
             SelectedColor = new Color(red / 255f, green / 255f, blue / 255f);
         }
 
+        if (!innerCubeValueRenderer || !innerCubeSaturationRenderer || !innerCubeHueRenderer || !innerCubeRGBRenderer)
+        {
+            return;
+        }
+        
         if (useHSV)
         {
-            innerCubeHue.GetComponent<Renderer>().material.color = SelectedColor;
-            innerCubeSaturation.GetComponent<Renderer>().material.color = SelectedColor;
-            innerCubeValue.GetComponent<Renderer>().material.color = SelectedColor;
+            innerCubeHueRenderer.material.color = SelectedColor;
+            innerCubeSaturationRenderer.material.color = SelectedColor;
+            innerCubeValueRenderer.material.color = SelectedColor;
         }
         else
         {
-            innerCubeRGB.GetComponent<Renderer>().material.color = SelectedColor;
+            innerCubeRGBRenderer.material.color = SelectedColor;
         }
     }
 
