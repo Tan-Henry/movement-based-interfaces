@@ -422,6 +422,8 @@ public class InputManager : BaseInputManager
     private void CheckTurnOnColorPicker()
     {
         if (!leftHand.IsTracked) return;
+        if (CurrentMode != EMode.CREATE) return;
+        //TODO: return if rightHandisDrawing or rightHandisErasing
 
         //check if no fingers are pinching
         if (leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ||
@@ -431,10 +433,11 @@ public class InputManager : BaseInputManager
         {
             return;
         }
-
+        
         //leftHand palm facing up
-        if (leftHand.transform.rotation.eulerAngles is { y: > 250.0f })
+        if (leftHand.transform.rotation.eulerAngles is { y: > 220.0f })
         {
+            Debug.Log("TurnOnColorPicker");
             OnTurnOnColorPicker();
         }
     }
@@ -444,7 +447,7 @@ public class InputManager : BaseInputManager
         if (!leftHand.IsTracked) return;
 
         //leftHand palm facing down
-        if (leftHand.transform.rotation.eulerAngles is { y: < 80.0f })
+        if (leftHand.transform.rotation.eulerAngles is { y: < 200.0f })
         {
             OnTurnOffColorPicker();
         }
