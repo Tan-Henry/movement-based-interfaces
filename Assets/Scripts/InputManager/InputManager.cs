@@ -575,7 +575,7 @@ public class InputManager : BaseInputManager
         Available3DStructuralBrushes = new List<EStructuralBrushes3D>((EStructuralBrushes3D[])Enum.GetValues(typeof(EStructuralBrushes3D)));
         Current3DStructuralBrush = EStructuralBrushes3D.NONE;
         Current2DBrushSettings = new BrushSettings2D { brushSize = 1f, opacity = 1 };
-        Current3DBrushSettings = new BrushSettings3D { brushSize = 1f };
+        Current3DBrushSettings = new BrushSettings3D { brushSize = 2f };
         AvailableEffects = new List<EEffects>((EEffects[])Enum.GetValues(typeof(EEffects)));
         CurrentEffect = EEffects.NONE;
     }
