@@ -140,12 +140,8 @@ public class InputManager : BaseInputManager
 
     private void CheckIndexFingerPinching()
     {
+        RightHandIsColorPicking = BlockedByColorPicker && rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
 
-        if (BlockedByColorPicker)
-        {
-            RightHandIsColorPicking = rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index);
-        }
-        
         if (IsDrawingState)
         {
             if (((BlockedByHandle || isPointingAtUI || BlockedByColorPicker) && !RightHandIsDrawing2D && !RightHandIsDrawing3D && !RightHandIsErasing2D && !RightHandIsErasing3D) || CurrentMode != EMode.CREATE)
@@ -430,8 +426,13 @@ public class InputManager : BaseInputManager
     private void CheckTurnOnColorPicker()
     {
         if (!leftHand.IsTracked) return;
-        if (CurrentMode != EMode.CREATE) return;
-        //TODO: return if rightHandisDrawing or rightHandisErasing
+
+        if (RightHandIsDrawing2D || RightHandIsErasing2D || RightHandIsDrawing3D || RightHandIsErasing3D ||
+            BlockedByHandle || CurrentMode != EMode.CREATE)
+        {
+            OnTurnOffColorPicker();
+            return;
+        }
 
         //check if no fingers are pinching
         if (leftHand.GetFingerIsPinching(OVRHand.HandFinger.Index) ||
@@ -543,7 +544,6 @@ public class InputManager : BaseInputManager
     
     protected override void OnTurnOffColorPicker()
     {
-        if (CurrentMode != EMode.CREATE) return;
         TurnOffColorPicker?.Invoke();
     }
 
