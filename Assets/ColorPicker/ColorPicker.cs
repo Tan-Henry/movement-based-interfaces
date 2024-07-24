@@ -33,9 +33,8 @@ public class ColorPicker : MonoBehaviour
 
     private void InitializeCubes()
     {
-        // Set the size of the larger and inner cubes
-        largerCubeSize = largerCube.GetComponent<Renderer>().bounds.size;
-        innerCubeSize = innerCubeRGB.GetComponent<Renderer>().bounds.size;
+        largerCubeSize = largerCube.transform.localScale;
+        innerCubeSize = innerCubeRGB.transform.localScale;
 
         // Create colored edges for the larger cube
         CreateColoredEdges();
@@ -60,7 +59,7 @@ public class ColorPicker : MonoBehaviour
             }
         }
 
-        Vector3 halfSize = largerCubeSize * 0.34f;
+        Vector3 halfSize = largerCubeSize * 0.5f;
 
         // Bottom edges
         CreateEdge(new Vector3(-halfSize.x, -halfSize.y, -halfSize.z),
@@ -109,7 +108,7 @@ public class ColorPicker : MonoBehaviour
     {
         return new Color(position.x / largerCubeSize.x, position.y / largerCubeSize.y, position.z / largerCubeSize.z);
     }
-    
+
     private void Update()
     {
         UpdateCubePosition();

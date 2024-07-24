@@ -1576,6 +1576,11 @@ PrefabInstance:
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 1746544024}
+    - target: {fileID: 2793009299289761920, guid: e26e5c71d467b5e49aa0968a08410154,
+        type: 3}
+      propertyPath: edgeThickness
+      value: 0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 3052450535472277270, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
       propertyPath: m_IsActive
@@ -1664,17 +1669,27 @@ PrefabInstance:
     - target: {fileID: 4712887000395520970, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4712887000395520970, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4712887000395520970, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4712887000395520970, guid: e26e5c71d467b5e49aa0968a08410154,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4712887000395520970, guid: e26e5c71d467b5e49aa0968a08410154,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4897270940422420322, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
@@ -1706,21 +1721,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-    - target: {fileID: 8176976157888968853, guid: e26e5c71d467b5e49aa0968a08410154,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8176976157888968853, guid: e26e5c71d467b5e49aa0968a08410154,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8176976157888968853, guid: e26e5c71d467b5e49aa0968a08410154,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 1.4
-      objectReference: {fileID: 0}
     - target: {fileID: 8176976157888968853, guid: e26e5c71d467b5e49aa0968a08410154,
         type: 3}
       propertyPath: m_IsTrigger
