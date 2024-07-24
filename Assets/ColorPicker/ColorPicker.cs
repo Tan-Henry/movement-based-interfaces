@@ -10,6 +10,8 @@ public class ColorPicker : MonoBehaviour
     public GameObject innerCubeValue;
     public float edgeThickness = 0.02f;
     public bool useHSV = false; // Toggle to switch between RGB and HSV
+    
+    [SerializeField] private BaseInputManager inputManager;
 
     [Range(0, 360)]
     public int hue = 0;
@@ -157,18 +159,25 @@ public class ColorPicker : MonoBehaviour
             // Update visibility of inner cubes
             UpdateCubeVisibility();
         }
-
-        // Update the position of the inner cubes based on user input
-        HandleInput();
+        
+        UpdateCubePosition();
 
         // Ensure the inner cubes stay within the bounds of the larger cube
         ConstrainInnerCubes();
 
         // Update the selected color based on the inner cubes' positions
         UpdateSelectedColor();
-
-        // Update inner cube positions based on inspector values
-        UpdateInnerCubePositions();
+    }
+    
+    private void UpdateCubePosition()
+    {
+        if (inputManager.RightHandIsColorPicking)
+        {
+            var worldPickingPosition = inputManager.RightHandPosition;
+            var localPickingPosition = largerCube.transform.InverseTransformPoint(worldPickingPosition);
+        
+            innerCubeRGB.transform.localPosition = localPickingPosition;   
+        }
     }
 
     private void HandleInput()
@@ -252,6 +261,7 @@ public class ColorPicker : MonoBehaviour
         else
         {
             innerCubeRGBRenderer.material.color = SelectedColor;
+            inputManager.Current2DBrushSettings.color = SelectedColor;
         }
     }
 
