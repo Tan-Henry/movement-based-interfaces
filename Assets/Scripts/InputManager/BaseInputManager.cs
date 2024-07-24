@@ -207,8 +207,8 @@ public enum EEffects
 
 public static class Limits
 {
-    public const int MAX_BRUSH_SIZE = 5;
-    public const int MIN_BRUSH_SIZE = 1;
+    public const float MAX_BRUSH_SIZE = 3;
+    public const float MIN_BRUSH_SIZE = 0.1f;
     public const float MAX_OPACITY = 1.0f;
     public const float MIN_OPACITY = 0.1f;
 }

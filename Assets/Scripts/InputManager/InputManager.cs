@@ -216,11 +216,9 @@ public class InputManager : BaseInputManager
                 rightMiddleFingerPinching = true;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
-                    {
-                        lastMiddleFingerPosition = b.Transform.position;
-                        break;
-                    }
+                    if (b.Id != OVRSkeleton.BoneId.Hand_MiddleTip) continue;
+                    lastMiddleFingerPosition = b.Transform.position;
+                    break;
                 }
             }
             else
@@ -234,7 +232,7 @@ public class InputManager : BaseInputManager
                 }
 
                 float verticalMovement = currentMiddleFingerPosition.y - lastMiddleFingerPosition.y;
-                int valueChange = Mathf.RoundToInt(verticalMovement);
+                float valueChange = verticalMovement * sensitivity;
                 lastMiddleFingerPosition = currentMiddleFingerPosition;
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
