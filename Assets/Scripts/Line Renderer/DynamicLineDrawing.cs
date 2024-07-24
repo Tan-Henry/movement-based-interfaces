@@ -11,7 +11,6 @@ public class DynamicLineDrawing : LineDrawer
     public float maxSpeed;
     private int positionCount;
     private float totalLengthOld;
-    public Color color;
 
     protected override void Start()
     {
@@ -58,9 +57,6 @@ public class DynamicLineDrawing : LineDrawer
         positionCount = 0;
         drawLine.positionCount = 0;
         drawLine.useWorldSpace = true;
-
-        drawLine.startColor = color;
-        drawLine.endColor = color;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)

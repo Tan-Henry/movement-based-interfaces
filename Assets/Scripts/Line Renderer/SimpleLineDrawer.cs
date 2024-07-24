@@ -7,7 +7,7 @@ public class SimpleLineDrawer : LineDrawer
     public override void InitializeLine()
     {
         base.InitializeLine();
-        drawLine.startColor = color;
-        drawLine.endColor = color;
+        //drawLine.startColor = color;
+        //drawLine.endColor = color;
     }
 }
