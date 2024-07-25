@@ -13,7 +13,7 @@ namespace UI
 
         private void Update()
         {
-            if (inputManager.whatever)
+            if (inputManager.rightMiddleFingerPinching)
             {
                 floatingMenu.SetActive(true);
                 brushSizeSlider.value = inputManager.Current2DBrushSettings.brushSize;

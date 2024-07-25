@@ -36,9 +36,9 @@ public class InputManager : BaseInputManager
     public override event Action Undo;
     public override event Action ResetMenu;
     
-    private bool rightMiddleFingerPinching = false;
+    public override bool rightMiddleFingerPinching {get; set;}
     private Vector3 lastMiddleFingerPosition = Vector3.zero;
-    private bool rightRingFingerPinching = false;
+    public override bool rightRingFingerPinching {get; set;}
     private Vector3 lastRingFingerPosition = Vector3.zero;
     private float sensitivity = 0.01f;
     private bool leftIndexFingerPinching = false;

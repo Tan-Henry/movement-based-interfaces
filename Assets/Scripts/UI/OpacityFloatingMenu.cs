@@ -14,7 +14,7 @@ namespace UI
         private void Update()
         {
 
-            if (!inputManager.whatever)
+            if (!inputManager.rightRingFingerPinching)
             {
                 floatingMenu.SetActive(false);
             } else
