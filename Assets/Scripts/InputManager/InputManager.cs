@@ -224,11 +224,9 @@ public class InputManager : BaseInputManager
                 rightMiddleFingerPinching = true;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_MiddleTip)
-                    {
-                        lastMiddleFingerPosition = b.Transform.position;
-                        break;
-                    }
+                    if (b.Id != OVRSkeleton.BoneId.Hand_MiddleTip) continue;
+                    lastMiddleFingerPosition = b.Transform.position;
+                    break;
                 }
             }
             else
@@ -588,11 +586,11 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = true;
-        CurrentMode = EMode.CREATE;
-        CurrentBrushCategory = EBrushCategory.BRUSH_2D;
-        Current2DBrushType = EBrushType2D.LINE;
+        CurrentMode = EMode.MAIN_MENU;
+        CurrentBrushCategory = EBrushCategory.NONE;
+        Current2DBrushType = EBrushType2D.NONE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
-        Current2DLineBrush = ELineBrushes2D.STANDARD;
+        Current2DLineBrush = ELineBrushes2D.NONE;
         Available2DDynamicBrushes = new List<EDynamicBrushes2D>((EDynamicBrushes2D[])Enum.GetValues(typeof(EDynamicBrushes2D)));
         Current2DDynamicBrush = EDynamicBrushes2D.NONE;
         Current3DBrushType = EBrushType3D.NONE;

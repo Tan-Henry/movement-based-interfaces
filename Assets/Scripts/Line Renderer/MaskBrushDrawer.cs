@@ -7,8 +7,7 @@ public class MaskBrushDrawer : LineDrawer
     public override void InitializeLine()
     {
         base.InitializeLine();
-        LineRenderer lineRenderer = GetDrawLine();
-        lineRenderer.textureMode = LineTextureMode.Tile;
-        lineRenderer.material = material;
+        drawLine.textureMode = LineTextureMode.Tile;
+        drawLine.material = material;
     }
 }
