@@ -6,10 +6,9 @@ public class DynamicLineDrawing : LineDrawer
 {
     private Vector3 lastPoint;
     private float lastTime;
-    public float minLineWidth;
-    public float maxLineWidth;
-    public float maxSpeed;
-    private float lastSpeed;
+    public float minLineWidth = 0.05f;
+    public float maxLineWidth = 1.5f;
+    public float maxSpeed = 10;
     private int positionCount;
     private float totalLengthOld;
 
@@ -35,12 +34,11 @@ public class DynamicLineDrawing : LineDrawer
             float speed = CalculateSpeed(lastPoint, currentPoint, lastTime, currentTime);
 
             float t = Mathf.Clamp01(speed / maxSpeed);
-            float width = Mathf.Lerp(minLineWidth, maxLineWidth, t);
+            float width = Mathf.Lerp(minLineWidth, maxLineWidth, t) * inputManager.Current2DBrushSettings.brushSize;
             AddPoint(currentPoint, width);
 
             lastPoint = currentPoint;
             lastTime = currentTime;
-            lastSpeed = speed;
         }
         else
         {
@@ -55,14 +53,9 @@ public class DynamicLineDrawing : LineDrawer
 
     public override void InitializeLine()
     {
+        base.InitializeLine();
         positionCount = 0;
-        newLine = new GameObject();
-        newLine.tag = "Line";
-        drawLine = newLine.AddComponent<LineRenderer>();
-        drawLine.material = new Material(Shader.Find("Sprites/Default"));
         drawLine.positionCount = 0;
-        drawLine.startColor = Color.blue;
-        drawLine.endColor = Color.blue;
         drawLine.useWorldSpace = true;
     }
 
@@ -107,28 +100,30 @@ public class DynamicLineDrawing : LineDrawer
             }
 
             // calculate the time factor we have to apply to all already existing keyframes
-            var factor = totalLengthOld / totalLengthNew;
-
-            // then store for the next added point
-            totalLengthOld = totalLengthNew;
-
-            // now move all existing keys which are currently based on the totalLengthOld to according positions based on the totalLengthNew
-            // we can skip the first one as it will stay at 0 always
-            var keys = curve.keys;
-            for (var i = 1; i < keys.Length; i++)
+            if (totalLengthNew > 0)
             {
-                var key = keys[i];
-                key.time *= factor;
-                if (!key.time.Equals(Single.NaN))
-                {
-                    curve.MoveKey(i, key);
-                }
-            }
-            
-            // add the new last keyframe
-            curve.AddKey(1f, width);
-        }
+                var factor = totalLengthOld / totalLengthNew;
 
+                // then store for the next added point
+                totalLengthOld = totalLengthNew;
+
+                // now move all existing keys which are currently based on the totalLengthOld to according positions based on the totalLengthNew
+                // we can skip the first one as it will stay at 0 always
+                var keys = curve.keys;
+                for (var i = 1; i < keys.Length; i++)
+                {
+                    var key = keys[i];
+                    key.time *= factor;
+                    if (!float.IsNaN(key.time) && !float.IsNaN(key.value))
+                    {
+                        curve.MoveKey(i, key);
+                    }
+                }
+            
+                // add the new last keyframe
+                curve.AddKey(1f, width);
+            }
+        }
         // finally write the curve back to the line
         drawLine.widthCurve = curve;
     }

@@ -31,6 +31,9 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //erase-action 3D right hand
     public abstract bool RightHandIsErasing3D { get; protected set; }
+    
+    //color-picker-action right hand
+    public abstract bool RightHandIsColorPicking { get; protected set; }
 
     // draw-action head
     public abstract Vector3 HeadDrawPosition { get; protected set; }
@@ -109,6 +112,9 @@ public abstract class BaseInputManager : MonoBehaviour
     // Other Functions
     public abstract bool IsDrawingState { get; set; }
     public abstract bool BlockedByHandle { get; set; }
+    public abstract bool BlockedByColorPicker { get; set; }
+    public abstract bool rightRingFingerPinching {get; set;}
+    public abstract bool rightMiddleFingerPinching {get; set;}
 
     protected virtual void Update()
     {
@@ -190,6 +196,7 @@ public class BrushSettings2D
 {
     public float brushSize;
     public float opacity;
+    public Color color;
 }
 
 public class BrushSettings3D 
@@ -207,8 +214,8 @@ public enum EEffects
 
 public static class Limits
 {
-    public const int MAX_BRUSH_SIZE = 5;
-    public const int MIN_BRUSH_SIZE = 1;
+    public const float MAX_BRUSH_SIZE = 5;
+    public const float MIN_BRUSH_SIZE = 0.1f;
     public const float MAX_OPACITY = 1.0f;
     public const float MIN_OPACITY = 0.1f;
 }
