@@ -250,7 +250,6 @@ public class InputManager : BaseInputManager
                 {
                     Current2DBrushSettings.brushSize = Mathf.Clamp(Current2DBrushSettings.brushSize + valueChange,
                         Limits.MIN_BRUSH_SIZE, Limits.MAX_BRUSH_SIZE);
-                    Debug.Log("Brush Size: " + Current2DBrushSettings.brushSize);
                 }
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
@@ -302,7 +301,6 @@ public class InputManager : BaseInputManager
                 float valueChange = verticalMovement * OpacitySensitivity;
                 lastRingFingerPosition = currentRingFingerPosition;
                 Current2DBrushSettings.opacity = Mathf.Clamp(Current2DBrushSettings.opacity + valueChange, Limits.MIN_OPACITY, Limits.MAX_OPACITY);
-                Debug.Log("Opacity: " + Current2DBrushSettings.opacity);
             }
         }
         else
@@ -410,8 +408,6 @@ public class InputManager : BaseInputManager
         if(!IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
         if(!IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
         
-        //Debug.Log("Left Hand: " + leftHand.transform.rotation.eulerAngles);
-        //Debug.Log("Right Hand: " + rightHand.transform.rotation.eulerAngles);
         //check if palms are facing each other
         if (leftHand.transform.rotation.eulerAngles.x < 5f || leftHand.transform.rotation.eulerAngles.x > 30f ||
             leftHand.transform.rotation.eulerAngles.y < 150f || leftHand.transform.rotation.eulerAngles.y > 190f ||
@@ -450,7 +446,6 @@ public class InputManager : BaseInputManager
         //leftHand palm facing up
         if (leftHand.transform.rotation.eulerAngles is { y: > 220.0f })
         {
-            Debug.Log("TurnOnColorPicker");
             OnTurnOnColorPicker();
         }
     }
@@ -526,7 +521,6 @@ public class InputManager : BaseInputManager
 
     public override void OnMainMenu()
     {
-        Debug.Log("Main Menu");
         CurrentMode = EMode.MAIN_MENU;
         CurrentEffect = EEffects.NONE;
         Current2DBrushType = EBrushType2D.NONE;
@@ -581,7 +575,6 @@ public class InputManager : BaseInputManager
         var palm = skeleton.Bones[(int)OVRSkeleton.BoneId.Hand_WristRoot].Transform;
 
         float distance = Vector3.Distance(fingerTip.position, palm.position);
-        //Debug.Log("Distance: " + distance);
         return distance < 2.35f;
     }
     
