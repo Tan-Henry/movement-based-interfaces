@@ -153,7 +153,37 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   pointLifetime: 2
   checkInterval: 0.1
-  gradient:
+  gradientRight:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 0.6672303, g: 0.8941451, b: 0.9245283, a: 0.13333334}
+    key2: {r: 0.047058824, g: 0.66867596, b: 0.78431374, a: 1}
+    key3: {r: 0.13318795, g: 0.31833285, b: 0.6886792, a: 0.9137255}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 6746
+    ctime2: 21010
+    ctime3: 50693
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 2120
+    atime2: 6554
+    atime3: 49537
+    atime4: 65342
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 5
+  gradientLeft:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0, g: 0.26415092, b: 0.013649075, a: 0.13333334}

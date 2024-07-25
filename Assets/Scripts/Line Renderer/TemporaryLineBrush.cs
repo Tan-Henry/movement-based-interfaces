@@ -6,76 +6,125 @@ public class TemporaryLineBrush : LineDrawer
 {
     public float pointLifetime = 2.0f; // Lifetime for each point in seconds
     public float checkInterval = 0.1f; // Interval to check for expired points
-    private float lineCompleteTime;
-    public Gradient gradient;
+    public Gradient gradientRight;
+    public Gradient gradientLeft;
+
+    private bool isRightHandDrawing;
+    private bool isLeftHandDrawing;
+
+    private float rightHandLineCompleteTime;
+    private float leftHandLineCompleteTime;
+
+    private List<Vector3> rightHandLinePoints;
+    private List<Vector3> leftHandLinePoints;
+
+    private LineRenderer rightHandDrawLine;
+    private LineRenderer leftHandDrawLine;
+
+    private GameObject rightHandLine;
+    private GameObject leftHandLine;
+
+    protected override void Start()
+    {
+        base.Start();
+        rightHandLinePoints = new List<Vector3>();
+        leftHandLinePoints = new List<Vector3>();
+    }
 
     protected override void Update()
     {
+        HandleRightHandDrawing();
+        HandleLeftHandDrawing();
+    }
+
+    private void HandleRightHandDrawing()
+    {
         if (inputManager.RightHandIsEffecting)
         {
-            if (!isDrawing)
+            if (!isRightHandDrawing)
             {
-                InitializeLine();
-                isDrawing = true;
+                InitializeRightHandLine();
+                isRightHandDrawing = true;
             }
-            linePoints.Add(inputManager.RightHandPosition);
-            drawLine.positionCount = linePoints.Count;
-            drawLine.SetPositions(linePoints.ToArray());
+            rightHandLinePoints.Add(inputManager.RightHandPosition);
+            rightHandDrawLine.positionCount = rightHandLinePoints.Count;
+            rightHandDrawLine.SetPositions(rightHandLinePoints.ToArray());
         }
-        else if (isDrawing)
+        else if (isRightHandDrawing)
         {
-            OnLineComplete();
-            isDrawing = false;
+            OnRightHandLineComplete();
+            isRightHandDrawing = false;
         }
-        
+    }
+
+    private void HandleLeftHandDrawing()
+    {
         if (inputManager.LeftHandIsEffecting)
         {
-            if (!isDrawing)
+            if (!isLeftHandDrawing)
             {
-                InitializeLine();
-                isDrawing = true;
+                InitializeLeftHandLine();
+                isLeftHandDrawing = true;
             }
-            linePoints.Add(inputManager.LeftHandPosition);
-            drawLine.positionCount = linePoints.Count;
-            drawLine.SetPositions(linePoints.ToArray());
+            leftHandLinePoints.Add(inputManager.LeftHandPosition);
+            leftHandDrawLine.positionCount = leftHandLinePoints.Count;
+            leftHandDrawLine.SetPositions(leftHandLinePoints.ToArray());
         }
-        else if (isDrawing)
+        else if (isLeftHandDrawing)
         {
-            OnLineComplete();
-            isDrawing = false;
+            OnLeftHandLineComplete();
+            isLeftHandDrawing = false;
         }
     }
 
-    public override void InitializeLine()
+    private void InitializeRightHandLine()
     {
-        newLine = new GameObject("LineSegment");
-        drawLine = newLine.AddComponent<LineRenderer>();
-        drawLine.material = new Material(Shader.Find("Sprites/Default"));
-        drawLine.positionCount = 0;
-        drawLine.useWorldSpace = true;
-        drawLine.colorGradient = gradient;
-        drawLine.startWidth = lineWidth;
-        drawLine.endWidth = lineWidth;
+        rightHandLine = new GameObject("RightHandLineSegment");
+        rightHandDrawLine = rightHandLine.AddComponent<LineRenderer>();
+        rightHandDrawLine.material = new Material(Shader.Find("Sprites/Default"));
+        rightHandDrawLine.positionCount = 0;
+        rightHandDrawLine.useWorldSpace = true;
+        rightHandDrawLine.colorGradient = gradientRight;
+        rightHandDrawLine.startWidth = lineWidth;
+        rightHandDrawLine.endWidth = lineWidth;
     }
 
-    protected override void OnLineComplete()
+    private void InitializeLeftHandLine()
     {
-        lineCompleteTime = Time.time; // Record the time when drawing is complete
-        StartCoroutine(RemoveExpiredPointsCoroutine());
+        leftHandLine = new GameObject("LeftHandLineSegment");
+        leftHandDrawLine = leftHandLine.AddComponent<LineRenderer>();
+        leftHandDrawLine.material = new Material(Shader.Find("Sprites/Default"));
+        leftHandDrawLine.positionCount = 0;
+        leftHandDrawLine.useWorldSpace = true;
+        leftHandDrawLine.colorGradient = gradientLeft;
+        leftHandDrawLine.startWidth = lineWidth;
+        leftHandDrawLine.endWidth = lineWidth;
     }
 
-    private IEnumerator RemoveExpiredPointsCoroutine()
+    private void OnRightHandLineComplete()
+    {
+        rightHandLineCompleteTime = Time.time; // Record the time when drawing is complete
+        StartCoroutine(RemoveExpiredPointsCoroutine(rightHandLinePoints, rightHandDrawLine, rightHandLine, rightHandLineCompleteTime));
+    }
+
+    private void OnLeftHandLineComplete()
+    {
+        leftHandLineCompleteTime = Time.time; // Record the time when drawing is complete
+        StartCoroutine(RemoveExpiredPointsCoroutine(leftHandLinePoints, leftHandDrawLine, leftHandLine, leftHandLineCompleteTime));
+    }
+
+    private IEnumerator RemoveExpiredPointsCoroutine(List<Vector3> linePoints, LineRenderer drawLine, GameObject lineObject, float lineCompleteTime)
     {
         while (linePoints.Count > 0)
         {
-            RemoveExpiredPoints();
+            RemoveExpiredPoints(linePoints, drawLine, lineCompleteTime);
             yield return new WaitForSeconds(checkInterval);
         }
 
-        Destroy(newLine);
+        Destroy(lineObject);
     }
 
-    private void RemoveExpiredPoints()
+    private void RemoveExpiredPoints(List<Vector3> linePoints, LineRenderer drawLine, float lineCompleteTime)
     {
         float currentTime = Time.time;
 
