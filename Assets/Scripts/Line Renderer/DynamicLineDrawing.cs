@@ -34,7 +34,7 @@ public class DynamicLineDrawing : LineDrawer
             float speed = CalculateSpeed(lastPoint, currentPoint, lastTime, currentTime);
 
             float t = Mathf.Clamp01(speed / maxSpeed);
-            float width = Mathf.Lerp(minLineWidth, maxLineWidth, t);
+            float width = Mathf.Lerp(minLineWidth, maxLineWidth, t) * inputManager.Current2DBrushSettings.brushSize;
             AddPoint(currentPoint, width);
 
             lastPoint = currentPoint;
@@ -57,7 +57,6 @@ public class DynamicLineDrawing : LineDrawer
         positionCount = 0;
         drawLine.positionCount = 0;
         drawLine.useWorldSpace = true;
-        minLineWidth = inputManager.Current2DBrushSettings.brushSize;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)

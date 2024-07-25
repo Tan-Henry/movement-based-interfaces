@@ -810,7 +810,7 @@ PrefabInstance:
         type: 3}
       propertyPath: lineMaterial
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
     - target: {fileID: 1748686884436953153, guid: 2ba90b96275a4442c80a886d7a9e884d,
         type: 3}
       propertyPath: m_Enabled
