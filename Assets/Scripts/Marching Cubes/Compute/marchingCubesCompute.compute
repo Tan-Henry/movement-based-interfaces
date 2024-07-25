@@ -137,16 +137,29 @@ void UpdateWeights(uint3 id : SV_DispatchThreadID)
         voxelWorldPosition = float3(center.x + 20.0f * cos(angleRound), center.y, center.z + 5.0f * sin(angleRound)) +
             _ChunkWorldPosition * 2;
         break;
-    case 2: // PseudoSpacedLines
-        voxelWorldPosition = float3(id.x * random(id.x), id.y, id.z) + _ChunkWorldPosition * 2;
+    case 2: // Smooth aka Sprinkle
+        float noiseX = frac(sin(dot(float3(id.x, id.y, id.z), float3(12.9898, 78.233, 37.719))) * 43758.5453);
+        float noiseY = frac(sin(dot(float3(id.x, id.y, id.z), float3(93.9898, 67.345, 45.123))) * 43567.2345);
+        float noiseZ = frac(sin(dot(float3(id.x, id.y, id.z), float3(57.234, 12.345, 98.765))) * 42123.1234);
+
+        // Scaling
+        noiseX = noiseX * 2.0 - 1.0;
+        noiseY = noiseY * 2.0 - 1.0;
+        noiseZ = noiseZ * 2.0 - 1.0;
+
+        voxelWorldPosition = float3(
+            id.x + noiseX * _range,
+            id.y + noiseY * _range,
+            id.z + noiseZ * _range
+        ) + _ChunkWorldPosition * 2;
         break;
     case 3: // Simple Noise (GPT)
         uint combinedSeed = id.x + id.y * 57 + id.z + _seed;
         voxelWorldPosition = float3(id.x + random(combinedSeed) * _range, id.y + random(combinedSeed + 1) * _range,
                                     id.z + random(combinedSeed + 1) * _range) + _ChunkWorldPosition * 2;
         break;
-    case 4: // ColumnNoise
-        voxelWorldPosition = float3(id.x, id.y * cos(noise*0.3), id.z) + _ChunkWorldPosition * 2;
+    case 4: //ColumnNoise aka SarumansTower
+        voxelWorldPosition = float3(id.x, id.y * noiseFrac, id.z) + _ChunkWorldPosition * 2;
         break;
     case 5: // NoiseField
         voxelWorldPosition = float3(id.x, id.y + noiseFrac, id.z) + _ChunkWorldPosition * 2;
