@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309020725220681546}
-  - component: {fileID: 1626048433227980778}
   - component: {fileID: 1748686884436953153}
   - component: {fileID: 5417209072018526579}
   - component: {fileID: 141200282566195397}
   - component: {fileID: 800152940243818127}
   - component: {fileID: 7509721874002049352}
   - component: {fileID: -8605978062803284607}
+  - component: {fileID: -1623652082013712557}
   m_Layer: 0
   m_Name: Line Drawer
   m_TagString: Untagged
@@ -38,25 +38,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1626048433227980778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2890387739050424606}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 161a456ec08c04337b46b441fac54015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerDelay: 0
-  lineWidth: 1
-  inputManager: {fileID: 0}
-  lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
-  visualEffectAsset: {fileID: 8926484042661614526, guid: a48bb54b10d724d0d8aa064308e936bd,
-    type: 3}
-  vfxSpawntime: 5
 --- !u!114 &1748686884436953153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,3 +194,18 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 5
+--- !u!114 &-1623652082013712557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890387739050424606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c825815b9204845e08eaa9d822864ba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 0}
+  bubbles: {fileID: 8926484042661614526, guid: a48bb54b10d724d0d8aa064308e936bd, type: 3}
+  butterflies: {fileID: 0}

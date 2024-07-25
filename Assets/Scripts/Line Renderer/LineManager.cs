@@ -10,7 +10,7 @@ public class LineManager : MonoBehaviour
     private MaskBrushDrawer _maskBrushDrawer;
     private SimpleLineDrawer _simpleLineDrawer;
     private DynamicLineDrawing _dynamicLineDrawing;
-    private VFXLineDrawer _vfxLineDrawer;
+    private VFXHandEffect _vfxHandEffect;
     private TemporaryLineBrush _temporaryLineBrush;
 
     private List<LineDrawer> _lineComponents = new List<LineDrawer>();
@@ -20,13 +20,12 @@ public class LineManager : MonoBehaviour
         _maskBrushDrawer = GetComponent<MaskBrushDrawer>();
         _simpleLineDrawer = GetComponent<SimpleLineDrawer>();
         _dynamicLineDrawing = GetComponent<DynamicLineDrawing>();
-        _vfxLineDrawer = GetComponent<VFXLineDrawer>();
+        _vfxHandEffect = GetComponent<VFXHandEffect>();
         _temporaryLineBrush = GetComponent<TemporaryLineBrush>();
         
         _lineComponents.Add(_maskBrushDrawer);
         _lineComponents.Add(_simpleLineDrawer);
         _lineComponents.Add(_dynamicLineDrawing);
-        _lineComponents.Add(_vfxLineDrawer);
         _lineComponents.Add(_temporaryLineBrush);
     }
 
@@ -90,16 +89,18 @@ public class LineManager : MonoBehaviour
                 switch (inputManager.CurrentEffect)
                 {
                     case EEffects.BUBBLES:
-                        _vfxLineDrawer.enabled = true;
+                        _vfxHandEffect.enabled = true;
                         _temporaryLineBrush.enabled = false;
+                        //_vfxHandEffect.ChangeEffectBubbles();
                         Debug.Log("Bubbles");
                         break;
                     case EEffects.COOL:
                         _temporaryLineBrush.enabled = true;
-                        _vfxLineDrawer.enabled = false;
+                        _vfxHandEffect.enabled = false;
                         break;
                     default:
-                        _vfxLineDrawer.enabled = false;
+                        _vfxHandEffect.enabled = false;
+                        _temporaryLineBrush.enabled = false;
                         break;
                 }
                 break;

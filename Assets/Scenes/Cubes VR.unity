@@ -741,6 +741,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8605978062803284607, guid: 2ba90b96275a4442c80a886d7a9e884d,
+        type: 3}
+      propertyPath: inputManager
+      value: 
+      objectReference: {fileID: 1746544024}
     - target: {fileID: 141200282566195397, guid: 2ba90b96275a4442c80a886d7a9e884d,
         type: 3}
       propertyPath: inputManager
@@ -801,13 +806,11 @@ PrefabInstance:
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 1746544024}
-    - target: {fileID: 1626048433227980778, guid: 2ba90b96275a4442c80a886d7a9e884d,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 1746544024}
-    - target: {fileID: 1626048433227980778, guid: 2ba90b96275a4442c80a886d7a9e884d,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: lineMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
@@ -869,8 +872,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2890387739050424606, guid: 2ba90b96275a4442c80a886d7a9e884d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1312155140}
   m_SourcePrefab: {fileID: 100100000, guid: 2ba90b96275a4442c80a886d7a9e884d, type: 3}
+--- !u!1 &894982427 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2890387739050424606, guid: 2ba90b96275a4442c80a886d7a9e884d,
+    type: 3}
+  m_PrefabInstance: {fileID: 894982426}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &998613586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -983,12 +996,27 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 894982426}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 894982427}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adccdcbcc358a4a4b81db7ccff6c7518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1312155140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894982427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c825815b9204845e08eaa9d822864ba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 1746544024}
+  bubbles: {fileID: 8926484042661614526, guid: a48bb54b10d724d0d8aa064308e936bd, type: 3}
+  butterflies: {fileID: 0}
 --- !u!1 &1496078846 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8628931683643677397, guid: e26e5c71d467b5e49aa0968a08410154,
