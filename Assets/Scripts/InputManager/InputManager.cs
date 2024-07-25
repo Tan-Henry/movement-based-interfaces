@@ -318,8 +318,6 @@ public class InputManager : BaseInputManager
 
         RightHandIsEffecting = rightHand.IsTracked;
         LeftHandIsEffecting = leftHand.IsTracked;
-        Debug.Log("RightHandIsEffecting: " + RightHandIsEffecting);
-        Debug.Log("LeftHandIsEffecting: " + LeftHandIsEffecting);
     }
 
     protected override void UpdateLeftHand()
@@ -408,12 +406,14 @@ public class InputManager : BaseInputManager
         if(!IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(leftHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
         if(!IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !IsFingerStraight(rightHandSkeleton, OVRSkeleton.BoneId.Hand_MiddleTip)) return;
         
+        //Debug.Log("Left Hand: " + leftHand.transform.rotation.eulerAngles);
+        //Debug.Log("Right Hand: " + rightHand.transform.rotation.eulerAngles);
         //check if palms are facing each other
-        if (leftHand.transform.rotation.eulerAngles.x < 5f || leftHand.transform.rotation.eulerAngles.x > 20f ||
-            leftHand.transform.rotation.eulerAngles.y < 150f || leftHand.transform.rotation.eulerAngles.y > 170f ||
+        if (leftHand.transform.rotation.eulerAngles.x < 5f || leftHand.transform.rotation.eulerAngles.x > 30f ||
+            leftHand.transform.rotation.eulerAngles.y < 150f || leftHand.transform.rotation.eulerAngles.y > 190f ||
             leftHand.transform.rotation.eulerAngles.z < 75f || leftHand.transform.rotation.eulerAngles.z > 95f) return;
         
-        if (rightHand.transform.rotation.eulerAngles.x < 340f || rightHand.transform.rotation.eulerAngles.x > 355f ||
+        if (rightHand.transform.rotation.eulerAngles.x < 300f || rightHand.transform.rotation.eulerAngles.x > 355f ||
             rightHand.transform.rotation.eulerAngles.y < 340f || rightHand.transform.rotation.eulerAngles.y > 360f ||
             rightHand.transform.rotation.eulerAngles.z < 270f || rightHand.transform.rotation.eulerAngles.z > 290f) return;
         
@@ -514,6 +514,7 @@ public class InputManager : BaseInputManager
 
     public override void OnMainMenu()
     {
+        Debug.Log("Main Menu");
         CurrentMode = EMode.MAIN_MENU;
         CurrentEffect = EEffects.NONE;
         Current2DBrushType = EBrushType2D.NONE;
