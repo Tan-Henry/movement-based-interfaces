@@ -10,6 +10,8 @@ namespace UI
         [SerializeField] private Slider brushSizeSlider2D;
         [SerializeField] private Slider brushOpacitySlider2D;
         
+        [SerializeField] private GameObject opacityObject;
+        
         private void Start()
         {
             brushSizeSlider2D.onValueChanged.AddListener(OnBrushSizeSlider2DValueChanged);
@@ -20,6 +22,13 @@ namespace UI
         {
             brushSizeSlider2D.value = inputManager.Current2DBrushSettings.brushSize;
             brushOpacitySlider2D.value = inputManager.Current2DBrushSettings.opacity;
+            
+            opacityObject.gameObject.SetActive(!OpacityShouldBeHidden());
+        }
+        
+        private bool OpacityShouldBeHidden()
+        {
+            return inputManager.Current2DBrushType == EBrushType2D.LINE && inputManager.Current2DLineBrush == ELineBrushes2D.MASK;
         }
         
         private void OnBrushSizeSlider2DValueChanged(float value)
