@@ -20,7 +20,6 @@ public class VFXLineDrawer : LineDrawer
             linePoints.Add(inputManager.RightHandPosition);
             drawLine.positionCount = linePoints.Count;
             drawLine.SetPositions(linePoints.ToArray());
-            timer = timerDelay;
         }
         else
         {
@@ -46,12 +45,20 @@ public class VFXLineDrawer : LineDrawer
     }
     
     
-    // protected override void InitializeLine()
-    // {
-    //     base.InitializeLine();
-    //     visualEffect = newLine.AddComponent<VisualEffect>();
-    //     visualEffect.visualEffectAsset = visualEffectAsset;
-    // }
+    public override void InitializeLine()
+    {
+        newLine = new GameObject();
+        newLine.tag = "Line";
+        drawLine = newLine.AddComponent<LineRenderer>();
+        drawLine.material = lineMaterial;
+        
+        float brushSize = inputManager.Current2DBrushSettings.brushSize;
+        drawLine.startWidth = brushSize;
+        drawLine.endWidth = brushSize;
+        
+        visualEffect = newLine.AddComponent<VisualEffect>();
+        visualEffect.visualEffectAsset = visualEffectAsset;
+    }
 
     protected override void OnLineComplete()
     {
@@ -61,4 +68,5 @@ public class VFXLineDrawer : LineDrawer
         visualEffect.SetMesh("LineMesh", mesh);
         elapsedTime = 0f;
     }
+    
 }
