@@ -808,6 +808,11 @@ PrefabInstance:
       objectReference: {fileID: 1746544024}
     - target: {fileID: 1748686884436953153, guid: 2ba90b96275a4442c80a886d7a9e884d,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748686884436953153, guid: 2ba90b96275a4442c80a886d7a9e884d,
+        type: 3}
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 1746544024}
@@ -826,6 +831,11 @@ PrefabInstance:
       propertyPath: lineMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
+    - target: {fileID: 7509721874002049352, guid: 2ba90b96275a4442c80a886d7a9e884d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7509721874002049352, guid: 2ba90b96275a4442c80a886d7a9e884d,
         type: 3}
       propertyPath: inputManager
@@ -913,6 +923,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ColorPicker  1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628931683643677397, guid: e26e5c71d467b5e49aa0968a08410154,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
