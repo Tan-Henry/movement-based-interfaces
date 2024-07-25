@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0ebb35d7-b53d-444c-98b6-4056fac3ff3f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.mvBased/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Cubes VR.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager/BaseInputManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager/InputManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IntroductionTextManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Voxel Engine/CursorController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +46,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;introduction__menu&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;deleteVoxels&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
