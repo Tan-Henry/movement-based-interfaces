@@ -36,11 +36,13 @@ public class VFXLineDrawer : LineDrawer
             drawLine.BakeMesh(mesh);
             visualEffect.SetMesh("LineMesh", mesh);
             visualEffect.Play();
+            Debug.Log("isDrawing called");
         }
         if (elapsedTime <= vfxSpawntime && isDrawing)
         {
             visualEffect.Play();
             elapsedTime += Time.deltaTime;
+            Debug.Log("Visual effect is played");
         }
     }
     
@@ -52,8 +54,8 @@ public class VFXLineDrawer : LineDrawer
         drawLine = newLine.AddComponent<LineRenderer>();
         drawLine.material = lineMaterial;
         
-        drawLine.startWidth = 0.5f;
-        drawLine.endWidth = 0.5f;
+        drawLine.startWidth = 0.1f;
+        drawLine.endWidth = 0.1f;
         
         drawLine.startColor = Color.clear;
         drawLine.endColor = Color.clear;
@@ -64,11 +66,12 @@ public class VFXLineDrawer : LineDrawer
 
     protected override void OnLineComplete()
     {
-        base.OnLineComplete();
         Mesh mesh = new Mesh { name = "Line" };
         drawLine.BakeMesh(mesh);
         visualEffect.SetMesh("LineMesh", mesh);
         elapsedTime = 0f;
+        
+        Debug.Log("Line completed");
     }
     
 }

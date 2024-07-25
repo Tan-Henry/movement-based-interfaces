@@ -7,7 +7,7 @@ public class DynamicLineDrawing : LineDrawer
     private Vector3 lastPoint;
     private float lastTime;
     public float minLineWidth = 0.05f;
-    public float maxLineWidth = 1;
+    public float maxLineWidth = 1.5f;
     public float maxSpeed = 10;
     private int positionCount;
     private float totalLengthOld;
@@ -57,6 +57,7 @@ public class DynamicLineDrawing : LineDrawer
         positionCount = 0;
         drawLine.positionCount = 0;
         drawLine.useWorldSpace = true;
+        minLineWidth = inputManager.Current2DBrushSettings.brushSize;
     }
 
     private float CalculateSpeed(Vector3 startPoint, Vector3 endPoint, float startTime, float endTime)
