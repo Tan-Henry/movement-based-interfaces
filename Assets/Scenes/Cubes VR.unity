@@ -1785,6 +1785,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2220333349722581279, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ff41f8a23e87947dfbb72a993214d56b,
+        type: 3}
     - target: {fileID: 2255859597984959969, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
         type: 3}
       propertyPath: inputManager
@@ -2803,7 +2809,7 @@ PrefabInstance:
     - target: {fileID: 6033962244296996442, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
         type: 3}
       propertyPath: m_Name
-      value: Butterfly
+      value: Coolbrush
       objectReference: {fileID: 0}
     - target: {fileID: 6190556769087118292, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
         type: 3}
@@ -3350,6 +3356,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7633348048096697353, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ff41f8a23e87947dfbb72a993214d56b,
+        type: 3}
     - target: {fileID: 7690842251909516278, guid: baf1a8fa97a9bd64ca542ad4420f5a5a,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3625,6 +3637,7 @@ PrefabInstance:
     - {fileID: 3358582505064372120, guid: baf1a8fa97a9bd64ca542ad4420f5a5a, type: 3}
     - {fileID: 7065799309158669820, guid: baf1a8fa97a9bd64ca542ad4420f5a5a, type: 3}
     - {fileID: 4850502386327687766, guid: baf1a8fa97a9bd64ca542ad4420f5a5a, type: 3}
+    - {fileID: 6033962244296996442, guid: baf1a8fa97a9bd64ca542ad4420f5a5a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: baf1a8fa97a9bd64ca542ad4420f5a5a, type: 3}
