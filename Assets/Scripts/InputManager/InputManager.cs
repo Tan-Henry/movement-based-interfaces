@@ -443,8 +443,9 @@ public class InputManager : BaseInputManager
             return;
         }
         
+        Debug.Log(leftHand.transform.rotation.eulerAngles.y);
         //leftHand palm facing up
-        if (leftHand.transform.rotation.eulerAngles is { y: > 220.0f })
+        if (leftHand.transform.rotation.eulerAngles is { y: > 240.0f })
         {
             OnTurnOnColorPicker();
         }
@@ -452,10 +453,8 @@ public class InputManager : BaseInputManager
 
     private void CheckTurnOffColorPicker()
     {
-        if (!leftHand.IsTracked) return;
-
         //leftHand palm facing down
-        if (leftHand.transform.rotation.eulerAngles is { y: < 200.0f })
+        if (leftHand.transform.rotation.eulerAngles is { y: < 235.0f } || IsFingerBent(leftHandSkeleton, OVRSkeleton.BoneId.Hand_IndexTip) || !leftHand.IsTracked)
         {
             OnTurnOffColorPicker();
         }
