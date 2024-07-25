@@ -573,11 +573,11 @@ public class InputManager : BaseInputManager
     private void InitializeState()
     {
         IsDrawingState = true;
-        CurrentMode = EMode.MAIN_MENU;
-        CurrentBrushCategory = EBrushCategory.NONE;
-        Current2DBrushType = EBrushType2D.NONE;
+        CurrentMode = EMode.CREATE;
+        CurrentBrushCategory = EBrushCategory.BRUSH_2D;
+        Current2DBrushType = EBrushType2D.LINE;
         Available2DLineBrushes = new List<ELineBrushes2D>((ELineBrushes2D[])Enum.GetValues(typeof(ELineBrushes2D)));
-        Current2DLineBrush = ELineBrushes2D.NONE;
+        Current2DLineBrush = ELineBrushes2D.STANDARD;
         Available2DDynamicBrushes = new List<EDynamicBrushes2D>((EDynamicBrushes2D[])Enum.GetValues(typeof(EDynamicBrushes2D)));
         Current2DDynamicBrush = EDynamicBrushes2D.NONE;
         Current3DBrushType = EBrushType3D.NONE;
