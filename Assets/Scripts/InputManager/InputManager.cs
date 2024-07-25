@@ -40,8 +40,8 @@ public class InputManager : BaseInputManager
     private Vector3 lastMiddleFingerPosition = Vector3.zero;
     private bool rightRingFingerPinching = false;
     private Vector3 lastRingFingerPosition = Vector3.zero;
-    private readonly float sizeSensitivity = 0.5f;
-    private float opacitySensitivity = 0.05f;
+    private const float SizeSensitivity = 0.5f;
+    private const float OpacitySensitivity = 0.1f;
     private bool leftIndexFingerPinching = false;
     private bool isPointingAtUI = false;
     private bool isChangingEffect = false;
@@ -239,7 +239,7 @@ public class InputManager : BaseInputManager
                 }
 
                 float verticalMovement = currentMiddleFingerPosition.y - lastMiddleFingerPosition.y;
-                float valueChange = verticalMovement * sizeSensitivity;
+                float valueChange = verticalMovement * SizeSensitivity;
                 lastMiddleFingerPosition = currentMiddleFingerPosition;
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
@@ -295,7 +295,7 @@ public class InputManager : BaseInputManager
                 }
                     
                 float verticalMovement = currentRingFingerPosition.y - lastRingFingerPosition.y;
-                float valueChange = verticalMovement * opacitySensitivity;
+                float valueChange = verticalMovement * OpacitySensitivity;
                 lastRingFingerPosition = currentRingFingerPosition;
                 Current2DBrushSettings.opacity = Mathf.Clamp(Current2DBrushSettings.opacity + valueChange, Limits.MIN_OPACITY, Limits.MAX_OPACITY);
                 Debug.Log("Opacity: " + Current2DBrushSettings.opacity);
