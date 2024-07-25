@@ -72,7 +72,6 @@ MonoBehaviour:
   lineWidth: 1
   inputManager: {fileID: 0}
   lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
-  color: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &5417209072018526579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,10 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerDelay: 0
-  lineWidth: 1
+  lineWidth: 0.1
   inputManager: {fileID: 0}
   lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   minLineWidth: 0.2
-  maxLineWidth: 3
+  maxLineWidth: 1
   maxSpeed: 0
-  color: {r: 0, g: 0, b: 0, a: 0}

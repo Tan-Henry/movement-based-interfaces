@@ -6,9 +6,9 @@ public class DynamicLineDrawing : LineDrawer
 {
     private Vector3 lastPoint;
     private float lastTime;
-    public float minLineWidth;
-    public float maxLineWidth;
-    public float maxSpeed;
+    public float minLineWidth = 0.05f;
+    public float maxLineWidth = 1;
+    public float maxSpeed = 10;
     private int positionCount;
     private float totalLengthOld;
 

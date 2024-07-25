@@ -52,9 +52,11 @@ public class VFXLineDrawer : LineDrawer
         drawLine = newLine.AddComponent<LineRenderer>();
         drawLine.material = lineMaterial;
         
-        float brushSize = inputManager.Current2DBrushSettings.brushSize;
-        drawLine.startWidth = brushSize;
-        drawLine.endWidth = brushSize;
+        drawLine.startWidth = 0.5f;
+        drawLine.endWidth = 0.5f;
+        
+        drawLine.startColor = Color.clear;
+        drawLine.endColor = Color.clear;
         
         visualEffect = newLine.AddComponent<VisualEffect>();
         visualEffect.visualEffectAsset = visualEffectAsset;
