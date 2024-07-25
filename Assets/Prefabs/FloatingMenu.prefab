@@ -556,8 +556,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.54639494
+        time: 0.059700012
+        value: 0.08247423
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -597,8 +597,8 @@ LineRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 1
-    numCapVertices: 0
+    numCornerVertices: 5
+    numCapVertices: 5
     alignment: 0
     textureMode: 4
     textureScale: {x: 0, y: 1}
@@ -3888,7 +3888,6 @@ LineRenderer:
   m_Positions:
   - {x: -15.275179, y: -9.364585, z: 0}
   - {x: -7.027987, y: 2.6724088, z: 0}
-  - {x: -2.6775818, y: -2.1636062, z: 0}
   - {x: 0.3518053, y: -5.7135344, z: 0}
   - {x: 4.4, y: -1.76, z: 0}
   - {x: 5.56, y: 4.4039626, z: 0}
@@ -3903,8 +3902,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.54639494
+        time: 0.07675995
+        value: 0.29897022
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -3944,8 +3943,8 @@ LineRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 1
-    numCapVertices: 0
+    numCornerVertices: 5
+    numCapVertices: 5
     alignment: 0
     textureMode: 4
     textureScale: {x: 0, y: 1}
