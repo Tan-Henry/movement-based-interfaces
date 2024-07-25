@@ -11,6 +11,7 @@ public class LineManager : MonoBehaviour
     private SimpleLineDrawer _simpleLineDrawer;
     private DynamicLineDrawing _dynamicLineDrawing;
     private VFXLineDrawer _vfxLineDrawer;
+    private TemporaryLineBrush _temporaryLineBrush;
 
     private List<LineDrawer> _lineComponents = new List<LineDrawer>();
     // Start is called before the first frame update
@@ -20,11 +21,13 @@ public class LineManager : MonoBehaviour
         _simpleLineDrawer = GetComponent<SimpleLineDrawer>();
         _dynamicLineDrawing = GetComponent<DynamicLineDrawing>();
         _vfxLineDrawer = GetComponent<VFXLineDrawer>();
+        _temporaryLineBrush = GetComponent<TemporaryLineBrush>();
         
         _lineComponents.Add(_maskBrushDrawer);
         _lineComponents.Add(_simpleLineDrawer);
         _lineComponents.Add(_dynamicLineDrawing);
         _lineComponents.Add(_vfxLineDrawer);
+        _lineComponents.Add(_temporaryLineBrush);
     }
 
     private void Update()
@@ -88,7 +91,12 @@ public class LineManager : MonoBehaviour
                 {
                     case EEffects.BUBBLES:
                         _vfxLineDrawer.enabled = true;
+                        _temporaryLineBrush.enabled = false;
                         Debug.Log("Bubbles");
+                        break;
+                    case EEffects.COOL:
+                        _temporaryLineBrush.enabled = true;
+                        _vfxLineDrawer.enabled = false;
                         break;
                     default:
                         _vfxLineDrawer.enabled = false;
