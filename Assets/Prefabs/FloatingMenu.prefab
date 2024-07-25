@@ -1593,8 +1593,8 @@ MonoBehaviour:
   _rightHand: {fileID: 0}
   _leftAnchorPoint: {x: -0.06086033, y: 0.009539844, z: 0.0002581277}
   _leftAimPoint: {x: -0.07492584, y: 0.08930927, z: 0.0002581277}
-  _rightAnchorPoint: {x: 0.06526034, y: -0.01143984, z: -0.004558128}
-  _rightAimPoint: {x: 0.07932585, y: -0.09120928, z: -0.004558128}
+  _rightAnchorPoint: {x: -1.81, y: -1.15, z: 0.47}
+  _rightAimPoint: {x: -4.01, y: 20.31, z: 3.77}
 --- !u!1 &2112437314599240213
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,8 +2100,8 @@ MonoBehaviour:
   _rightHand: {fileID: 0}
   _leftAnchorPoint: {x: -0.06086033, y: 0.009539844, z: 0.0002581277}
   _leftAimPoint: {x: -0.07492584, y: 0.08930927, z: 0.0002581277}
-  _rightAnchorPoint: {x: 0.06526034, y: -0.01143984, z: -0.004558128}
-  _rightAimPoint: {x: 0.07932585, y: -0.09120928, z: -0.004558128}
+  _rightAnchorPoint: {x: -1.81, y: -1.15, z: 0.47}
+  _rightAimPoint: {x: -4.01, y: 20.31, z: 3.77}
 --- !u!1 &3565545872943621249
 GameObject:
   m_ObjectHideFlags: 0
@@ -2114,7 +2114,6 @@ GameObject:
   - component: {fileID: 8456172088516306864}
   - component: {fileID: 7755360922662201002}
   - component: {fileID: 4871072290923004500}
-  - component: {fileID: 2946529267997180866}
   m_Layer: 0
   m_Name: Column
   m_TagString: Untagged
@@ -2195,20 +2194,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2946529267997180866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3565545872943621249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962faae6896547ecab1d7f62b15782e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputManager: {fileID: 0}
-  brushSizeSlider3D: {fileID: 0}
 --- !u!1 &3676210415884193070
 GameObject:
   m_ObjectHideFlags: 0
@@ -4002,7 +3987,6 @@ GameObject:
   - component: {fileID: 6983597643057045277}
   - component: {fileID: 2090171676836319454}
   - component: {fileID: 7565661120941361601}
-  - component: {fileID: 7485983204732292493}
   m_Layer: 0
   m_Name: Column
   m_TagString: Untagged
@@ -4083,20 +4067,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7485983204732292493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8275538980263392213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962faae6896547ecab1d7f62b15782e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputManager: {fileID: 0}
-  brushSizeSlider3D: {fileID: 0}
 --- !u!1 &8908068733055808008
 GameObject:
   m_ObjectHideFlags: 0
