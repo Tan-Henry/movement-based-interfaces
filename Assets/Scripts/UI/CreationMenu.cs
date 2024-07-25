@@ -42,6 +42,12 @@ namespace UI
             }
             
             DisableButtons(inputManager.CurrentMode == EMode.TUTORIAL);
+
+            if (inputManager.CurrentMode != EMode.CREATE)
+            {
+                brushMenuToggle.isOn = false;
+                colorMenuToggle.isOn = false;
+            }
         }
         
         private void DisableButtons(bool isTutorialMode)
