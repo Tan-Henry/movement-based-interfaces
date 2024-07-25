@@ -12,11 +12,11 @@ public class TemporaryLineBrush : LineDrawer
     private bool isRightHandDrawing;
     private bool isLeftHandDrawing;
 
-    private float rightHandLineCompleteTime;
-    private float leftHandLineCompleteTime;
-
     private List<Vector3> rightHandLinePoints;
     private List<Vector3> leftHandLinePoints;
+
+    private List<float> rightHandPointTimes;
+    private List<float> leftHandPointTimes;
 
     private LineRenderer rightHandDrawLine;
     private LineRenderer leftHandDrawLine;
@@ -29,6 +29,9 @@ public class TemporaryLineBrush : LineDrawer
         base.Start();
         rightHandLinePoints = new List<Vector3>();
         leftHandLinePoints = new List<Vector3>();
+        rightHandPointTimes = new List<float>();
+        leftHandPointTimes = new List<float>();
+        StartCoroutine(RemoveExpiredPointsCoroutine());
     }
 
     protected override void Update()
@@ -47,12 +50,12 @@ public class TemporaryLineBrush : LineDrawer
                 isRightHandDrawing = true;
             }
             rightHandLinePoints.Add(inputManager.RightHandPosition);
+            rightHandPointTimes.Add(Time.time);
             rightHandDrawLine.positionCount = rightHandLinePoints.Count;
             rightHandDrawLine.SetPositions(rightHandLinePoints.ToArray());
         }
         else if (isRightHandDrawing)
         {
-            OnRightHandLineComplete();
             isRightHandDrawing = false;
         }
     }
@@ -67,12 +70,12 @@ public class TemporaryLineBrush : LineDrawer
                 isLeftHandDrawing = true;
             }
             leftHandLinePoints.Add(inputManager.LeftHandPosition);
+            leftHandPointTimes.Add(Time.time);
             leftHandDrawLine.positionCount = leftHandLinePoints.Count;
             leftHandDrawLine.SetPositions(leftHandLinePoints.ToArray());
         }
         else if (isLeftHandDrawing)
         {
-            OnLeftHandLineComplete();
             isLeftHandDrawing = false;
         }
     }
@@ -101,45 +104,35 @@ public class TemporaryLineBrush : LineDrawer
         leftHandDrawLine.endWidth = lineWidth;
     }
 
-    private void OnRightHandLineComplete()
+    private IEnumerator RemoveExpiredPointsCoroutine()
     {
-        rightHandLineCompleteTime = Time.time; // Record the time when drawing is complete
-        StartCoroutine(RemoveExpiredPointsCoroutine(rightHandLinePoints, rightHandDrawLine, rightHandLine, rightHandLineCompleteTime));
-    }
-
-    private void OnLeftHandLineComplete()
-    {
-        leftHandLineCompleteTime = Time.time; // Record the time when drawing is complete
-        StartCoroutine(RemoveExpiredPointsCoroutine(leftHandLinePoints, leftHandDrawLine, leftHandLine, leftHandLineCompleteTime));
-    }
-
-    private IEnumerator RemoveExpiredPointsCoroutine(List<Vector3> linePoints, LineRenderer drawLine, GameObject lineObject, float lineCompleteTime)
-    {
-        while (linePoints.Count > 0)
+        while (true)
         {
-            RemoveExpiredPoints(linePoints, drawLine, lineCompleteTime);
+            RemoveExpiredPoints(rightHandLinePoints, rightHandPointTimes, rightHandDrawLine, rightHandLine);
+            RemoveExpiredPoints(leftHandLinePoints, leftHandPointTimes, leftHandDrawLine, leftHandLine);
             yield return new WaitForSeconds(checkInterval);
         }
-
-        Destroy(lineObject);
     }
 
-    private void RemoveExpiredPoints(List<Vector3> linePoints, LineRenderer drawLine, float lineCompleteTime)
+    private void RemoveExpiredPoints(List<Vector3> linePoints, List<float> pointTimes, LineRenderer drawLine, GameObject lineObject)
     {
         float currentTime = Time.time;
 
-        // Calculate the elapsed time since the line was completed
-        float elapsedTimeSinceCompletion = currentTime - lineCompleteTime;
-
-        // Remove points that have exceeded their lifetime since the line was completed
-        while (linePoints.Count > 0 && elapsedTimeSinceCompletion > pointLifetime)
+        // Remove points that have exceeded their lifetime
+        while (pointTimes.Count > 0 && currentTime - pointTimes[0] > pointLifetime)
         {
             linePoints.RemoveAt(0);
-            elapsedTimeSinceCompletion -= checkInterval;
+            pointTimes.RemoveAt(0);
         }
 
         // Update the LineRenderer with the remaining points
         drawLine.positionCount = linePoints.Count;
         drawLine.SetPositions(linePoints.ToArray());
+
+        // Destroy the line segment if all points are gone
+        if (linePoints.Count == 0 && lineObject != null)
+        {
+            Destroy(lineObject);
+        }
     }
 }
