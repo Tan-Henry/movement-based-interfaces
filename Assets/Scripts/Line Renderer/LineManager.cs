@@ -16,8 +16,6 @@ public class LineManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        inputManager.ChangeEffect += OnChangeEffect;
-        
         _maskBrushDrawer = GetComponent<MaskBrushDrawer>();
         _simpleLineDrawer = GetComponent<SimpleLineDrawer>();
         _dynamicLineDrawing = GetComponent<DynamicLineDrawing>();
@@ -26,72 +24,79 @@ public class LineManager : MonoBehaviour
         _lineComponents.Add(_maskBrushDrawer);
         _lineComponents.Add(_simpleLineDrawer);
         _lineComponents.Add(_dynamicLineDrawing);
-        //_lineComponents.Add(_vfxLineDrawer);
+        _lineComponents.Add(_vfxLineDrawer);
     }
 
     private void Update()
     {
-        EBrushType2D brushType = inputManager.Current2DBrushType;
-        switch (brushType)
+        EMode mode = inputManager.CurrentMode;
+        switch (mode)
         {
-            case EBrushType2D.LINE:
-                var lineBrush = inputManager.Current2DLineBrush;
-                switch (lineBrush)
-                    {
-                        case ELineBrushes2D.MASK:
-                            if (!_maskBrushDrawer.enabled)
+            case EMode.CREATE:
+                EBrushType2D brushType = inputManager.Current2DBrushType;
+                switch (brushType)
+                {
+                    case EBrushType2D.LINE:
+                        var lineBrush = inputManager.Current2DLineBrush;
+                        switch (lineBrush)
                             {
-                                DisableComponents();
-                                _maskBrushDrawer.enabled = true;
+                                case ELineBrushes2D.MASK:
+                                    if (!_maskBrushDrawer.enabled)
+                                    {
+                                        DisableComponents();
+                                        _maskBrushDrawer.enabled = true;
+                                    }
+                                    break;
+                                case ELineBrushes2D.STANDARD:
+                                    if (!_simpleLineDrawer.enabled)
+                                    {
+                                        DisableComponents();
+                                        _simpleLineDrawer.enabled = true;
+                                    }
+                                    break;
+                                case ELineBrushes2D.NONE:
+                                    DisableComponents();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
                             }
-                            break;
-                        case ELineBrushes2D.STANDARD:
-                            if (!_simpleLineDrawer.enabled)
+                        break;
+                    case EBrushType2D.DYNAMIC:
+                        var dynamicBrush = inputManager.Current2DDynamicBrush;
+                        switch (dynamicBrush)
                             {
-                                DisableComponents();
-                                _simpleLineDrawer.enabled = true;
+                                case EDynamicBrushes2D.SIZE:
+                                    if (!_dynamicLineDrawing.enabled)
+                                    {
+                                        DisableComponents();
+                                        _dynamicLineDrawing.enabled = true;
+                                    }
+                                    break;
+                                case EDynamicBrushes2D.NONE:
+                                    DisableComponents();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
                             }
-                            break;
-                        case ELineBrushes2D.NONE:
-                            DisableComponents();
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                        break;
+                    case EBrushType2D.NONE:
+                        break;
+                }
                 break;
-            case EBrushType2D.DYNAMIC:
-                var dynamicBrush = inputManager.Current2DDynamicBrush;
-                switch (dynamicBrush)
-                    {
-                        case EDynamicBrushes2D.SIZE:
-                            if (!_dynamicLineDrawing.enabled)
-                            {
-                                DisableComponents();
-                                _dynamicLineDrawing.enabled = true;
-                            }
-                            break;
-                        case EDynamicBrushes2D.NONE:
-                            DisableComponents();
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                break;
-            case EBrushType2D.NONE:
+            case EMode.PRESENT:
+                switch (inputManager.CurrentEffect)
+                {
+                    case EEffects.BUBBLES:
+                        _vfxLineDrawer.enabled = true;
+                        Debug.Log("Bubbles");
+                        break;
+                    default:
+                        _vfxLineDrawer.enabled = false;
+                        break;
+                }
                 break;
         }
-    }
-
-    private void OnChangeEffect()
-    {
-        switch (inputManager.CurrentEffect)
-        {
-            case EEffects.BUBBLES:
-                _vfxLineDrawer.enabled = true;
-                break;
-            default:
-                break;
-        }
+        
     }
 
     private void DisableComponents()
