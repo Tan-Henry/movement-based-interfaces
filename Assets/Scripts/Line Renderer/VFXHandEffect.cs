@@ -7,40 +7,47 @@ using UnityEngine.VFX;
 public class VFXHandEffect : MonoBehaviour
 {
     [SerializeField] private BaseInputManager inputManager;
-    private VisualEffect visualEffect;
-    private GameObject visualEffectGameobject;
+    private VisualEffect visualEffectLeftHand;
+    private VisualEffect visualEffectRightHand;
+    private GameObject visualEffectGameobjectLeft;
+    private GameObject visualEffectGameobjectRight;
     [SerializeField] private VisualEffectAsset bubbles;
     [SerializeField] private VisualEffectAsset butterflies;
 
     private void Start()
     {
-        visualEffectGameobject = new GameObject();
-        visualEffect = visualEffectGameobject.AddComponent<VisualEffect>();
-        visualEffect.visualEffectAsset = bubbles;
+        visualEffectGameobjectLeft = new GameObject();
+        visualEffectGameobjectRight = new GameObject();
+        visualEffectLeftHand = visualEffectGameobjectLeft.AddComponent<VisualEffect>();
+        visualEffectLeftHand.visualEffectAsset = bubbles;
+        visualEffectRightHand = visualEffectGameobjectRight.AddComponent<VisualEffect>();
+        visualEffectRightHand.visualEffectAsset = bubbles;
     }
 
     void Update()
     {
         if (inputManager.RightHandIsEffecting)
         {
-            visualEffect.transform.position = inputManager.RightHandPosition;
-            visualEffect.Play();
+            visualEffectRightHand.transform.position = inputManager.RightHandPosition;
+            visualEffectRightHand.Play();
         }
 
         if (inputManager.LeftHandIsEffecting)
         {
-            visualEffect.transform.position = inputManager.LeftHandPosition;
-            visualEffect.Play();
+            visualEffectLeftHand.transform.position = inputManager.LeftHandPosition;
+            visualEffectLeftHand.Play();
         }
     }
 
     public void ChangeEffectBubbles()
     {
-        visualEffect.visualEffectAsset = bubbles;
+        visualEffectLeftHand.visualEffectAsset = bubbles;
+        visualEffectRightHand.visualEffectAsset = bubbles;
     }
     
     public void ChangeEffectButterflies()
     {
-        visualEffect.visualEffectAsset = butterflies;
+        visualEffectLeftHand.visualEffectAsset = butterflies;
+        visualEffectRightHand.visualEffectAsset = butterflies;
     }
 }

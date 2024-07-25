@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 800152940243818127}
   - component: {fileID: 7509721874002049352}
   - component: {fileID: -8605978062803284607}
-  - component: {fileID: -1623652082013712557}
+  - component: {fileID: 458326210899879007}
   m_Layer: 0
   m_Name: Line Drawer
   m_TagString: Untagged
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2890387739050424606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a02988b7ff333456db8072deab13083d, type: 3}
   m_Name: 
@@ -69,7 +69,7 @@ MonoBehaviour:
   timerDelay: 0
   lineWidth: 1
   inputManager: {fileID: 0}
-  lineMaterial: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
   material: {fileID: 2100000, guid: 97f6b5f06cfd44ffdaf833c4e6a443b6, type: 2}
 --- !u!114 &141200282566195397
 MonoBehaviour:
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2890387739050424606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed3b5b31e90fc41e5968a97ca4303b7f, type: 3}
   m_Name: 
@@ -113,9 +113,9 @@ MonoBehaviour:
   lineWidth: 0.1
   inputManager: {fileID: 0}
   lineMaterial: {fileID: 2100000, guid: 7145e6192e7e2444787249c52ed535f9, type: 2}
-  minLineWidth: 0.2
+  minLineWidth: 0.05
   maxLineWidth: 1
-  maxSpeed: 0
+  maxSpeed: 10
 --- !u!114 &-8605978062803284607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 5
     m_NumAlphaKeys: 5
---- !u!114 &-1623652082013712557
+--- !u!114 &458326210899879007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -31,13 +31,14 @@ public class TemporaryLineBrush : LineDrawer
         leftHandLinePoints = new List<Vector3>();
         rightHandPointTimes = new List<float>();
         leftHandPointTimes = new List<float>();
-        StartCoroutine(RemoveExpiredPointsCoroutine());
+        //bStartCoroutine(RemoveExpiredPointsCoroutine());
     }
 
     protected override void Update()
     {
-        HandleRightHandDrawing();
-        HandleLeftHandDrawing();
+        // doesn't work deactivated
+       // HandleRightHandDrawing();
+       // HandleLeftHandDrawing();
     }
 
     private void HandleRightHandDrawing()
