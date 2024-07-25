@@ -40,7 +40,8 @@ public class InputManager : BaseInputManager
     private Vector3 lastMiddleFingerPosition = Vector3.zero;
     private bool rightRingFingerPinching = false;
     private Vector3 lastRingFingerPosition = Vector3.zero;
-    private float sensitivity = 0.01f;
+    private readonly float sizeSensitivity = 0.5f;
+    private float opacitySensitivity = 0.05f;
     private bool leftIndexFingerPinching = false;
     private bool isPointingAtUI = false;
     private bool isChangingEffect = false;
@@ -210,6 +211,7 @@ public class InputManager : BaseInputManager
             //if index finger is also pinching, no action
             if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) || CurrentMode != EMode.CREATE || CurrentBrushCategory == EBrushCategory.NONE || rightHand.GetFingerIsPinching(OVRHand.HandFinger.Ring))
             {
+                rightMiddleFingerPinching = false;
                 return;
             }
             
@@ -237,13 +239,14 @@ public class InputManager : BaseInputManager
                 }
 
                 float verticalMovement = currentMiddleFingerPosition.y - lastMiddleFingerPosition.y;
-                int valueChange = Mathf.RoundToInt(verticalMovement);
+                float valueChange = verticalMovement * sizeSensitivity;
                 lastMiddleFingerPosition = currentMiddleFingerPosition;
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_2D)
                 {
                     Current2DBrushSettings.brushSize = Mathf.Clamp(Current2DBrushSettings.brushSize + valueChange,
                         Limits.MIN_BRUSH_SIZE, Limits.MAX_BRUSH_SIZE);
+                    Debug.Log("Brush Size: " + Current2DBrushSettings.brushSize);
                 }
 
                 if (CurrentBrushCategory == EBrushCategory.BRUSH_3D)
@@ -266,6 +269,7 @@ public class InputManager : BaseInputManager
             //if index finger is also pinching, no action
             if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index) || CurrentMode != EMode.CREATE || CurrentBrushCategory != EBrushCategory.BRUSH_2D || rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
             {
+                rightRingFingerPinching = false;
                 return;
             }
                 
@@ -275,11 +279,9 @@ public class InputManager : BaseInputManager
                 rightRingFingerPinching = true;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_RingTip)
-                    {
-                        lastRingFingerPosition = b.Transform.position;
-                        break;
-                    }
+                    if (b.Id != OVRSkeleton.BoneId.Hand_RingTip) continue;
+                    lastRingFingerPosition = b.Transform.position;
+                    break;
                 }
             }
             else
@@ -287,17 +289,16 @@ public class InputManager : BaseInputManager
                 Vector3 currentRingFingerPosition = Vector3.zero;
                 foreach (var b in rightHandSkeleton.Bones)
                 {
-                    if (b.Id == OVRSkeleton.BoneId.Hand_RingTip)
-                    {
-                        currentRingFingerPosition = b.Transform.position;
-                        break;
-                    }
+                    if (b.Id != OVRSkeleton.BoneId.Hand_RingTip) continue;
+                    currentRingFingerPosition = b.Transform.position;
+                    break;
                 }
                     
                 float verticalMovement = currentRingFingerPosition.y - lastRingFingerPosition.y;
-                float valueChange = verticalMovement * sensitivity;
+                float valueChange = verticalMovement * opacitySensitivity;
                 lastRingFingerPosition = currentRingFingerPosition;
                 Current2DBrushSettings.opacity = Mathf.Clamp(Current2DBrushSettings.opacity + valueChange, Limits.MIN_OPACITY, Limits.MAX_OPACITY);
+                Debug.Log("Opacity: " + Current2DBrushSettings.opacity);
             }
         }
         else
