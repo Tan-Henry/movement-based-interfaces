@@ -60,9 +60,9 @@ public abstract class LineDrawer : MonoBehaviour
         
         //Brush Settings Input Manager
         float opacity = inputManager.Current2DBrushSettings.opacity;
-        Debug.Log("Opacity: " + opacity);
-        drawLine.startColor = new Color(0.1f, 1f, 1f, opacity);
-        drawLine.endColor = new Color(0.1f, 1f, 1f, opacity);
+        Color color = inputManager.Current2DBrushSettings.color;
+        drawLine.startColor = new Color(color.r, color.g, color.b, opacity);
+        drawLine.endColor = new Color(color.r, color.g, color.b, opacity);
         drawLine.material.SetColor("Color", new Color(1f, 1f, 1f, opacity));
         float brushSize = inputManager.Current2DBrushSettings.brushSize;
         drawLine.startWidth = brushSize;
