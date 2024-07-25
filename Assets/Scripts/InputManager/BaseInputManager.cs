@@ -31,6 +31,9 @@ public abstract class BaseInputManager : MonoBehaviour
 
     //erase-action 3D right hand
     public abstract bool RightHandIsErasing3D { get; protected set; }
+    
+    //color-picker-action right hand
+    public abstract bool RightHandIsColorPicking { get; protected set; }
 
     // draw-action head
     public abstract Vector3 HeadDrawPosition { get; protected set; }
@@ -109,6 +112,7 @@ public abstract class BaseInputManager : MonoBehaviour
     // Other Functions
     public abstract bool IsDrawingState { get; set; }
     public abstract bool BlockedByHandle { get; set; }
+    public abstract bool BlockedByColorPicker { get; set; }
 
     protected virtual void Update()
     {
@@ -190,6 +194,7 @@ public class BrushSettings2D
 {
     public float brushSize;
     public float opacity;
+    public Color color;
 }
 
 public class BrushSettings3D 
