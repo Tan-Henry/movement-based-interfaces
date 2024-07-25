@@ -113,6 +113,8 @@ public abstract class BaseInputManager : MonoBehaviour
     public abstract bool IsDrawingState { get; set; }
     public abstract bool BlockedByHandle { get; set; }
     public abstract bool BlockedByColorPicker { get; set; }
+    public abstract bool rightRingFingerPinching {get; set;}
+    public abstract bool rightMiddleFingerPinching {get; set;}
 
     protected virtual void Update()
     {
