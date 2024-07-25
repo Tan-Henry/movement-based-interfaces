@@ -440,7 +440,6 @@ public class InputManager : BaseInputManager
             return;
         }
         
-        Debug.Log(leftHand.transform.rotation.eulerAngles.y);
         //leftHand palm facing up
         if (leftHand.transform.rotation.eulerAngles is { y: > 250.0f })
         {

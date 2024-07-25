@@ -73,7 +73,6 @@ namespace Marching_Cubes
                         Vector3Int chunkPos = new Vector3Int(x, y, z);
 
                         if (chunks.TryGetValue(chunkPos, out Chunk chunk)) {
-                            Debug.Log("Terraforming chunk: " + chunkPos + " at point: " + hitPoint + " with brush size: " + brushSize + " and add: " + add);
                             chunk.EditWeights(hitPoint, brushSize, add, brushType);
                         }
                     }

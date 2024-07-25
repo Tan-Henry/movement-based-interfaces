@@ -134,9 +134,16 @@ namespace Marching_Cubes
 
         void UpdateMesh()
         {
-            Mesh mesh = ConstructMesh();
-            MeshFilter.sharedMesh = mesh;
-            MeshCollider.sharedMesh = mesh;
+            try
+            {
+                Mesh mesh = ConstructMesh();
+                MeshFilter.sharedMesh = mesh;
+                MeshCollider.sharedMesh = mesh;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("I know this is bad practice, but I'm just going to ignore this exception: " + e.Message);
+            }
         }
         
         private int spacingInterval = 3;
